@@ -2427,7 +2427,7 @@
       width: 84px;
       min-height: 84px;
       display: flex;
-      align-items: flex-end;
+      align-items: center;
       justify-content: center
     }
 
@@ -4163,7 +4163,7 @@
           <span class="rp-hex" data-gi="${t.gi}" data-ti="${t.ti}"></span>
           <span class="rp-bars">${bars}</span>
           <span class="rp-int"><b>${t.vals ? sum(t.vals) : "–"}</b><span>Intensity</span></span>
-          <span class="rp-col"><i class="${t.vals ? "" : "empty"}" style="${t.vals ? `background:${t.color}` : ""}"></i><div><b>${t.vals ? esc(t.cname) : "No color yet"}</b><span>${t.vals ? `${t.color} · ${t.code}` : "–"}</span></div></span>
+          <span class="rp-col"><i class="${t.vals ? "" : "empty"}" style="${t.vals ? `background:${t.color}` : ""}"></i><div><b>${t.vals ? esc(t.cname) : "No color yet"}</b><span>${t.vals ? t.color : "–"}</span></div></span>
         </${tag}></li>`;
           }).join("");
           return `<section class="rp-game" id="rp-${g.id}" aria-labelledby="rph-${g.id}">
