@@ -2569,205 +2569,6 @@
       display: none
     }
 
-    /* Score editor */
-    .sed {
-      width: min(760px, calc(100vw - 24px));
-      max-height: calc(100dvh - 24px);
-      padding: 0;
-      border: 1px solid var(--line);
-      background: var(--surface);
-      color: var(--ink);
-      flex-direction: column
-    }
-
-    .sed[open] {
-      display: flex
-    }
-
-    .sed::backdrop {
-      background: rgba(10, 14, 20, .55)
-    }
-
-    .sed-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 16px;
-      padding: 16px 18px 12px;
-      border-bottom: 1px solid var(--line)
-    }
-
-    .sed-head h2 {
-      font-family: var(--display);
-      font-size: 20px;
-      margin: 0
-    }
-
-    .sed-sub {
-      margin: 4px 0 0;
-      font-size: 13px;
-      color: var(--muted);
-      max-width: 56ch
-    }
-
-    .sed-msg {
-      margin: 0;
-      padding: 10px 18px;
-      font-size: 13px;
-      border-bottom: 1px solid var(--line);
-      background: var(--grid)
-    }
-
-    .sed-msg.err {
-      color: var(--r)
-    }
-
-    .sed-body {
-      overflow-y: auto;
-      flex: 1;
-      padding: 4px 18px 12px
-    }
-
-    .sed-game {
-      font-family: var(--display);
-      font-size: 13px;
-      letter-spacing: .04em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin: 16px 0 4px;
-      position: sticky;
-      top: 0;
-      background: var(--surface);
-      padding: 6px 0;
-      z-index: 1
-    }
-
-    .sed-row {
-      display: grid;
-      grid-template-columns: 22px minmax(0, 1fr) repeat(3, 64px) 72px;
-      gap: 10px;
-      align-items: center;
-      padding: 6px 6px;
-      border-bottom: 1px solid var(--grid)
-    }
-
-    .sed-row.chg {
-      background: var(--grid);
-      box-shadow: inset 3px 0 0 var(--ink)
-    }
-
-    .sed-row.bad {
-      box-shadow: inset 3px 0 0 var(--r)
-    }
-
-    .sed-row i {
-      width: 22px;
-      height: 22px;
-      border: 1px solid var(--halo)
-    }
-
-    .sed-row i.empty {
-      background: repeating-linear-gradient(135deg, var(--grid) 0 4px, transparent 4px 8px)
-    }
-
-    .sed-nm {
-      min-width: 0;
-      line-height: 1.2
-    }
-
-    .sed-nm b {
-      display: block;
-      font-weight: 600;
-      font-size: 14px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap
-    }
-
-    .sed-nm span {
-      font-family: var(--mono);
-      font-size: 11px;
-      color: var(--muted)
-    }
-
-    .sed-row label {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-      font-size: 10px;
-      text-transform: uppercase;
-      letter-spacing: .04em
-    }
-
-    .sed-row select {
-      appearance: none;
-      -webkit-appearance: none;
-      font: 600 14px var(--mono);
-      color: var(--ink);
-      background: var(--surface) var(--caret) no-repeat right 6px center/10px;
-      border: 1px solid var(--line);
-      border-radius: 0;
-      height: 32px;
-      padding: 0 20px 0 8px;
-      cursor: pointer
-    }
-
-    .sed-row select:hover {
-      border-color: var(--muted)
-    }
-
-    .sed-row select:focus-visible {
-      outline: 2px solid var(--b);
-      outline-offset: 1px
-    }
-
-    .sed-hex {
-      font-family: var(--mono);
-      font-size: 12px;
-      color: var(--muted);
-      text-align: right
-    }
-
-    .sed-foot {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 12px 18px;
-      border-top: 1px solid var(--line)
-    }
-
-    .sed-foot span {
-      flex: 1;
-      font-size: 13px;
-      color: var(--muted)
-    }
-
-    .sed-foot .tab:disabled {
-      opacity: .45;
-      cursor: default
-    }
-
-    .sed-save:not(:disabled) {
-      background: var(--ink);
-      color: var(--bg);
-      border-color: var(--ink)
-    }
-
-    @media (max-width:560px) {
-      .sed-row {
-        grid-template-columns: 22px minmax(0, 1fr) repeat(3, 52px);
-        gap: 6px
-      }
-
-      .sed-hex {
-        display: none
-      }
-
-      .sed-sub {
-        display: none
-      }
-    }
-
     .vizfab {
       position: fixed;
       right: max(16px, env(safe-area-inset-right));
@@ -2779,21 +2580,6 @@
     }
 
     .vizfab:hover {
-      background: var(--grid)
-    }
-
-    /* Edit scores floats in the bottom-left corner so it stays in reach while scrolling (the visualizer shortcut takes the right) */
-    #editBtn {
-      position: fixed;
-      left: max(16px, env(safe-area-inset-left));
-      bottom: max(16px, env(safe-area-inset-bottom));
-      z-index: 20;
-      margin: 0;
-      padding: 10px 14px;
-      box-shadow: 0 4px 14px rgba(0, 0, 0, .18)
-    }
-
-    #editBtn:hover {
       background: var(--grid)
     }
 
@@ -2872,13 +2658,6 @@
             </svg>
             <span class="tlabel tl-long" id="viewBtnLong">Open the visualizer</span><span class="tl-short"
               id="viewBtnShort">Visualizer</span>
-          </button>
-          <button type="button" class="themetoggle" id="editBtn" hidden>
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path fill="currentColor"
-                d="M18 2h-2v2h-2v2h-2v2h-2v2H8v2H6v2H4v2H2v6h6v-2h2v-2h2v-2h2v-2h2v-2h2v-2h2V8h2V6h-2V4h-2V2zm0 8h-2v2h-2v2h-2v2h-2v2H8v-2H6v-2h2v-2h2v-2h2V8h2V6h2v2h2v2zM6 16H4v4h4v-2H6v-2z" />
-            </svg>
-            <span class="tlabel">Edit scores</span>
           </button>
           <button type="button" class="themetoggle" id="themeToggle" aria-label="Switch to dark mode">
             <svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true">
@@ -3157,26 +2936,6 @@
     </div>
   </div>
 
-  <!-- Score editor: owner and editors only. Saving publishes a new version of this page with the new scores built in. -->
-  <dialog class="sed" id="scoreEditor" aria-labelledby="sedTitle">
-    <div class="sed-head">
-      <div>
-        <h2 id="sedTitle">Edit scores</h2>
-        <p class="sed-sub">Scores run from 1 to 5. Leave all three blank for a track that isn't scored yet. Saving
-          publishes a new version of the page for everyone.</p>
-      </div>
-      <div style="display:flex;gap:8px;flex:none"><button type="button" class="tab" id="sedAll" hidden>Show all
-          tracks</button><button type="button" class="tab" id="sedClose">Close</button></div>
-    </div>
-    <p class="sed-msg" id="sedMsg" aria-live="polite" hidden></p>
-    <div class="sed-body" id="sedBody"></div>
-    <div class="sed-foot">
-      <span id="sedCount">No changes</span>
-      <button type="button" class="tab" id="sedReset" disabled>Undo all</button>
-      <button type="button" class="tab sed-save" id="sedSave" disabled>Save and publish</button>
-    </div>
-  </dialog>
-
   <!-- Floating shortcut to the visualizer: shows on the report once the title bar's button has scrolled away -->
   <button type="button" class="themetoggle vizfab" id="vizFab" hidden>
     <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -3227,7 +2986,6 @@
     }
     // Tracks ordered by serial number. A track's composer is set only where it differs from the game's.
     // code null = not scored yet. Scores from "new mega man classic music metric.md".
-    // @scores-begin: the score editor rewrites only the code:"…" values between these two markers when it saves
     const GAMES = [
       {
         id: "mm1", title: "Mega Man", year: 1987, composer: "Manami Matsumae", tracks: [
@@ -3423,7 +3181,6 @@
         ]
       },
     ];
-    // @scores-end
     // High end of each axis points at a vertex; low end at the opposite one
     const AXES = [
       { label: "Energy", lo: "Chill", hi: "Hype", tok: "--r", ang: 90 },
@@ -4287,10 +4044,7 @@
       refreshCustom(); sync();
     }
 
-    // Saved lists. Each person's lists live in their own private space in this page's database
-    // (data/users/<id>/lists/saved), so they follow them across devices and nobody else sees them. Where that is
-    // not available (signed out, opened outside claude.ai, or a view-only visitor who cannot write), lists are kept
-    // in this browser instead and marked as such.
+    // Saved lists, kept in this browser.
     {
       const sel = document.getElementById("savedSel"), saveBtn = document.getElementById("saveBtn"), delBtn = document.getElementById("delBtn");
       const form = document.getElementById("saveForm"), nameIn = document.getElementById("saveName"), note = document.getElementById("saveNote");
@@ -4298,79 +4052,56 @@
       const keyOf = t => `${t.game.id}.${t.ti}`;
       const fromKeys = keys => keys.map(k => { const [id, ti] = k.split("."); const g = GAMES.find(g => g.id === id); return g && g.tracks[+ti]; })
         .filter(t => t && (t.vals || t.audio));
-      let remote = [], col = null, canRemote = false, chosen = "";   // chosen: the saved list now on screen
+      let chosen = "";   // chosen: id of the saved list now on screen
       const readLocal = () => { try { return JSON.parse(localStorage.getItem(LKEY) || "[]"); } catch (e) { return []; } };
       const writeLocal = lists => { try { localStorage.setItem(LKEY, JSON.stringify(lists)); return true; } catch (e) { return false; } };
-      const all = () => [...remote.map(l => ({ ...l, where: "db" })), ...readLocal().map(l => ({ ...l, where: "local" }))]
-        .sort((a, b) => a.name.localeCompare(b.name));
+      const all = () => readLocal().sort((a, b) => a.name.localeCompare(b.name));
       const sameTracks = l => l.tracks.join() === CUSTOM.tracks.map(keyOf).join();
       const esc = s => s.replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
       function render() {
         const lists = all(), cur = chosen;
         sel.innerHTML = lists.length
-          ? `<option value="">Choose a saved list…</option>` + lists.map(l => `<option value="${l.where}:${esc(l.id)}">${esc(l.name)} (${l.tracks.length})${l.where === "local" && canRemote ? " · this browser" : ""}</option>`).join("")
+          ? `<option value="">Choose a saved list…</option>` + lists.map(l => `<option value="${esc(l.id)}">${esc(l.name)} (${l.tracks.length})</option>`).join("")
           : `<option value="">No saved lists yet</option>`;
         // Keep the selection while the list on screen still matches what was saved
-        const match = lists.find(l => `${l.where}:${l.id}` === cur && G && G.custom && sameTracks(l));
+        const match = lists.find(l => l.id === cur && G && G.custom && sameTracks(l));
         chosen = sel.value = match ? cur : "";
         delBtn.hidden = !sel.value; delBtn.classList.remove("confirm"); delBtn.textContent = "Delete";
         saveBtn.disabled = !CUSTOM.tracks.length;
       }
       window.onCustomChange = render;
       sel.addEventListener("change", () => {
-        const l = all().find(l => `${l.where}:${l.id}` === sel.value);
-        chosen = l ? `${l.where}:${l.id}` : "";
+        const l = all().find(l => l.id === sel.value);
+        chosen = l ? l.id : "";
         if (l) { applyCustom(fromKeys(l.tracks)); note.textContent = ""; }
         render();
       });
       saveBtn.addEventListener("click", () => {
-        const l = all().find(l => `${l.where}:${l.id}` === chosen);
+        const l = all().find(l => l.id === chosen);
         form.hidden = false; nameIn.value = l ? l.name : ""; nameIn.focus(); nameIn.select();
       });
       document.getElementById("saveCancel").addEventListener("click", () => { form.hidden = true; saveBtn.focus(); });
       form.addEventListener("keydown", e => { if (e.key === "Escape") { form.hidden = true; saveBtn.focus(); } });
-      form.addEventListener("submit", async e => {
+      form.addEventListener("submit", e => {
         e.preventDefault();
         const name = nameIn.value.trim(); if (!name || !CUSTOM.tracks.length) return;
         const tracks = CUSTOM.tracks.map(keyOf), updatedAt = new Date().toISOString();
         // Saving under an existing name replaces that list
         const existing = all().find(l => l.name.toLowerCase() === name.toLowerCase());
         form.hidden = true;
-        if (canRemote && (!existing || existing.where === "db")) {
-          const id = existing ? existing.id : "l" + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
-          try {
-            await col.doc(id).set({ name, tracks, updatedAt });
-            chosen = "db:" + id; note.textContent = `Saved “${name}”.`; render(); return;
-          } catch (err) { canRemote = false; }
-        }
-        const local = readLocal().filter(l => !(existing && existing.where === "local" && l.id === existing.id));
-        const id = existing && existing.where === "local" ? existing.id : "l" + Date.now().toString(36);
-        if (writeLocal([...local, { id, name, tracks, updatedAt }])) { chosen = "local:" + id; note.textContent = `Saved “${name}” in this browser.`; }
+        const local = readLocal().filter(l => !(existing && l.id === existing.id));
+        const id = existing ? existing.id : "l" + Date.now().toString(36);
+        if (writeLocal([...local, { id, name, tracks, updatedAt }])) { chosen = id; note.textContent = `Saved “${name}”.`; }
         else note.textContent = "Couldn't save here. Copy the page link to keep this list.";
         render();
       });
-      delBtn.addEventListener("click", async () => {
+      delBtn.addEventListener("click", () => {
         if (!delBtn.classList.contains("confirm")) { delBtn.classList.add("confirm"); delBtn.textContent = "Really delete?"; return; }
-        const [where, id] = chosen.split(/:(.*)/s);
-        const l = all().find(l => l.where === where && l.id === id);
-        if (where === "db" && col) { try { await col.doc(id).delete(); } catch (e) { note.textContent = "Couldn't delete that list."; return; } }
-        else writeLocal(readLocal().filter(x => x.id !== id));
-        remote = remote.filter(x => !(where === "db" && x.id === id));
+        const l = all().find(l => l.id === chosen);
+        writeLocal(readLocal().filter(x => x.id !== chosen));
         chosen = ""; note.textContent = l ? `Deleted “${l.name}”.` : ""; render();
       });
       render();
-      // Light up the account-backed store when the page can use it
-      (async () => {
-        if (!window.claude || !claude.use) return;
-        const db = await claude.use("db"); if (!db) return;
-        const user = await claude.use("user"); const uid = user && await user.id(); if (!uid) return;
-        col = db.doc("data/users/" + uid + "/lists").collection("saved");
-        canRemote = true;
-        col.onSnapshot(snap => {
-          remote = snap.docs.map(d => ({ id: d.id, ...d.data() })).filter(l => l.name && Array.isArray(l.tracks));
-          render();
-        }, () => { canRemote = false; remote = []; render(); });
-      })();
     }
 
     // Full color report, the main view: every game in release order and every robot master in it,
@@ -4557,121 +4288,7 @@
       new IntersectionObserver(([e]) => { viewBtnSeen = e.isIntersecting; syncFab(); }).observe(document.getElementById("viewBtn"));
     } catch (e) { }
     vizFab.addEventListener("click", () => { showView("viz"); landView("viz"); syncFab(); });
-
-    // Score editor. Only people who can publish this page see it. Saving rebuilds this page's source with the
-    // new scores swapped in (only the code:"…" values between the @scores markers change) and publishes it as a new version.
-    {
-      const SKEL_HEAD = '<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>';
-      const START = "<title>Robot Master Color Project</title>", END = "<!--rmcp" + "-end-->";
-      const DRAFT_KEY = "rmcp-score-draft";
-      const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
-      const TRACKS = GAMES.flatMap(g => g.tracks);
-      const current = TRACKS.map(t => t.code || null);
-      let draft = current.slice(), artifactNs = null;
-      let only = null;   // the playing track when the editor was opened during playback: only its row is shown
-      const dlg = document.getElementById("scoreEditor"), body = document.getElementById("sedBody"),
-        msg = document.getElementById("sedMsg"), count = document.getElementById("sedCount"),
-        saveBtn = document.getElementById("sedSave"), resetBtn = document.getElementById("sedReset"),
-        editBtn = document.getElementById("editBtn");
-      const say = (text, err) => { msg.textContent = text || ""; msg.hidden = !text; msg.classList.toggle("err", !!err); };
-      const stash = v => { try { v ? sessionStorage.setItem(DRAFT_KEY, JSON.stringify(v)) : sessionStorage.removeItem(DRAFT_KEY); } catch (e) { } };
-      const opts = v => `<option value=""${v ? "" : " selected"}>–</option>` + [1, 2, 3, 4, 5].map(n => `<option${String(n) === v ? " selected" : ""}>${n}</option>`).join("");
-
-      function render() {
-        let k = 0, html = "";
-        GAMES.forEach(g => {
-          if (!only || only.game === g) html += `<h3 class="sed-game">${esc(g.title)}</h3>`;
-          g.tracks.forEach(t => {
-            if (only && t !== only) { k++; return; }
-            const c = draft[k] || "";
-            html += `<div class="sed-row" data-k="${k}"><i></i><div class="sed-nm"><b>${esc(t.name)}</b><span>${esc(t.dln)}</span></div>` +
-              [0, 1, 2].map(a => `<label>${AXES[a].label.slice(0, 3)}<select data-a="${a}" aria-label="${esc(t.name)}, ${esc(g.title)}: ${AXES[a].label}">${opts(c[a])}</select></label>`).join("") +
-              `<span class="sed-hex"></span></div>`;
-            k++;
-          });
-        });
-        body.innerHTML = html;
-        document.getElementById("sedTitle").textContent = only ? `Edit scores: ${only.name}` : "Edit scores";
-        document.getElementById("sedAll").hidden = !only;
-        body.querySelectorAll(".sed-row").forEach(syncRow);
-        syncFoot();
-      }
-      // A row's current picks: three digits, all blank (unscored), or partial (can't save yet)
-      const rowState = row => { const v = [...row.querySelectorAll("select")].map(s => s.value); return v.every(x => x) ? v.join("") : v.every(x => !x) ? null : undefined; };
-      function syncRow(row) {
-        const k = +row.dataset.k, st = rowState(row), sw = row.querySelector("i"), hx = row.querySelector(".sed-hex");
-        if (st !== undefined) draft[k] = st;
-        const show = st || null;
-        sw.style.background = show ? hex([...show].map(Number)) : "";
-        sw.classList.toggle("empty", !show);
-        hx.textContent = show ? hex([...show].map(Number)) : st === undefined ? "incomplete" : "unscored";
-        row.classList.toggle("bad", st === undefined);
-        row.classList.toggle("chg", st !== undefined && draft[k] !== current[k]);
-      }
-      const changes = () => draft.reduce((n, c, k) => n + (c !== current[k] ? 1 : 0), 0);
-      const incomplete = () => body.querySelectorAll(".sed-row.bad").length;
-      function syncFoot() {
-        const n = changes(), bad = incomplete();
-        count.textContent = bad ? `${bad} track${bad === 1 ? " needs" : "s need"} all three scores (or none)` : n ? `${n} track${n === 1 ? "" : "s"} changed` : "No changes";
-        saveBtn.disabled = !n || !!bad; resetBtn.disabled = !n && !bad;
-        stash(n ? { base: current, draft } : null);
-      }
-      body.addEventListener("change", e => { const row = e.target.closest(".sed-row"); if (row) { syncRow(row); syncFoot(); } });
-      resetBtn.addEventListener("click", () => { draft = current.slice(); render(); say(""); });
-      document.getElementById("sedClose").addEventListener("click", () => dlg.close());
-      // Opened during playback, the editor shows just the playing robot master; otherwise every track
-      editBtn.addEventListener("click", () => { only = pinned != null && !player.paused ? G.tracks[pinned] : null; render(); say(""); dlg.showModal(); });
-      document.getElementById("sedAll").addEventListener("click", () => { only = null; render(); });
-
-      // The page's own source, from the published copy: everything from its title to the end marker
-      async function ownSource() {
-        const r = await fetch("index.html", { cache: "no-store" });
-        if (!r.ok) throw new Error("source " + r.status);
-        const src = await r.text(), a = src.indexOf(START), b = src.indexOf(END);
-        if (a < 0 || b < a) throw new Error("markers");
-        return src.slice(a, b + END.length);
-      }
-      function withScores(content) {
-        const a = content.indexOf("// @scores-begin"), b = content.indexOf("// @scores-end");
-        if (a < 0 || b < a) throw new Error("scores markers");
-        let k = 0;
-        const block = content.slice(a, b).replace(/code:(null|"\d{3}")/g, () => { const c = draft[k++]; return "code:" + (c ? `"${c}"` : "null"); });
-        if (k !== draft.length) throw new Error(`found ${k} scores, expected ${draft.length}`);
-        return content.slice(0, a) + block + content.slice(b);
-      }
-      saveBtn.addEventListener("click", async () => {
-        if (saveBtn.disabled) return;
-        saveBtn.disabled = true; say("Publishing…");
-        try {
-          const html = SKEL_HEAD + "\n" + withScores(await ownSource()) + "\n</body></html>";
-          stash({ base: current, draft });
-          await artifactNs.publish(html);
-          say("Published. Reloading…");   // every open view, this one included, reloads to the new version
-        } catch (e) {
-          const c = e && e.code;
-          if (c === "conflict") say("Someone published a newer version first. The page is reloading to it, and your changes will come back.");
-          else if (c === "not_writer" || c === "not_granted" || c === "consent_required" || c === "capability_disabled" || c === "not_declared") {
-            say("This view can't publish the page, so scores can't be saved here.", true); editBtn.hidden = true;
-          } else if (c === "rate_limited") { say("Saving too often. Wait a moment and try again.", true); syncFoot(); }
-          else { say("Couldn't save: " + ((e && e.message) || "unknown error") + ". Your changes are still here.", true); syncFoot(); }
-        }
-      });
-
-      // Show the editor only to people who can publish, and bring back unsaved changes from a save that didn't land
-      (async () => {
-        if (!window.claude || !claude.use) return;
-        const [art, user] = await Promise.all([claude.use("artifact"), claude.use("user")]);
-        if (!art || !user || !(await user.canEdit())) return;
-        artifactNs = art; editBtn.hidden = false;
-        let saved = null; try { saved = JSON.parse(sessionStorage.getItem(DRAFT_KEY) || "null"); } catch (e) { }
-        if (!saved || !Array.isArray(saved.draft) || saved.draft.length !== current.length) return stash(null);
-        if (saved.draft.every((c, k) => c === current[k])) return stash(null);   // the save went through
-        draft = saved.draft; render(); dlg.showModal();
-        say("Your last save didn't go through, so your changes are restored here." + (saved.base.some((c, k) => c !== current[k]) ? " The page also changed since then; check the highlighted rows." : ""));
-      })();
-    }
   </script>
-  <!--rmcp-end-->
 </body>
 
 </html>
