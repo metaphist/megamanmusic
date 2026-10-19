@@ -2312,22 +2312,25 @@ svg text {
   opacity: .85
 }
 
-.rp-badges {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  margin-top: 8px
-}
-
-.rp-badge {
+/* The badges sit just left of Play all. They sit on the game's own color,
+   so they take the band's ink rather than the axis colors */
+.rp-actions {
+  flex: none;
   display: flex;
   align-items: center;
+  gap: 12px
+}
+
+.rp-badges {
   gap: 6px;
-  padding: 3px 8px 3px 4px;
-  background: var(--surface);
-  color: var(--ink);
-  border: 1px solid var(--halo);
-  font-size: 12px
+  margin: 0
+}
+
+.rp-badges .ticon,
+.rp-badges .ticon svg {
+  width: 20px;
+  height: 20px;
+  color: inherit
 }
 
 .rp-gstats {
@@ -2345,11 +2348,11 @@ svg text {
 
 .rp-gstats b {
   font-family: var(--mono);
-  font-size: 20px
+  font-size: 16px
 }
 
 .rp-gstats span {
-  font-size: 11px;
+  font-size: 10px;
   opacity: .8
 }
 
@@ -2589,14 +2592,19 @@ button.rp-row:focus-visible {
     font-size: 10px
   }
 
-  .rp-band .rp-viz {
+  /* Play all and the badges to its left move together; the title makes room for both */
+  .rp-band .rp-actions {
     position: absolute;
     top: 12px;
     right: 12px
   }
 
+  .rp-band:has(.rp-actions > *)>div:first-child {
+    padding-right: calc(var(--nb) * 26px + 12px)
+  }
+
   .rp-band:has(.rp-viz)>div:first-child {
-    padding-right: 110px
+    padding-right: calc(var(--nb) * 26px + 110px)
   }
 }
 

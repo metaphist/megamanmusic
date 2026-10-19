@@ -459,17 +459,23 @@
         tip: `Lowest average ${ax.label} (${most(ax.lo)})`
       });
     });
+    // Intensity is the sum of the three scores, so a game's average intensity is the sum of its averages
+    const intensity = g => g.avg[0] + g.avg[1] + g.avg[2];
+    award(intensity, true, { text: "▲ Highest intensity", icon: "hiI", tip: "Highest average intensity (most intense)" });
+    award(intensity, false, { text: "▼ Lowest intensity", icon: "loI", tip: "Lowest average intensity (calmest)" });
   }
-  // Pixel icons for the game tabs, from Pixelarticons by Gerrit Halfmann (MIT license), github.com/halfmage/pixelarticons
+  // Pixel icons for the game tabs, from Pixelarticons 2.4.2 by Gerrit Halfmann (MIT license), github.com/halfmage/pixelarticons
   const BADGE_ICONS = {
-    varied: "M14 2h8v20H12V2h2zm6 2h-6v16h6V4zM10 20H4v-6h6v-2H6v-2H4V8h2V6h2V4h2V2H8v2H6v2H4v2H2v2h2v2H2v10h8v-2zm8-4h-2v2h2v-2z",   // colors-swatch
-    uniform: "M20 5H4v2h16V5zm0 4H4v2h16V9zM4 13h16v2H4v-2zm16 4H4v2h16v-2z",   // align-justify
-    hiE: "M12 1h2v8h8v4h-2v-2h-8V5h-2V3h2V1zM8 7V5h2v2H8zM6 9V7h2v2H6zm-2 2V9h2v2H4zm10 8v2h-2v2h-2v-8H2v-4h2v2h8v6h2zm2-2v2h-2v-2h2zm2-2v2h-2v-2h2zm0 0h2v-2h-2v2z",   // zap
-    loE: "M6 2h8v2h-2v2h-2V4H6V2ZM4 6V4h2v2H4Zm0 10H2V6h2v10Zm2 2H4v-2h2v2Zm2 2H6v-2h2v2Zm10 0v2H8v-2h10Zm2-2v2h-2v-2h2Zm-2-4h2v4h2v-8h-2v2h-2v2Zm-6 0v2h6v-2h-6Zm-2-2h2v2h-2v-2Zm0 0V6H8v6h2Z",   // moon
-    hiD: "M2 2h20v20H2V2zm2 2v4h4V4H4zm6 0v4h4V4h-4zm6 0v4h4V4h-4zm4 6h-4v4h4v-4zm0 6h-4v4h4v-4zm-6 4v-4h-4v4h4zm-6 0v-4H4v4h4zm-4-6h4v-4H4v4zm6-4v4h4v-4h-4z",   // grid
-    loD: "M2 2h20v2H2zM2 20h20v2H2zM2 4h2v16H2zM20 4h2v16h-2z",   // empty frame: the busy grid's outline with nothing inside
-    hiG: "M14 3h-4v2H8v4h2v2h1v8H6v-4h2v-2H4v6h2v2h12v-2h2v-6h-4v2h2v4h-5v-8h1V9h2V5h-2V3zm0 2v4h-4V5h4z",   // anchor
-    loG: "M16 4h-6v2H8v2H4v2H2v2H0v6h2v2h20v-2h2v-6h-2v-2h-2V8h-2V6h-2V4zm2 8h4v6H2v-6h2v-2h4v2h2v-2H8V8h2V6h6v2h2v4zm0 0v2h-2v-2h2z",   // cloud
+    varied: "M14 2h6v2h-6zm0 18h6v2h-6zM4 20h10v2H4zm8-16h2v16h-2zm8 0h2v16h-2zM2 16h2v4H2zm2-2h8v2H4zm12 2h2v2h-2zM6 12h2v2H6zM4 8h2v4H4zm2-2h4v2H6zm4 2h2v2h-2z",   // colors-swatch
+    uniform: "M5 19H3v-2h2v2Zm16 0h-2v-2h2v2ZM3 17H1v-6h2v6Zm11 0h-4v-4h1V5h2v8h1v4Zm9 0h-2v-6h2v6ZM5 11H3V9h2v2Zm16 0h-2V9h2v2ZM9 9H5V7h4v2Zm10 0h-4V7h4v2Z",   // speed-medium
+    hiE: "M9 2h2v4H9zM7 6h2v2H7zM5 8h2v2H5zm8 2h2v2h-2zm2-2h2v2h-2zm2 2h2v2h-2zm2 2h2v6h-2zM3 10h2v8H3zm8-4h2v4h-2zm6 12h2v2h-2zM7 20h10v2H7zm-2-2h2v2H5zm4-2h6v4H9zM11 14h2v3h-2z",   // fire
+    loE: "M13 24h-2v-2h2v2Zm-2-2H9v-2H7v2H2v-5h2v3h3v-2h2v-2h2v6Zm4-4h2v2h-2v2h-2v-6h2v2Zm7 4h-5v-2h3v-3h2v5ZM4 15H2v-2h6v2H6v2H4v-2Zm18 0h-2v2h-2v-2h-2v-2h6v2ZM2 13H0v-2h2v2Zm22 0h-2v-2h2v2ZM6 9h2v2H2V9h2V7h2v2Zm14 0h2v2h-6V9h2V7h2v2Zm-9-1H9V6H7V4h2V2h2v6Zm4-4h2V2h5v5h-2V4h-3v2h-2v2h-2V2h2v2ZM7 4H4v3H2V2h5v2Zm6-2h-2V0h2v2Z",   // snowflake
+    hiD: "M11 2h2v2h-2zM9 4h2v2H9zm4 0h2v2h-2zm2 2h2v2h-2zM7 6h2v2H7zm0 4h2v2H7zm-2 2h2v2H5zm2 2h2v2H7zm-2 2h2v2H5zm-2 2h18v2H3zM13 8h2v2h-2zm2 2h2v2h-2zM9 8h2v2H9zm8 4h2v2h-2zm-2 2h2v2h-2zm2 2h2v2h-2zm-6 4h2v2h-2z",   // tree-pine
+    loD: "M1 18h2v4H1zm2-2h2v2H3zm2-2h6v2H5zm6-2h2v2h-2zm-6 6h4v2H5zm4 2h4v2H9zm4-2h4v2h-4zm4-2h2v2h-2zm2-8h2v8h-2zm0-4h2v4h-2zm-2-2h2v2h-2zm-4 2h4v2h-4zM7 6h6v2H7zM5 8h2v2H5zm-2 2h2v4H3z",   // leaf
+    hiG: "M6 2h12v2H6zm0 18h12v2H6zM18 4h2v2h-2zM4 18h2v2H4zM4 4h2v2H4zm14 14h2v2h-2zM2 6h2v12H2zm18 0h2v12h-2zM8 4h2v4H8zm2 4h4v2h-4zm4 2h4v2h-4zm4-2h2v2h-2zM4 12h2v2H4zm6 4h2v4h-2zm-4-2h4v2H6zm8 2h2v4h-2zm2-2h4v2h-4z",   // earth
+    loG: "M22 10h-4v2h4v-2Zm2 2h-2v6h2v-6Zm-2 6H2v2h20v-2ZM2 12H0v6h2v-6Zm2-2H2v2h2v-2Zm4-2H4v2h4V8Zm8-4h-6v2h6V4Zm-6 2H8v2h2V6Zm0 4H8v2h2v-2Zm8-4h-2v2h2V6ZM20 8h-2v4h2V8Zm-2 4h-2v2h2v-2Z",   // cloud
+    hiI: "M9 4h6v2H9zM7 6h2v2H7zm8 0h2v2h-2zm4-2h2v2h-2zm2-2h2v2h-2zM0 10h3v2H0zm21 0h3v2h-3zM3 4h2v2H3zM1 2h2v2H1zm6 12h2v2H7zm8 0h2v2h-2zM5 8h2v6H5zm12 0h2v6h-2zm-8 8h6v2H9zm0 4h6v2H9zm0-2h2v2H9zm4 0h2v2h-2zM11 0h2v3h-2z",   // lightbulb
+    loI: "M15 10h5v2h-5zM4 10h5v2H4zm16 2h2v5h-2zM9 12h2v5H9zm4 0h2v5h-2zM2 12h2v5H2zm13 5h5v2h-5zM4 17h5v2H4zm7-5h2v2h-2zM2 6h2v6H2zm18 0h2v6h-2zM4 4h2v2H4zm14 0h2v2h-2zM6 12h3v2H6zm11 0h3v2h-3zM4 14h2v3H4zm11 0h2v3h-2zm-9 2h3v1H6zm11 0h3v1h-3zm-9-2h1v2H8zm11 0h1v2h-1z",   // sunglasses
   };
   const badgeIcon = b => `<span class="ticon ${b.cls || ""}" role="img" aria-label="${b.tip}" data-tip="${b.tip}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="${BADGE_ICONS[b.icon]}" fill="currentColor"/></svg></span>`;
 
@@ -1195,7 +1201,7 @@
     </section>`;
       const games = order.map(([g, gi]) => {
         const ink = g.avg ? inkOn(g.avg) : "var(--ink)";
-        const badges = g.badges.length ? `<div class="rp-badges">${g.badges.map(b => `<span class="rp-badge">${badgeIcon(b)}${esc(b.text.replace(/^[▲▼]\s*/, ""))}</span>`).join("")}</div>` : "";
+        const badges = g.badges.length ? `<span class="ticons rp-badges">${g.badges.map(badgeIcon).join("")}</span>` : "";
         const stats = g.avg ? `<div class="rp-gstats">
           ${g.avg.map((v, k) => `<div><b>${v.toFixed(1)}</b><span>${AXES[k].label}</span></div>`).join("")}
           <div><b>${sum(g.avg).toFixed(1)}</b><span>Intensity</span></div>
@@ -1219,10 +1225,10 @@
         </${tag}></li>`;
         }).join("");
         return `<section class="rp-game" id="rp-${g.id}" aria-labelledby="rph-${g.id}">
-        <header class="rp-band${g.avg ? (ink === "#f2f4fa" ? " ink-light" : "") : " empty"}" style="${g.avg ? `background:${g.color};color:${ink}` : ""}">
-          <div><div class="rp-eyebrow">${g.year || "Upcoming"}${g.composer ? " · " + esc(g.composer) : ""}</div><h3 id="rph-${g.id}">${esc(g.title)}</h3>${badges}</div>
+        <header class="rp-band${g.avg ? (ink === "#f2f4fa" ? " ink-light" : "") : " empty"}" style="${g.avg ? `background:${g.color};color:${ink};` : ""}--nb:${g.badges.length}">
+          <div><div class="rp-eyebrow">${g.year || "Upcoming"}${g.composer ? " · " + esc(g.composer) : ""}</div><h3 id="rph-${g.id}">${esc(g.title)}</h3></div>
           <div class="rp-right">${stats}</div>
-          <div class="rp-foot"><div class="rp-lineup" aria-hidden="true">${lineup}</div>${g.tracks.some(t => t.audio) ? `<button type="button" class="rp-viz" data-viz-game="${gi}" aria-label="Play all of ${esc(g.title)} in the visualizer">${ICON_PLAY}Play all</button>` : ""}</div>
+          <div class="rp-foot"><div class="rp-lineup" aria-hidden="true">${lineup}</div><div class="rp-actions">${badges}${g.tracks.some(t => t.audio) ? `<button type="button" class="rp-viz" data-viz-game="${gi}" aria-label="Play all of ${esc(g.title)} in the visualizer">${ICON_PLAY}Play all</button>` : ""}</div></div>
         </header>
         <ol class="rp-tracks">${rows}</ol>
       </section>`;
