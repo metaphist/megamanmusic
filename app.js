@@ -604,6 +604,8 @@
   const ICON_PLAY = `<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 1.5v9l7.5-4.5z" fill="currentColor"/></svg>`;
   const ICON_PAUSE = `<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 1.5h2.5v9H2.5zM7 1.5h2.5v9H7z" fill="currentColor"/></svg>`;
   const player = new Audio();
+  // Google Analytics event; on local copies gtag only queues into dataLayer, so nothing is sent
+  const track = (name, params) => { try { gtag("event", name, params); } catch (e) { } };
   function audioIcons() {
     document.querySelectorAll("[data-pi]").forEach(s => {
       const on = +s.dataset.pi === pinned && !player.paused;
@@ -617,7 +619,8 @@
       if (!player.src.endsWith(t.audio)) { player.src = t.audio; }
       player.currentTime = 0;
       ensureAnalyser();
-      player.play().catch(() => { }).finally(audioIcons);
+      player.play().then(() => track("play_track", { track_name: t.name, game_id: t.game.id, game_title: t.game.title, custom_list: !!G.custom }))
+        .catch(() => { }).finally(audioIcons);
     } else player.pause();
     audioIcons();
   }
@@ -1166,7 +1169,10 @@
       form.hidden = true;
       const local = readLocal().filter(l => !(existing && l.id === existing.id));
       const id = existing ? existing.id : "l" + Date.now().toString(36);
-      if (writeLocal([...local, { id, name, tracks, updatedAt }])) { chosen = id; note.textContent = `Saved “${name}”.`; }
+      if (writeLocal([...local, { id, name, tracks, updatedAt }])) {
+        chosen = id; note.textContent = `Saved “${name}”.`;
+        track(existing ? "update_playlist" : "create_playlist", { track_count: tracks.length });
+      }
       else note.textContent = "Couldn't save here. Copy the page link to keep this list.";
       render();
     });
@@ -1254,7 +1260,7 @@
       const b = e.target.closest("[data-viz-game]"); if (!b) return;
       setGame(+b.dataset.vizGame); showView("viz"); scrollTo({ top: 0 });
       const k = nextPlayable(0);
-      if (k >= 0) { setPinned(k); autoIdx = k; }
+      if (k >= 0) { track("play_all", { game_id: G.id, game_title: G.title }); setPinned(k); autoIdx = k; }
     });
     player.addEventListener("ended", () => {
       if (autoIdx == null || pinned !== autoIdx) { autoIdx = null; return; }
