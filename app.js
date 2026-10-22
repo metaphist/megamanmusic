@@ -873,6 +873,10 @@
     // In a custom list the track's game sits beside its serial here, not on the composer line
     serial.textContent = t ? [G.custom ? t.game.title : "", t.dln].filter(Boolean).join(" · ") : "";
     serial.style.color = vals ? inkOn(vals) : "var(--muted)";
+    // The shown track (selected or hovered) gets a favorite star at the right of its composer and scores
+    const rFav = document.getElementById("rFav"), favT = t && (t.vals || t.audio);
+    rFav.hidden = !favT;
+    if (favT) { rFav.dataset.fav = `${t.game.id}.${t.ti}`; rFav.setAttribute("aria-label", `Favorite ${t.name}, ${t.game.title}`); markFavs(); }
     if (!vals) {
       sw.style.background = "";
       document.getElementById("rName").style.color = "";
