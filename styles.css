@@ -1887,6 +1887,12 @@ svg text {
   background: var(--grid)
 }
 
+.themetoggle:disabled {
+  opacity: .45;
+  cursor: default;
+  background: var(--surface)
+}
+
 .themetoggle:focus-visible {
   outline: 2px solid var(--b);
   outline-offset: 2px
@@ -2387,6 +2393,49 @@ svg text {
   border-bottom: 1px solid var(--line)
 }
 
+/* Each row's favorite star sits over the row's right edge; the row leaves room for it */
+.rp-tracks li {
+  position: relative
+}
+
+.rp-tracks .rp-row {
+  padding-right: 52px
+}
+
+.rp-fav {
+  all: unset;
+  box-sizing: border-box;
+  cursor: pointer;
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 8px;
+  color: var(--muted);
+  opacity: .35
+}
+
+.rp-fav svg {
+  width: 18px;
+  height: 18px;
+  display: block
+}
+
+.rp-fav:hover {
+  opacity: .8
+}
+
+.rp-fav.on {
+  color: #f2b705;
+  opacity: 1
+}
+
+.rp-fav:focus-visible {
+  outline: 2px solid var(--b);
+  outline-offset: -2px;
+  opacity: 1
+}
+
 .rp-tracks li:last-child .rp-row {
   border-bottom: 0
 }
@@ -2556,11 +2605,16 @@ button.rp-row:focus-visible {
   display: none
 }
 
-.vizfab {
+.fabs {
   position: fixed;
   right: max(16px, env(safe-area-inset-right));
   bottom: max(16px, env(safe-area-inset-bottom));
   z-index: 20;
+  display: flex;
+  gap: 8px
+}
+
+.vizfab {
   margin: 0;
   padding: 10px 14px;
   box-shadow: 0 4px 14px rgba(0, 0, 0, .18)
@@ -2568,6 +2622,10 @@ button.rp-row:focus-visible {
 
 .vizfab:hover {
   background: var(--grid)
+}
+
+.favfab {
+  padding: 10px
 }
 
 @media (max-width:480px) {

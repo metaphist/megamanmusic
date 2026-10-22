@@ -603,6 +603,7 @@
   // One shared player, tied to the pinned track: pinning a track with audio plays it, unpinning pauses it
   const ICON_PLAY = `<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 1.5v9l7.5-4.5z" fill="currentColor"/></svg>`;
   const ICON_PAUSE = `<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 1.5h2.5v9H2.5zM7 1.5h2.5v9H7z" fill="currentColor"/></svg>`;
+  const ICON_STAR = `<svg viewBox="0 0 12 12" aria-hidden="true" shape-rendering="crispEdges"><path d="M5 0h2v2H5zM4 2h4v1H4zM0 3h12v1H0zM1 4h10v1H1zM2 5h8v1H2zM3 6h6v2H3zM2 8h8v1H2zM2 9h3v1H2zM7 9h3v1H7zM1 10h3v1H1zM8 10h3v1H8zM1 11h2v1H1zM9 11h2v1H9z" fill="currentColor"/></svg>`;
   const player = new Audio();
   // Google Analytics event; on local copies gtag only queues into dataLayer, so nothing is sent
   const track = (name, params) => { try { gtag("event", name, params); } catch (e) { } };
@@ -1122,6 +1123,21 @@
     refreshCustom(); sync();
   }
 
+  // Favorites: tracks starred in the report, kept in this browser. They act as a special saved list.
+  const FKEY = "rmcp-favorites", FAV = "fav";
+  let favs = (() => { try { return JSON.parse(localStorage.getItem(FKEY) || "[]"); } catch (e) { return []; } })();
+  function markFavs() {
+    document.querySelectorAll("[data-fav]").forEach(b => {
+      const on = favs.includes(b.dataset.fav);
+      b.classList.toggle("on", on); b.setAttribute("aria-pressed", on);
+    });
+    const fb = document.getElementById("favBtn");
+    fb.disabled = !favs.length;
+    fb.title = favs.length ? `Open favorites (${favs.length})` : "Star tracks in the report to add favorites";
+    document.getElementById("favFab").title = fb.title;
+    syncFab();
+  }
+
   // Saved lists, kept in this browser.
   {
     const sel = document.getElementById("savedSel"), saveBtn = document.getElementById("saveBtn"), delBtn = document.getElementById("delBtn");
@@ -1134,22 +1150,24 @@
     const readLocal = () => { try { return JSON.parse(localStorage.getItem(LKEY) || "[]"); } catch (e) { return []; } };
     const writeLocal = lists => { try { localStorage.setItem(LKEY, JSON.stringify(lists)); return true; } catch (e) { return false; } };
     const all = () => readLocal().sort((a, b) => a.name.localeCompare(b.name));
+    // Favorites, when there are any, always come first, as if they were a saved list
+    const withFavs = () => [...(favs.length ? [{ id: FAV, name: "★ Favorites", tracks: favs }] : []), ...all()];
     const sameTracks = l => l.tracks.join() === CUSTOM.tracks.map(keyOf).join();
     const esc = s => s.replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
     function render() {
-      const lists = all(), cur = chosen;
+      const lists = withFavs(), cur = chosen;
       sel.innerHTML = lists.length
         ? `<option value="">Choose a saved list…</option>` + lists.map(l => `<option value="${esc(l.id)}">${esc(l.name)} (${l.tracks.length})</option>`).join("")
         : `<option value="">No saved lists yet</option>`;
       // Keep the selection while the list on screen still matches what was saved
       const match = lists.find(l => l.id === cur && G && G.custom && sameTracks(l));
       chosen = sel.value = match ? cur : "";
-      delBtn.hidden = !sel.value; delBtn.classList.remove("confirm"); delBtn.textContent = "Delete";
+      delBtn.hidden = !sel.value || sel.value === FAV; delBtn.classList.remove("confirm"); delBtn.textContent = "Delete";
       saveBtn.disabled = !CUSTOM.tracks.length;
     }
     window.onCustomChange = render;
     sel.addEventListener("change", () => {
-      const l = all().find(l => l.id === sel.value);
+      const l = withFavs().find(l => l.id === sel.value);
       chosen = l ? l.id : "";
       if (l) { applyCustom(fromKeys(l.tracks)); note.textContent = ""; }
       render();
@@ -1182,6 +1200,24 @@
       writeLocal(readLocal().filter(x => x.id !== chosen));
       chosen = ""; note.textContent = l ? `Deleted “${l.name}”.` : ""; render();
     });
+    // A row's star adds or removes that track; if the favorites list is on screen it follows along
+    document.addEventListener("click", e => {
+      const b = e.target.closest("[data-fav]"); if (!b) return;
+      const k = b.dataset.fav, on = !favs.includes(k), t = fromKeys([k])[0];
+      favs = on ? [...favs, k] : favs.filter(x => x !== k);
+      try { localStorage.setItem(FKEY, JSON.stringify(favs)); } catch (e) { }
+      markFavs();
+      if (t) track(on ? "favorite_add" : "favorite_remove", { track_name: t.name, game_id: t.game.id });
+      if (chosen === FAV && G.custom) applyCustom(fromKeys(favs)); else render();
+    });
+    const openFavs = () => {
+      if (!favs.length) return;
+      chosen = FAV; applyCustom(fromKeys(favs));
+      showView("viz"); landView("viz"); syncFab();
+    };
+    document.getElementById("favBtn").addEventListener("click", openFavs);
+    document.getElementById("favFab").addEventListener("click", openFavs);
+    markFavs();
     render();
   }
 
@@ -1228,7 +1264,7 @@
           <span class="rp-bars">${bars}</span>
           <span class="rp-int"><b>${t.vals ? sum(t.vals) : "–"}</b><span>Intensity</span></span>
           <span class="rp-col"><i class="${t.vals ? "" : "empty"}" style="${t.vals ? `background:${t.color}` : ""}"></i><div><b>${t.vals ? esc(t.cname) : "No color yet"}</b><span>${t.vals ? t.color : "–"}</span></div></span>
-        </${tag}></li>`;
+        </${tag}>${play ? `<button type="button" class="rp-fav" data-fav="${g.id}.${t.ti}" aria-pressed="false" aria-label="Favorite ${esc(t.name)}, ${esc(g.title)}">${ICON_STAR}</button>` : ""}</li>`;
         }).join("");
         return `<section class="rp-game" id="rp-${g.id}" aria-labelledby="rph-${g.id}">
         <header class="rp-band${g.avg ? (ink === "#f2f4fa" ? " ink-light" : "") : " empty"}" style="${g.avg ? `background:${g.color};color:${ink};` : ""}--nb:${g.badges.length}">
@@ -1240,6 +1276,7 @@
       </section>`;
       }).join("");
       body.innerHTML = intro + games;
+      markFavs();
       jump.innerHTML = order.map(([g]) => `<button type="button" data-jump="rp-${g.id}" title="${esc(g.title)}" aria-label="${esc(g.title)}"><i style="${g.color ? `background:${g.color}` : ""}" class="${g.color ? "" : "chip empty"}"></i>${esc(tableTitle(g))}</button>`).join("");
       // Each robot master's own hexagon, drawn the same way as the cards
       body.querySelectorAll(".rp-hex").forEach(c => {
@@ -1363,7 +1400,11 @@
   // The floating button shows only on the report, and only while the title bar's button is out of sight
   // (looked up by id inside, since the first view switch can run before this point)
   var viewBtnSeen = true;
-  function syncFab() { const f = document.getElementById("vizFab"); if (f) f.hidden = viewBtnSeen !== false || document.documentElement.dataset.view !== "report"; }
+  function syncFab() {
+    const off = viewBtnSeen !== false || document.documentElement.dataset.view !== "report";
+    const f = document.getElementById("vizFab"); if (f) f.hidden = off;
+    const s = document.getElementById("favFab"); if (s) s.hidden = off || !favs.length;
+  }
   const vizFab = document.getElementById("vizFab");
   try {
     new IntersectionObserver(([e]) => { viewBtnSeen = e.isIntersecting; syncFab(); }).observe(document.getElementById("viewBtn"));

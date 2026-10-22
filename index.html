@@ -41,6 +41,12 @@
             <span class="tlabel tl-long" id="viewBtnLong">Open the visualizer</span><span class="tl-short"
               id="viewBtnShort">Visualizer</span>
           </button>
+          <button type="button" class="themetoggle" id="favBtn" aria-label="Open favorites">
+            <svg viewBox="0 0 12 12" aria-hidden="true" shape-rendering="crispEdges">
+              <path fill="currentColor"
+                d="M5 0h2v2H5zM4 2h4v1H4zM0 3h12v1H0zM1 4h10v1H1zM2 5h8v1H2zM3 6h6v2H3zM2 8h8v1H2zM2 9h3v1H2zM7 9h3v1H7zM1 10h3v1H1zM8 10h3v1H8zM1 11h2v1H1zM9 11h2v1H9z" />
+            </svg>
+          </button>
           <button type="button" class="themetoggle" id="themeToggle" aria-label="Switch to dark mode">
             <svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true">
               <path fill="currentColor"
@@ -317,14 +323,22 @@
     </div>
   </div>
 
-  <!-- Floating shortcut to the visualizer: shows on the report once the title bar's button has scrolled away -->
-  <button type="button" class="themetoggle vizfab" id="vizFab" hidden>
-    <svg viewBox="0 0 24 24" aria-hidden="true">
-      <path fill="currentColor"
-        d="M11 2h2v4h-2V2zm0 16h2v4h-2v-4zM2 11h4v2H2v-2zm16 0h4v2h-4v-2zM8 8h8v8H8V8zm2 2v4h4v-4h-4z" />
-    </svg>
-    <span>Open the visualizer</span>
-  </button>
+  <!-- Floating shortcuts to the visualizer and favorites: show on the report once the title bar's buttons have scrolled away -->
+  <div class="fabs">
+    <button type="button" class="themetoggle vizfab" id="vizFab" hidden>
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path fill="currentColor"
+          d="M11 2h2v4h-2V2zm0 16h2v4h-2v-4zM2 11h4v2H2v-2zm16 0h4v2h-4v-2zM8 8h8v8H8V8zm2 2v4h4v-4h-4z" />
+      </svg>
+      <span>Open the visualizer</span>
+    </button>
+    <button type="button" class="themetoggle vizfab favfab" id="favFab" aria-label="Open favorites" hidden>
+      <svg viewBox="0 0 12 12" aria-hidden="true" shape-rendering="crispEdges">
+        <path fill="currentColor"
+          d="M5 0h2v2H5zM4 2h4v1H4zM0 3h12v1H0zM1 4h10v1H1zM2 5h8v1H2zM3 6h6v2H3zM2 8h8v1H2zM2 9h3v1H2zM7 9h3v1H7zM1 10h3v1H1zM8 10h3v1H8zM1 11h2v1H1zM9 11h2v1H9z" />
+      </svg>
+    </button>
+  </div>
 
   <!-- Shared badge tooltip, outside both views so it works in the visualizer and the report -->
   <div class="gtip" id="gtip" role="tooltip" hidden></div>
