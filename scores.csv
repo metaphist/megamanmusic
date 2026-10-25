@@ -102,13 +102,13 @@ mmii,Needle Man,3,4,4
 mmii,Magnet Man,3,3,3
 mmii,Hard Man,3,2,3
 mmii,Top Man,4,3,3
-mmv,Mercury,4,4,3
-mmv,Venus,4,3,3
+mmv,Mercury,3,3,3
+mmv,Venus,4,4,2
 mmv,Mars,2,2,3
-mmv,Neptune,4,2,3
+mmv,Neptune,3,2,2
 mmv,Jupiter,3,3,1
 mmv,Saturn,4,3,4
-mmv,Uranus,3,3,3
+mmv,Uranus,3,4,3
 mmv,Pluto,3,2,4
 mmb,Tengu Man,3,2,1
 mmb,Astro Man,1,1,3
