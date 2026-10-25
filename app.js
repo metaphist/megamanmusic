@@ -1,6 +1,22 @@
 (async () => {
+  // The link's query: ?game=mm2 or ?list=mm2.0,mmii.0, plus track=3 for the track at that place in the game or list,
+  // and view=report for the report. Older hash links (#mm2/3, #custom=mm2.0,mmii.0/1, #report/mm2/3) read the same way.
+  const LINK_KEYS = ["view", "game", "list", "track"];
+  function linkParams() {
+    const q = new URLSearchParams(location.search);
+    if (q.has("game") || q.has("list") || !location.hash) return q;
+    let h = decodeURIComponent(location.hash).slice(1);
+    if (h === "report" || h.startsWith("report/")) { q.set("view", "report"); h = h.slice(7); }
+    const [target = "", idx = ""] = h.split("/");
+    if (target.startsWith("custom")) q.set("list", target.split("=")[1] || ""); else if (target) q.set("game", target);
+    if (idx !== "") q.set("track", idx);
+    return q;
+  }
   // Two views: the full color report (main) and the visualizer. A link to a game or custom list opens the visualizer.
-  document.documentElement.dataset.view = location.hash && location.hash !== "#report" ? "viz" : "report";
+  {
+    const q = linkParams();
+    document.documentElement.dataset.view = (q.has("game") || q.has("list")) && q.get("view") !== "report" ? "viz" : "report";
+  }
   function showView(v) {
     const root = document.documentElement, viz = v === "viz";
     if (root.dataset.view === v && document.getElementById("viewViz").hidden !== viz) return;
@@ -10,8 +26,7 @@
     document.getElementById("viewBtnLong").textContent = viz ? "View full color report" : "Open the visualizer";
     document.getElementById("viewBtnShort").textContent = viz ? "Report" : "Visualizer";
     if (typeof syncFab === "function") syncFab();
-    // The visualizer keeps its game or list in the link; the report keeps a plain link
-    try { history.replaceState(null, "", viz && typeof G !== "undefined" && G ? (G.custom ? (G.tracks.length ? "#custom=" + G.tracks.map(t => `${t.game.id}.${t.ti}`).join(",") : "#custom") : "#" + G.id) : location.pathname + location.search); } catch (e) { }
+    syncHistory();
   }
 
   // Light/dark toggle. With no saved choice the page follows the system setting.
@@ -596,8 +611,8 @@
     document.addEventListener("keydown", e => { if (e.key === "Escape") closeAll(); });
   }
   document.querySelectorAll("[data-game]").forEach(b => b.addEventListener("click", () => {
-    setGame(+b.dataset.game);
-    if (b.classList.contains("crow")) { showView("viz"); document.getElementById("gamePick").scrollIntoView({ behavior: "smooth", block: "start" }); }
+    nav(() => { setGame(+b.dataset.game); if (b.classList.contains("crow")) showView("viz"); });
+    if (b.classList.contains("crow")) { document.getElementById("gamePick").scrollIntoView({ behavior: "smooth", block: "start" }); }
   }));
 
   // One shared player, tied to the pinned track: pinning a track with audio plays it, unpinning pauses it
@@ -769,6 +784,52 @@
     CUSTOM.color = CUSTOM.avg ? hex(CUSTOM.avg) : null;
     CUSTOM.cname = CUSTOM.avg ? colorName(CUSTOM.avg) : null;
   }
+  // Back button history. Each entry keeps the view, the game or custom list, and the selected track.
+  // Picking a game or a track pushes an entry (via nav); other changes, like editing the list, update the current one.
+  // The link's query follows along so it can be saved (see linkParams): the visualizer keeps its game or list and selected track;
+  // the report keeps a plain link unless a track is selected
+  let navDepth = 0;
+  const trackKey = t => `${t.game.id}.${t.ti}`;
+  const trackOf = k => { const [id, ti] = k.split("."); const g = GAMES.find(g => g.id === id); return g && g.tracks[+ti]; };
+  function syncHistory(push) {
+    if (navDepth || !G) return;
+    const viz = document.documentElement.dataset.view === "viz";
+    const s = { view: viz ? "viz" : "report", game: G.custom ? null : G.id, list: G.custom ? G.tracks.map(trackKey) : null, pin: pinned != null ? trackKey(G.tracks[pinned]) : null };
+    if (push && JSON.stringify(s) === JSON.stringify(history.state)) return;
+    // Other query parameters (like campaign tags) are kept; commas and dots in a list stay readable, unescaped
+    const q = new URLSearchParams(location.search);
+    LINK_KEYS.forEach(k => q.delete(k));
+    const ours = viz || pinned != null ? [
+      viz ? "" : "view=report",
+      G.custom ? "list=" + s.list.join(",") : "game=" + G.id,
+      pinned != null ? "track=" + pinned : "",
+    ].filter(Boolean) : [];
+    const query = [...ours, q.toString()].filter(Boolean).join("&");
+    try { history[push ? "pushState" : "replaceState"](s, "", location.pathname + (query ? "?" + query : "")); } catch (e) { }
+  }
+  // Runs a user's pick, then records one history entry for everything it changed
+  function nav(fn) {
+    navDepth++;
+    try { fn(); } finally { navDepth--; }
+    syncHistory(true);
+  }
+  // Back and forward restore the entry's game or list, its selected track and its view.
+  // An entry without saved state (a link typed or edited in the address bar) is read from the link instead.
+  addEventListener("popstate", e => {
+    const s = e.state; if (!G) return;
+    navDepth++;
+    try {
+      if (!s) showView(fromLink());
+      else {
+        if (s.list) { if (!G.custom || G.tracks.map(trackKey).join() !== s.list.join()) applyCustom(s.list.map(trackOf).filter(Boolean)); }
+        else if (G.custom || G.id !== s.game) { const gi = GAMES.findIndex(g => g.id === s.game); setGame(gi < 0 ? 0 : gi); }
+        const t = s.pin && trackOf(s.pin), k = t ? G.tracks.indexOf(t) : -1;
+        if ((k < 0 ? null : k) !== pinned) setPinned(k < 0 ? null : k);
+        showView(s.view);
+      }
+    } finally { navDepth--; }
+    syncHistory();
+  });
   const viewIndex = (gi, ti) => G ? G.tracks.findIndex(t => t.gi === gi && t.ti === ti) : -1;
   const isPinned = (gi, ti) => pinned != null && G.tracks[pinned].gi === gi && G.tracks[pinned].ti === ti;
   const viewTitle = () => G.custom ? `Custom list (${G.tracks.length} track${G.tracks.length === 1 ? "" : "s"})` : `${G.title} (${G.year || "upcoming"})`;
@@ -782,7 +843,7 @@
     const prev = keepPlaying && pinned != null ? G.tracks[pinned] : null;
     G = view; pinned = null;
     const gi = GAMES.indexOf(G);
-    if (document.documentElement.dataset.view === "viz") try { history.replaceState(null, "", G.custom ? (G.tracks.length ? "#custom=" + G.tracks.map(t => `${t.game.id}.${t.ti}`).join(",") : "#custom") : "#" + G.id); } catch (e) { }
+    syncHistory();
     document.getElementById("gameSel").value = G.custom ? "custom" : gi;
     document.querySelectorAll("[data-game]").forEach(b => b.setAttribute("aria-pressed", +b.dataset.game === gi));
 
@@ -828,7 +889,7 @@
       b.addEventListener("mouseleave", () => preview(pinned));
       b.addEventListener("focus", () => preview(i));
       b.addEventListener("blur", () => preview(pinned));
-      b.addEventListener("click", () => setPinned(pinned === i ? null : i));
+      b.addEventListener("click", () => nav(() => setPinned(pinned === i ? null : i)));
     });
     show(null);
     audioIcons();
@@ -840,7 +901,7 @@
       pinned = k;
       document.getElementById("lg" + k)?.setAttribute("aria-pressed", true);
       document.getElementById("cd" + k)?.setAttribute("aria-pressed", true);
-      show(k); audioIcons(); markTable();
+      show(k); audioIcons(); markTable(); syncHistory();
     }
   }
 
@@ -905,6 +966,7 @@
     show(i);
     syncAudio();
     if (typeof markTable === "function") markTable();
+    syncHistory();
   }
 
   // Data table of every track in every game, sortable by column
@@ -967,9 +1029,11 @@
   }
   // A track in the current view (game or custom list) is toggled in place; otherwise its game is loaded first
   function toggleTrack(gi, ti) {
-    let k = viewIndex(gi, ti);
-    if (k < 0) { setGame(gi); k = ti; }
-    setPinned(pinned === k ? null : k);
+    nav(() => {
+      let k = viewIndex(gi, ti);
+      if (k < 0) { setGame(gi); k = ti; }
+      setPinned(pinned === k ? null : k);
+    });
   }
   function markTable() {
     document.querySelectorAll("#trackTable tbody tr[data-gi]").forEach(tr =>
@@ -1000,8 +1064,8 @@
       if (b) { toggleTrack(+b.dataset.gi, +b.dataset.ti); return; }
       const load = e.target.closest(".bud-load");
       if (load) {
-        applyCustom(list[+load.dataset.k].map(t => GAMES[t.gi].tracks[t.ti]));
-        showView("viz"); document.getElementById("rSw").scrollIntoView({ behavior: "smooth", block: "center" });
+        nav(() => { applyCustom(list[+load.dataset.k].map(t => GAMES[t.gi].tracks[t.ti])); showView("viz"); });
+        document.getElementById("rSw").scrollIntoView({ behavior: "smooth", block: "center" });
       }
     });
     markTable();
@@ -1079,7 +1143,7 @@
 
   // Game picker: loads a whole game, or switches back to the custom list
   document.getElementById("gameSel").addEventListener("change", e => {
-    if (e.target.value === "custom") setView(CUSTOM); else setGame(+e.target.value);
+    nav(() => { if (e.target.value === "custom") setView(CUSTOM); else setGame(+e.target.value); });
   });
 
   // Custom track list: a multi-select of every scored or playable track, grouped by game. Each checked track is added
@@ -1108,7 +1172,9 @@
     list.addEventListener("change", e => {
       const c = e.target; if (!c.dataset.gi) return;
       const t = GAMES[+c.dataset.gi].tracks[+c.dataset.ti];
-      applyCustom(c.checked ? [...CUSTOM.tracks, t] : CUSTOM.tracks.filter(x => x !== t));
+      // Editing the list on screen updates its history entry; switching to it from a game makes a new one
+      const edit = () => applyCustom(c.checked ? [...CUSTOM.tracks, t] : CUSTOM.tracks.filter(x => x !== t));
+      if (G.custom) edit(); else nav(edit);
     });
     const open = on => {
       panel.hidden = !on; btn.setAttribute("aria-expanded", on);
@@ -1173,7 +1239,7 @@
     sel.addEventListener("change", () => {
       const l = withFavs().find(l => l.id === sel.value);
       chosen = l ? l.id : "";
-      if (l) { applyCustom(fromKeys(l.tracks)); note.textContent = ""; }
+      if (l) { nav(() => applyCustom(fromKeys(l.tracks))); note.textContent = ""; }
       render();
     });
     saveBtn.addEventListener("click", () => {
@@ -1216,8 +1282,8 @@
     });
     const openFavs = () => {
       if (!favs.length) return;
-      chosen = FAV; applyCustom(fromKeys(favs));
-      showView("viz"); landView("viz"); syncFab();
+      chosen = FAV; nav(() => { applyCustom(fromKeys(favs)); showView("viz"); });
+      landView("viz"); syncFab();
     };
     document.getElementById("favBtn").addEventListener("click", openFavs);
     document.getElementById("favFab").addEventListener("click", openFavs);
@@ -1299,9 +1365,14 @@
     const nextPlayable = from => { for (let k = from; k < G.tracks.length; k++) if (G.tracks[k].audio) return k; return -1; };
     body.addEventListener("click", e => {
       const b = e.target.closest("[data-viz-game]"); if (!b) return;
-      setGame(+b.dataset.vizGame); showView("viz"); scrollTo({ top: 0 });
-      const k = nextPlayable(0);
-      if (k >= 0) { track("play_all", { game_id: G.id, game_title: G.title }); setPinned(k); autoIdx = k; }
+      let k = -1;
+      nav(() => {
+        setGame(+b.dataset.vizGame); showView("viz");
+        k = nextPlayable(0);
+        if (k >= 0) setPinned(k);
+      });
+      scrollTo({ top: 0 });
+      if (k >= 0) { track("play_all", { game_id: G.id, game_title: G.title }); autoIdx = k; }
     });
     player.addEventListener("ended", () => {
       if (autoIdx == null || pinned !== autoIdx) { autoIdx = null; return; }
@@ -1371,18 +1442,21 @@
     body.addEventListener("click", e => { const r = e.target.closest(".rp-row[data-gi]"); if (r) toggleTrack(+r.dataset.gi, +r.dataset.ti); });
   }
 
-  // Start from the link: #mm2 loads a game, #custom=mm2.0,mmii.0 rebuilds a custom list
-  {
-    const h = decodeURIComponent(location.hash);
-    if (h.startsWith("#custom")) {
-      const picks = (h.split("=")[1] || "").split(",").map(x => { const [id, ti] = x.split("."); const g = GAMES.find(g => g.id === id); return g && g.tracks[+ti]; })
-        .filter(t => t && (t.vals || t.audio));
+  // Start from the link (see linkParams): loads its game or list and selects its track. Returns the view the link asks for.
+  function fromLink() {
+    const q = linkParams(), idx = q.get("track") || "";
+    if (q.has("list")) {
+      const picks = q.get("list").split(",").filter(Boolean).map(trackOf).filter(t => t && (t.vals || t.audio));
       applyCustom([...new Set(picks)]);
     } else {
-      const start = GAMES.findIndex(g => "#" + g.id === h);
+      const start = GAMES.findIndex(g => g.id === q.get("game"));
       setGame(start < 0 ? 0 : start);
     }
+    const t = idx === "" ? null : G.tracks[+idx];
+    setPinned(t && (t.vals || t.audio) ? +idx : null);
+    return (q.has("game") || q.has("list")) && q.get("view") !== "report" ? "viz" : "report";
   }
+  fromLink();
   markIntensity();
   showView(document.documentElement.dataset.view);
   // On phones, switching views lands somewhere useful instead of the top of the page:
