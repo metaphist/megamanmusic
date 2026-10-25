@@ -1,8 +1,8 @@
 // The games and their tracks, with the scores from scores.csv and everything worked out from them:
 // each track's color, each game's average scores and color, and the distinction badges.
 // Importing this module waits for the scores to load (see "Start" at the bottom).
-import { GAMES } from "./data/games.js";
-import { AXES } from "./data/axes.js";
+import { GAMES } from "../data/games.js";
+import { AXES } from "../data/axes.js";
 import { hex, colorName, intensity } from "./colors.js";
 
 export { GAMES, AXES };
@@ -36,12 +36,12 @@ export const tableTitle = g => TABLE_ABBR[shortTitle(g)] || shortTitle(g);
 
 // ---- Loading ----
 
-// Scores live in scores.csv (game,name,energy,density,gravity; blank scores = not scored yet), matched to tracks by
+// Scores live in data/scores.csv (game,name,energy,density,gravity; blank scores = not scored yet), matched to tracks by
 // game id and name. Each scored track gets a code of its three scores, like "352"; the rest get null.
 async function loadScores() {
   let codes = new Map();
   try {
-    const r = await fetch("scores.csv", { cache: "no-cache" });
+    const r = await fetch("data/scores.csv", { cache: "no-cache" });
     if (!r.ok) throw new Error("scores.csv " + r.status);
     codes = parseScores(await r.text());
   } catch (e) {

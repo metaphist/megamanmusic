@@ -1,5 +1,5 @@
 // Tracks ordered by serial number. A track's composer is set only where it differs from the game's.
-// Scores come from scores.csv (see model.js).
+// Scores come from data/scores.csv (see src/model.js).
 export const GAMES = [
   {
     id: "mm1", title: "Mega Man", year: 1987, composer: "Manami Matsumae", tracks: [

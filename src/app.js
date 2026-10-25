@@ -7,7 +7,7 @@
 import { GAMES, AXES, RELEASE_ORDER, trackKey, trackOf, selectable, shortTitle, tableTitle } from "./model.js";
 import { inkOn, intensity } from "./colors.js";
 import { el, drawSmallHexagon, scoreBars, sprite, spriteOf, sprImg, badgeIcon } from "./draw.js";
-import { ICON_STAR, ICON_PLAY } from "./data/icons.js";
+import { ICON_STAR, ICON_PLAY } from "../data/icons.js";
 import { $, esc, track, readStored, writeStored } from "./util.js";
 import { G, pinned, player, CUSTOM, initViz, setGame, setPinned, togglePinned, viewIndex, isPinned, applyCustom } from "./viz.js";
 

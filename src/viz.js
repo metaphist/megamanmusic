@@ -6,7 +6,7 @@
 import { GAMES, AXES, average, shortTitle } from "./model.js";
 import { hex, colorName, inkOn, digits, fmt } from "./colors.js";
 import { el, drawFrame, drawTop, triangle, ps, shapePts, SINGLE, STACKED, setGrad, drawSmallHexagon, scoreBars, sprite, spriteOf, sprImg, badgeIcon } from "./draw.js";
-import { ICON_PLAY, ICON_PAUSE } from "./data/icons.js";
+import { ICON_PLAY, ICON_PAUSE } from "../data/icons.js";
 import { $, plural, track } from "./util.js";
 
 // Hooks from app.js (set by initViz) that keep the rest of the page in step: the link and history, the track table,

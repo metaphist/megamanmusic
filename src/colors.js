@@ -1,6 +1,6 @@
 // Turning scores into colors. Energy is the red channel, Density green and Gravity blue,
 // so each of the 125 possible score combinations is its own color.
-import { COLOR_NAMES } from "./data/color-names.js";
+import { COLOR_NAMES } from "../data/color-names.js";
 
 // A score (1–5) as a color channel (0–255)
 export const channel = v => Math.round((v - 1) / 4 * 255);

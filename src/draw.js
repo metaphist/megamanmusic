@@ -1,7 +1,7 @@
 // Drawing helpers: the hexagon chart (SVG), track sprites, score bars and badge icons
 import { GAMES, AXES } from "./model.js";
-import { SPRITES } from "./data/sprites.js";
-import { BADGE_ICONS } from "./data/icons.js";
+import { SPRITES } from "../data/sprites.js";
+import { BADGE_ICONS } from "../data/icons.js";
 
 // ---- Hexagon chart ----
 
