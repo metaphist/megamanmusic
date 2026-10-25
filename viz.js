@@ -1,19 +1,17 @@
 // The visualizer: the big hexagon chart with its legend and cards, the banner for the shown track, the shared
 // audio player and its live response to the music, the game picker and the custom track list.
 //
-// app.js hands over its data, drawing helpers and hooks once with initViz, then reads what's on screen through
-// the live exports G (the game or custom list) and pinned (the selected track). Only this file changes them.
+// app.js sets it up once with initViz, handing over its hooks, then reads what's on screen through the live exports
+// G (the game or custom list) and pinned (the selected track). Only this file changes them.
+import { GAMES, AXES, average, shortTitle } from "./model.js";
+import { hex, colorName, inkOn, digits, fmt } from "./colors.js";
+import { el, drawFrame, drawTop, triangle, ps, shapePts, SINGLE, STACKED, setGrad, drawSmallHexagon, scoreBars, sprite, spriteOf, sprImg, badgeIcon } from "./draw.js";
+import { ICON_PLAY, ICON_PAUSE } from "./data/icons.js";
+import { $, plural, track } from "./util.js";
 
-// ---- From app.js (set by initViz) ----
-
-// Data and drawing helpers
-let GAMES, AXES, el, drawFrame, drawTop, triangle, ps, shapePts, hex, colorName, inkOn, digits, fmt;
-let sprite, spriteOf, sprImg, badgeIcon, shortTitle, SINGLE, STACKED, setGrad, track;
-// Hooks that keep the rest of the page in step: the link and history, the track table, the dot plot and favorite stars
-let nav, syncHistory, markIntensity, markTable, markFavs;
-
-const $ = id => document.getElementById(id);
-const plural = (n, word) => `${n} ${word}${n === 1 ? "" : "s"}`;
+// Hooks from app.js (set by initViz) that keep the rest of the page in step: the link and history, the track table,
+// the dot plot, favorite stars and the saved-list picker
+let nav, syncHistory, markIntensity, markTable, markFavs, onCustomChange;
 
 // ---- State ----
 
@@ -53,12 +51,12 @@ export function applyCustom(tracks, show = true) {
   refreshCustom();
   syncCustomPicker();
   if (show) setView(CUSTOM, true);
-  window.onCustomChange && window.onCustomChange();
+  onCustomChange();
 }
 
 function refreshCustom() {
   const scored = CUSTOM.scored = CUSTOM.tracks.filter(t => t.vals);
-  CUSTOM.avg = scored.length ? [0, 1, 2].map(k => scored.reduce((sum, t) => sum + t.vals[k], 0) / scored.length) : null;
+  CUSTOM.avg = average(scored);
   CUSTOM.color = CUSTOM.avg ? hex(CUSTOM.avg) : null;
   CUSTOM.cname = CUSTOM.avg ? colorName(CUSTOM.avg) : null;
 }
@@ -158,10 +156,7 @@ function renderCards() {
     card.innerHTML = cardHtml(t);
     cards.appendChild(card);
 
-    const svg = card.querySelector("svg");
-    drawFrame(svg, 58, false);
-    if (t.vals) triangle(svg, t.vals, 58, t.color, { w: 1.6 });
-    drawTop(svg, 58);
+    drawSmallHexagon(card.querySelector("svg"), t, 1.6);
   });
 }
 
@@ -171,15 +166,11 @@ function cardHtml(t) {
   const bandText = t.vals ? `${t.cname} · ${t.color}` : "not scored yet";
   // In a custom list the credit line also names the track's game
   const credit = [current.custom ? t.game.title : "", t.composer || t.game.composer].filter(Boolean).join(" · ");
-  const bars = AXES.map((ax, k) => {
-    const blocks = [1, 2, 3, 4, 5].map(n => `<b style="${t.vals && n <= t.vals[k] ? `background:var(${ax.tok})` : ""}"></b>`).join("");
-    return `<div class="bar"><span>${ax.label}</span><i>${blocks}</i><span>${t.vals ? t.vals[k] : "–"}</span></div>`;
-  }).join("");
   return `<div class="band" style="${bandStyle}">${bandText}${sprite(t, "spr-ghost")}</div>
     <div class="body"><svg viewBox="-70 -64 140 128" aria-hidden="true"></svg><div>
       <div class="nm">${t.name}</div>
       ${credit ? `<div class="cmp">${credit}</div>` : ""}
-      <div class="bars">${bars}</div>
+      ${scoreBars(t.vals)}
     </div></div>`;
 }
 
@@ -280,8 +271,6 @@ function renderBanner(t) {
 
 // One shared player, tied to the selected track: selecting a track with audio plays it from the start;
 // selecting one without audio, or none, pauses it
-export const ICON_PLAY = `<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 1.5v9l7.5-4.5z" fill="currentColor"/></svg>`;
-const ICON_PAUSE = `<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 1.5h2.5v9H2.5zM7 1.5h2.5v9H7z" fill="currentColor"/></svg>`;
 export const player = new Audio();
 
 function syncAudio(play = true) {
@@ -564,12 +553,8 @@ function syncCustomPicker() {
 
 // ---- Setup ----
 
-export function initViz(deps) {
-  ({
-    GAMES, AXES, el, drawFrame, drawTop, triangle, ps, shapePts, hex, colorName, inkOn, digits, fmt,
-    sprite, spriteOf, sprImg, badgeIcon, shortTitle, SINGLE, STACKED, setGrad, track,
-    nav, syncHistory, markIntensity, markTable, markFavs,
-  } = deps);
+export function initViz(hooks) {
+  ({ nav, syncHistory, markIntensity, markTable, markFavs, onCustomChange } = hooks);
   drawChart();
   ["play", "pause", "ended"].forEach(e => player.addEventListener(e, audioIcons));
   player.addEventListener("playing", startLive);
