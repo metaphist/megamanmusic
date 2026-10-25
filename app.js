@@ -1,4 +1,4 @@
-import { G, pinned, player, CUSTOM, initViz, ICON_PLAY, setGame, setView, setPinned, viewIndex, isPinned, applyCustom } from "./viz.js";
+import { G, pinned, player, CUSTOM, initViz, ICON_PLAY, setGame, setView, setPinned, togglePinned, viewIndex, isPinned, applyCustom } from "./viz.js";
 
 (async () => {
   // The link's query: ?game=mm2 or ?list=mm2.0,mmii.0, plus track=3 for the track at that place in the game or list,
@@ -725,7 +725,7 @@ import { G, pinned, player, CUSTOM, initViz, ICON_PLAY, setGame, setView, setPin
     nav(() => {
       let k = viewIndex(gi, ti);
       if (k < 0) { setGame(gi); k = ti; }
-      setPinned(pinned === k ? null : k);
+      togglePinned(k);
     });
   }
   function markTable() {
@@ -1095,7 +1095,7 @@ import { G, pinned, player, CUSTOM, initViz, ICON_PLAY, setGame, setView, setPin
       setGame(start < 0 ? 0 : start);
     }
     const t = idx === "" ? null : G.tracks[+idx];
-    setPinned(t && (t.vals || t.audio) ? +idx : null);
+    setPinned(t && (t.vals || t.audio) ? +idx : null, false);   // selected, but not played until clicked
     return (q.has("game") || q.has("list")) && q.get("view") !== "report" ? "viz" : "report";
   }
   fromLink();

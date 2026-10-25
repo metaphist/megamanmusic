@@ -99,17 +99,27 @@ export function setView(view, keepPlaying) {
   }
 }
 
-// Selects a track (null for none): marks it in the legend and cards, shows it and plays it
-export function setPinned(i) {
+// Set while a track with audio is selected but hasn't been played (a link opened it), so clicking it plays it
+let waitingToPlay = false;
+
+// Selects a track (null for none): marks it in the legend and cards, shows it and plays it.
+// play = false selects it without starting it, as when a link opens the page on a track.
+export function setPinned(i, play = true) {
   pinned = i;
+  waitingToPlay = !play && !!selected()?.audio;
   current.tracks.forEach((_, k) => {
     $("lg" + k)?.setAttribute("aria-pressed", k === i);
     $("cd" + k)?.setAttribute("aria-pressed", k === i);
   });
   show(i);
-  syncAudio();
+  syncAudio(play);
   markTable();
   syncHistory();
+}
+
+// A click on a track: selects it, or clears it if it's already selected (unless it's waiting to play: then it plays)
+export function togglePinned(i) {
+  setPinned(pinned === i && !waitingToPlay ? null : i);
 }
 
 // ---- Legend and cards ----
@@ -183,7 +193,7 @@ function listenToTrackButtons() {
     b.addEventListener("mouseleave", () => preview(pinned));
     b.addEventListener("focus", () => preview(i));
     b.addEventListener("blur", () => preview(pinned));
-    b.addEventListener("click", () => nav(() => setPinned(pinned === i ? null : i)));
+    b.addEventListener("click", () => nav(() => togglePinned(i)));
   });
 }
 
@@ -274,9 +284,9 @@ export const ICON_PLAY = `<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M
 const ICON_PAUSE = `<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 1.5h2.5v9H2.5zM7 1.5h2.5v9H7z" fill="currentColor"/></svg>`;
 export const player = new Audio();
 
-function syncAudio() {
+function syncAudio(play = true) {
   const t = selected();
-  if (t && t.audio) {
+  if (t && t.audio && play) {
     if (!player.src.endsWith(t.audio)) player.src = t.audio;
     player.currentTime = 0;
     connectAnalyser();
