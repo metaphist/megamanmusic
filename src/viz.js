@@ -47,10 +47,11 @@ export function setGame(gi) {
 
 // Replaces the custom list. show = false updates it without switching the view to it (used when a game is chosen).
 export function applyCustom(tracks, show = true) {
+  const playing = selected();   // looked up before the list changes, since pinned is a position in the old list
   CUSTOM.tracks = tracks;
   refreshCustom();
   syncCustomPicker();
-  if (show) setView(CUSTOM, true);
+  if (show) setView(CUSTOM, playing);
   onCustomChange();
 }
 
@@ -62,9 +63,9 @@ function refreshCustom() {
 }
 
 // Shows a game or the custom list, with nothing selected.
-// keepPlaying: when the custom list changes, the playing track keeps playing if it is still in the list.
-export function setView(view, keepPlaying) {
-  const wasPlaying = keepPlaying ? selected() : null;
+// wasPlaying: when the custom list changes, the track that was selected stays selected (and playing) if it is
+// still in the list.
+export function setView(view, wasPlaying = null) {
   current = view;
   pinned = null;
   const gi = GAMES.indexOf(current);
