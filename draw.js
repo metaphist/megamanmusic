@@ -119,7 +119,7 @@ export function sprImg(s, box, cls = "", maxK = Infinity) {
   const r = s.r || 1, size = Math.max(s.w, s.h) / r;
   const k = Math.min(maxK, Math.floor(box / size));
   const scale = (k < 1 ? box / size : k) / r, soft = scale < 1;
-  return `<img class="spr${cls ? " " + cls : ""}${soft ? " soft" : ""}" src="${s.src}" alt="" width="${Math.round(s.w * scale)}" height="${Math.round(s.h * scale)}">`;
+  return `<img class="spr${cls ? " " + cls : ""}${soft ? " soft" : ""}" src="${s.src}" alt="" loading="lazy" width="${Math.round(s.w * scale)}" height="${Math.round(s.h * scale)}">`;
 }
 
 // A track's sprite in one of the page's standard sizes: "spr-ghost" (the big faint one on cards), "spr-banner",
