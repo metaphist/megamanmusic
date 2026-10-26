@@ -46,6 +46,13 @@ export const endTrack = page => page.evaluate(async () => {
   player.dispatchEvent(new Event("ended"));
 });
 
+// Opens a game's rows in the report by clicking its banner title (if they aren't open already)
+export async function openGame(page, id) {
+  const section = page.locator("#rp-" + id);
+  if (!(await section.evaluate(s => s.classList.contains("open")))) await section.locator(".rp-toggle").click();
+  await expect(page.locator(`#rpt-${id}`)).toBeVisible();
+}
+
 export const toVisualizer = async page => {
   if (await page.locator("#viewViz").isHidden()) await page.locator("#viewBtn").click();
   await expect(page.locator("#viewViz")).toBeVisible();

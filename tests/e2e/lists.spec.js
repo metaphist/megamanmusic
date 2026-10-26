@@ -1,16 +1,18 @@
 // Favorites, saved lists and color buddies, all of which become custom lists
-import { test, expect, open, inPage, selectedTrack, currentView, query, toVisualizer } from "./fixtures.js";
+import { test, expect, open, openGame, inPage, selectedTrack, currentView, query, toVisualizer } from "./fixtures.js";
 
 const stored = (page, key) => page.evaluate(k => JSON.parse(localStorage.getItem(k) || "null"), key);
 const star = (page, key) => page.locator(`#rpBody .rp-fav[data-fav="${key}"]`);
+// Opens the track's game in the report, then clicks its star
+const clickStar = async (page, key) => { await openGame(page, key.split(".")[0]); await star(page, key).click(); };
 const listKeys = page => inPage(page, ({ viz }) => viz.G.tracks.map(t => `${t.game.id}.${t.ti}`));
 
 test.describe("favorites", () => {
   test("a star adds and removes a track, and is remembered", async ({ page }) => {
     await open(page);
     await expect(page.locator("#favBtn")).toBeDisabled();
-    await star(page, "mm2.0").click();
-    await star(page, "mm1.3").click();
+    await clickStar(page, "mm2.0");
+    await clickStar(page, "mm1.3");
     await expect(star(page, "mm2.0")).toHaveAttribute("aria-pressed", "true");
     await expect(page.locator("#favBtn")).toBeEnabled();
     await expect(page.locator("#favBtn")).toHaveAttribute("title", "Open favorites (2)");
@@ -18,21 +20,21 @@ test.describe("favorites", () => {
 
     await page.reload();
     await expect(star(page, "mm2.0")).toHaveAttribute("aria-pressed", "true");
-    await star(page, "mm2.0").click();
+    await clickStar(page, "mm2.0");
     expect(await stored(page, "rmcp-favorites")).toEqual(["mm1.3"]);
     await expect(star(page, "mm2.0")).toHaveAttribute("aria-pressed", "false");
   });
 
   test("starring a row doesn't play it", async ({ page }) => {
     await open(page);
-    await star(page, "mm2.0").click();
+    await clickStar(page, "mm2.0");
     expect(await selectedTrack(page)).toBeNull();
   });
 
   test("the favorites button opens them as a custom list in the visualizer", async ({ page }) => {
     await open(page);
-    await star(page, "mm2.0").click();
-    await star(page, "mm1.3").click();
+    await clickStar(page, "mm2.0");
+    await clickStar(page, "mm1.3");
     await page.locator("#favBtn").click();
     await expect(page.locator("#viewViz")).toBeVisible();
     expect(await listKeys(page)).toEqual(["mm2.0", "mm1.3"]);
@@ -42,7 +44,7 @@ test.describe("favorites", () => {
 
   test("the banner's star favorites the shown track, and an open favorites list follows along", async ({ page }) => {
     await open(page);
-    await star(page, "mm2.0").click();
+    await clickStar(page, "mm2.0");
     await page.locator("#favBtn").click();
     await page.locator("#lg0").click();
     await page.locator("#rFav").click();   // unfavorite Metal Man from the banner
@@ -52,13 +54,13 @@ test.describe("favorites", () => {
 
   test("come first in the saved-list picker", async ({ page }) => {
     await open(page);
-    await star(page, "mm2.0").click();
+    await clickStar(page, "mm2.0");
     await expect(page.locator("#savedSel option").nth(1)).toHaveText("★ Favorites (1)");
   });
 
   test("the floating favorites button shows on the report once there are favorites", async ({ page }) => {
     await open(page);
-    await star(page, "mm1.0").click();
+    await clickStar(page, "mm1.0");
     await page.locator("#rp-mm3").scrollIntoViewIfNeeded();
     await expect(page.locator("#favFab")).toBeVisible();
     await page.locator("#favFab").click();

@@ -1,5 +1,5 @@
 // Links: what a saved link opens, and how the link follows what's on screen
-import { test, expect, open, query, selectedTrack, currentView, isPlaying, expectPlaying, inPage } from "./fixtures.js";
+import { test, expect, open, openGame, query, selectedTrack, currentView, isPlaying, expectPlaying, inPage } from "./fixtures.js";
 
 test.describe("opening a link", () => {
   test("a game opens the visualizer on it", async ({ page }) => {
@@ -133,6 +133,7 @@ test.describe("the link follows along", () => {
   test("on the report it's plain, unless a track is selected", async ({ page }) => {
     await open(page);
     expect(query(page)).toBe("");
+    await openGame(page, "mm1");
     await page.locator("#rpBody button.rp-row").first().click();
     expect(query(page)).toBe("?view=report&game=mm1&track=0");
   });

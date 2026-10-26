@@ -2316,6 +2316,77 @@ svg text {
   background: repeating-linear-gradient(135deg, var(--grid) 0 6px, transparent 6px 12px)
 }
 
+/* The banner opens and closes its game's rows */
+.rp-band {
+  cursor: pointer
+}
+
+.rp-game:not(.open) .rp-band {
+  border-bottom-color: transparent
+}
+
+/* The title is the toggle: it keeps the heading's look, with a chevron that turns when the rows are open */
+.rp-toggle {
+  all: unset;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px
+}
+
+.rp-toggle:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px
+}
+
+.rp-chev {
+  width: 9px;
+  height: 9px;
+  border-right: 2.5px solid currentColor;
+  border-bottom: 2.5px solid currentColor;
+  transform: translateY(-3px) rotate(45deg);
+  transition: transform .25s ease;
+  opacity: .8
+}
+
+.rp-game.open .rp-chev {
+  transform: translateY(2px) rotate(-135deg)
+}
+
+/* The rows drop down: the wrapper's single grid row grows from nothing to the rows' full height.
+   While closed they're hidden, so they can't be tabbed to or read out. */
+.rp-drop {
+  display: grid;
+  grid-template-rows: 0fr;
+  visibility: hidden;
+  transition: grid-template-rows .3s ease, visibility 0s .3s
+}
+
+.rp-game.open .rp-drop {
+  grid-template-rows: 1fr;
+  visibility: visible;
+  transition: grid-template-rows .3s ease, visibility 0s 0s
+}
+
+.rp-drop>.rp-tracks {
+  min-height: 0;
+  overflow: hidden
+}
+
+.rp-game.no-anim .rp-drop,
+.rp-game.no-anim .rp-chev {
+  transition: none
+}
+
+@media (prefers-reduced-motion:reduce) {
+
+  .rp-drop,
+  .rp-game.open .rp-drop,
+  .rp-chev {
+    transition: none
+  }
+}
+
 .rp-band h3 {
   font-family: var(--display);
   font-size: clamp(20px, 3vw, 28px);

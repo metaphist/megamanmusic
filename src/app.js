@@ -137,7 +137,7 @@ function landView(v) {
   if (!PHONE.matches) return;
   let target = null;
   if (v === "viz") target = document.querySelector("#viewViz .stage");
-  else if (pinned != null && !player.paused) target = reportRow(G.tracks[pinned]);
+  else if (pinned != null && !player.paused) { openSelectedGame(); target = reportRow(G.tracks[pinned]); }
   if (target) target.scrollIntoView({ block: v === "viz" ? "start" : "center" });
 }
 
@@ -645,13 +645,15 @@ function reportGame(g) {
   const playAll = g.tracks.some(t => t.audio)
     ? `<button type="button" class="rp-viz" data-viz-game="${GAMES.indexOf(g)}" aria-label="Play all of ${esc(g.title)} in the visualizer">${ICON_PLAY}Play all</button>` : "";
   const bandClass = g.avg ? (ink === "#f2f4fa" ? " ink-light" : "") : " empty";
+  // The title is the button that opens the game's rows (a click anywhere else on the banner does too)
+  const toggle = `<button type="button" class="rp-toggle" aria-expanded="false" aria-controls="rpt-${g.id}">${esc(g.title)}<span class="rp-chev" aria-hidden="true"></span></button>`;
   return `<section class="rp-game" id="rp-${g.id}" aria-labelledby="rph-${g.id}">
         <header class="rp-band${bandClass}" style="${g.avg ? `background:${g.color};color:${ink};` : ""}--nb:${g.badges.length}">
-          <div><div class="rp-eyebrow">${g.year || "Upcoming"}${g.composer ? " · " + esc(g.composer) : ""}</div><h3 id="rph-${g.id}">${esc(g.title)}</h3></div>
+          <div><div class="rp-eyebrow">${g.year || "Upcoming"}${g.composer ? " · " + esc(g.composer) : ""}</div><h3 id="rph-${g.id}">${toggle}</h3></div>
           <div class="rp-right">${stats}</div>
           <div class="rp-foot"><div class="rp-lineup" aria-hidden="true">${lineup}</div><div class="rp-actions">${badges}${playAll}</div></div>
         </header>
-        <ol class="rp-tracks">${g.tracks.map(t => reportTrack(t, g)).join("")}</ol>
+        <div class="rp-drop" id="rpt-${g.id}"><ol class="rp-tracks">${g.tracks.map(t => reportTrack(t, g)).join("")}</ol></div>
       </section>`;
 }
 
@@ -677,10 +679,37 @@ function reportTrack(t, g) {
 function goToRow(gi, ti) {
   const row = reportBody.querySelector(`.rp-row[data-gi="${gi}"][data-ti="${ti}"]`);
   if (!row) return;
+  openGame(GAMES[gi], { instantly: true });
   row.scrollIntoView({ block: "center", behavior: "smooth" });
   row.classList.remove("flash");
   void row.offsetWidth;   // restarts the flash animation
   row.classList.add("flash");
+}
+
+// Each game's rows start hidden behind its banner, and drop down when it's clicked.
+// instantly skips the animation, so the rows are in place to scroll to straight away.
+function openGame(g, { open = true, instantly = false } = {}) {
+  const section = $("rp-" + g.id);
+  if (!section || section.classList.contains("open") === open) return;
+  if (instantly) section.classList.add("no-anim");
+  section.classList.toggle("open", open);
+  section.querySelector(".rp-toggle").setAttribute("aria-expanded", open);
+  if (instantly) { void section.offsetHeight; section.classList.remove("no-anim"); }
+}
+
+// The banner toggles its game's rows, except where it has buttons of its own (Play all)
+function setupGameToggles() {
+  reportBody.addEventListener("click", e => {
+    const band = e.target.closest(".rp-band");
+    if (!band || e.target.closest(".rp-viz")) return;
+    const g = GAMES.find(g => "rp-" + g.id === band.parentElement.id);
+    openGame(g, { open: !band.parentElement.classList.contains("open") });
+  });
+}
+
+// The selected track's game opens, so its row shows (when a link opens the report on a track, or a phone lands on it)
+function openSelectedGame() {
+  if (pinned != null) openGame(G.tracks[pinned].game, { instantly: true });
 }
 
 // A game banner's "Play all" loads that game in the visualizer, switches to it and plays its tracks in order.
@@ -776,6 +805,7 @@ function searchHit(h, i) {
 
 function setupReport() {
   renderReport();
+  setupGameToggles();
   setupPlayAll();
   // Each color in the intro strip jumps to its robot master's row
   reportBody.addEventListener("click", e => { const b = e.target.closest("[data-to-gi]"); if (b) goToRow(b.dataset.toGi, b.dataset.toTi); });
@@ -804,6 +834,7 @@ setupDistribution();
 setupSavedLists();
 setupReport();
 fromLink();
+openSelectedGame();
 markIntensity();
 showView(document.documentElement.dataset.view);
 setupViewButtons();

@@ -1,5 +1,5 @@
 // The full color report: rows, jump bar, search, "Play all" and the game profiles
-import { test, expect, open, inPage, selectedTrack, currentView, expectPlaying, endTrack, query } from "./fixtures.js";
+import { test, expect, open, openGame, inPage, selectedTrack, currentView, expectPlaying, endTrack, query } from "./fixtures.js";
 
 const row = (page, gi, ti) => page.locator(`#rpBody .rp-row[data-gi="${gi}"][data-ti="${ti}"]`);
 const inViewport = locator => locator.evaluate(e => { const r = e.getBoundingClientRect(); return r.bottom > 0 && r.top < innerHeight; });
@@ -30,6 +30,7 @@ test.describe("report rows", () => {
 
   test("clicking a row plays its track and marks it, staying on the report", async ({ page }) => {
     await open(page);
+    await openGame(page, "mm2");
     await row(page, 2, 0).click();
     await expect(page.locator("#viewReport")).toBeVisible();
     expect(await currentView(page)).toBe("mm2");
@@ -42,9 +43,95 @@ test.describe("report rows", () => {
 
   test("the playing track's small shape pulses with the music", async ({ page }) => {
     await open(page);
+    await openGame(page, "mm1");
     await row(page, 0, 0).click();
     await expectPlaying(page);
     await expect(page.locator('#rpBody .rp-hex[data-gi="0"][data-ti="0"] .tri[transform]')).toHaveCount(1, { timeout: 5000 });
+  });
+});
+
+test.describe("game sections", () => {
+  const section = (page, id) => page.locator("#rp-" + id), toggle = (page, id) => page.locator(`#rp-${id} .rp-toggle`);
+
+  test("start closed: just the banner, with the rows hidden", async ({ page }) => {
+    await open(page);
+    const ids = await inPage(page, ({ model }) => model.GAMES.map(g => g.id));
+    await expect(page.locator("#rpBody .rp-game.open")).toHaveCount(0);
+    await expect(page.locator('#rpBody .rp-toggle[aria-expanded="false"]')).toHaveCount(ids.length);
+    for (const id of ids) {
+      await expect(section(page, id).locator(".rp-band")).toBeVisible();
+      await expect(page.locator(`#rpt-${id}`)).toBeHidden();
+    }
+    await expect(page.locator("#rpBody .rp-row").first()).toBeHidden();
+  });
+
+  test("clicking the title drops the rows down; clicking again closes them", async ({ page }) => {
+    await open(page);
+    await toggle(page, "mm2").click();
+    await expect(section(page, "mm2")).toHaveClass(/open/);
+    await expect(toggle(page, "mm2")).toHaveAttribute("aria-expanded", "true");
+    await expect(row(page, 2, 0)).toBeVisible();
+    await expect(page.locator("#rpBody .rp-game.open")).toHaveCount(1);   // the others stay closed
+    await toggle(page, "mm2").click();
+    await expect(toggle(page, "mm2")).toHaveAttribute("aria-expanded", "false");
+    await expect(row(page, 2, 0)).toBeHidden();
+  });
+
+  test("a click anywhere else on the banner toggles it too", async ({ page }) => {
+    await open(page);
+    await section(page, "mm2").locator(".rp-gstats").click();
+    await expect(section(page, "mm2")).toHaveClass(/open/);
+    await section(page, "mm2").locator(".rp-eyebrow").click();
+    await expect(section(page, "mm2")).not.toHaveClass(/open/);
+  });
+
+  test("Play all plays without opening the rows", async ({ page }) => {
+    await open(page);
+    await section(page, "mm2").locator(".rp-viz").click();
+    await expect(page.locator("#viewViz")).toBeVisible();
+    await expect(section(page, "mm2")).not.toHaveClass(/open/);
+  });
+
+  test("the title is a button, so the keyboard opens it too", async ({ page }) => {
+    await open(page);
+    await toggle(page, "mm3").focus();
+    await page.keyboard.press("Enter");
+    await expect(section(page, "mm3")).toHaveClass(/open/);
+    await page.keyboard.press(" ");
+    await expect(section(page, "mm3")).not.toHaveClass(/open/);
+    await expect(toggle(page, "mm3")).toHaveAttribute("aria-controls", "rpt-mm3");
+  });
+
+  test("hidden rows can't be tabbed to", async ({ page }) => {
+    await open(page);
+    await toggle(page, "mm1").focus();
+    await page.keyboard.press("Tab");
+    const focused = await page.evaluate(() => document.activeElement.closest(".rp-drop") ? "row" : document.activeElement.className);
+    expect(focused).not.toBe("row");
+  });
+
+  test("going to a row opens its game: the color strip and the search", async ({ page }) => {
+    await open(page);
+    await page.locator('#rpBody .rp-all button[data-to-gi="4"][data-to-ti="0"]').click();
+    await expect(page.locator('#rpBody .rp-game:has(.rp-row[data-gi="4"][data-ti="0"])')).toHaveClass(/open/);
+    await page.locator("#rpFind").fill("quick");
+    await page.locator("#rpFind").press("Enter");
+    await expect(section(page, "mm2")).toHaveClass(/open/);
+    await expect(row(page, 2, 3)).toBeVisible();
+  });
+
+  test("a link to a track on the report opens that game", async ({ page }) => {
+    await open(page, "?view=report&game=mm2&track=0");
+    await expect(section(page, "mm2")).toHaveClass(/open/);
+    await expect(row(page, 2, 0)).toBeVisible();
+    await expect(page.locator("#rpBody .rp-game.open")).toHaveCount(1);
+  });
+
+  test("open instantly for reduced motion", async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    await open(page);
+    await toggle(page, "mm2").click();
+    expect(await page.locator("#rpt-mm2").evaluate(e => getComputedStyle(e).transitionDuration)).toMatch(/^0s/);
   });
 });
 
