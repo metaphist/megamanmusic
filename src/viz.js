@@ -303,7 +303,7 @@ function audioIcons() {
 // on the beat. Two more effects are kept for testing but switched off: a spectrum ring around the hexagon, and a
 // dashed "live reading" that maps low/mid/high frequencies to Energy/Density/Gravity.
 // Off for reduced motion; everything resets when playback stops.
-const LIVE = { pulse: true, flicker: true, ring: false, ghost: true };
+const LIVE = { pulse: true, flicker: true, ring: false, ghost: false };
 const REDUCED_MOTION = matchMedia("(prefers-reduced-motion: reduce)").matches;
 const PULSE_REST = .82;   // resting size of the playing shape, as a share of its true size
 // Spectrum ring: bars in each mirrored half, inner radius and longest bar
