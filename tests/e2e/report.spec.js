@@ -172,7 +172,7 @@ test.describe("robot master search", () => {
     await expect(list(page).locator("li[role=option] b")).toHaveText(["Ground Man"]);
   });
 
-  test("arrow keys move through the matches and Enter jumps to the row", async ({ page }) => {
+  test("arrow keys move through the matches and Enter jumps to the row and plays it", async ({ page }) => {
     await open(page);
     await input(page).fill("man");
     await input(page).press("ArrowDown");
@@ -187,14 +187,55 @@ test.describe("robot master search", () => {
     await expect(list(page)).toBeHidden();
     await expect(input(page)).toHaveValue("");
     await expect(row(page, 2, 3)).toHaveClass(/flash/);
+    expect(await selectedTrack(page)).toBe("Quick Man");
+    await expectPlaying(page);
+    await expect(row(page, 2, 3)).toHaveClass(/on/);
   });
 
-  test("clicking a match jumps to its row", async ({ page }) => {
+  test("clicking a match jumps to its row and plays it", async ({ page }) => {
     await open(page);
     await input(page).fill("gemini");
     await list(page).locator("li[role=option]").first().click();
     await expect(page.locator("#rpBody .rp-row.flash")).toHaveCount(1);
     await expect(page.locator("#rpBody .rp-row.flash b").first()).toHaveText("Gemini Man");
+    expect(await selectedTrack(page)).toBe("Gemini Man");
+    await expectPlaying(page);
+  });
+
+  test("playing from the search stays on the report and adds a history entry", async ({ page }) => {
+    await open(page);
+    const before = await page.evaluate(() => history.length);
+    await input(page).fill("quick");
+    await input(page).press("Enter");
+    await expect(page.locator("#viewReport")).toBeVisible();
+    expect(query(page)).toBe("?view=report&game=mm2&track=3");
+    expect(await page.evaluate(() => history.length)).toBe(before + 1);
+  });
+
+  test("picking the track that's already playing keeps it playing", async ({ page }) => {
+    await open(page);
+    await input(page).fill("quick");
+    await input(page).press("Enter");
+    await expectPlaying(page);
+    await page.evaluate(async () => { (await import("/src/viz.js")).player.currentTime = 5; });
+    await input(page).fill("quick");
+    await input(page).press("Enter");
+    await expectPlaying(page);
+    expect(await selectedTrack(page)).toBe("Quick Man");
+    expect(await inPage(page, ({ viz }) => viz.player.currentTime)).toBeGreaterThanOrEqual(5);
+  });
+
+  test("a robot master with nothing to play is only jumped to", async ({ page }) => {
+    await open(page);
+    const t = await inPage(page, ({ model }) => {
+      const t = model.GAMES.flatMap(g => g.tracks).find(t => !model.selectable(t) && t.name !== "???");
+      return t && { name: t.name, gi: t.gi, ti: t.ti };
+    });
+    test.skip(!t, "every named robot master is playable");
+    await input(page).fill(t.name);
+    await input(page).press("Enter");
+    await expect(page.locator(`#rpBody .rp-row:has(.rp-hex[data-gi="${t.gi}"][data-ti="${t.ti}"])`)).toHaveClass(/flash/);
+    expect(await selectedTrack(page)).toBeNull();
   });
 
   test("Escape closes the list, then clears the box", async ({ page }) => {

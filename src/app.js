@@ -200,6 +200,16 @@ function toggleTrack(gi, ti) {
   });
 }
 
+// Plays a track (never clears it, unlike toggleTrack): a track in the current game or list is selected in place;
+// otherwise its game is loaded first. A track that's already playing carries on.
+function playTrack(gi, ti) {
+  nav(() => {
+    let k = viewIndex(gi, ti);
+    if (k < 0) { setGame(gi); k = ti; }
+    if (pinned !== k || player.paused) setPinned(k);
+  });
+}
+
 // Marks the selected track in the table, the color buddies and the report
 function markTable() {
   const mark = sel => document.querySelectorAll(sel).forEach(e => e.classList.toggle("on", isPinned(+e.dataset.gi, +e.dataset.ti)));
@@ -677,7 +687,8 @@ function reportTrack(t, g) {
 
 // Scrolls to a robot master's row and flashes it
 function goToRow(gi, ti) {
-  const row = reportBody.querySelector(`.rp-row[data-gi="${gi}"][data-ti="${ti}"]`);
+  // Found through its hexagon, which every row has (rows that can't be played aren't buttons and carry no data-gi)
+  const row = reportBody.querySelector(`.rp-hex[data-gi="${gi}"][data-ti="${ti}"]`)?.closest(".rp-row");
   if (!row) return;
   openGame(GAMES[gi], { instantly: true });
   row.scrollIntoView({ block: "center", behavior: "smooth" });
@@ -737,7 +748,8 @@ function setupPlayAll() {
   });
 }
 
-// Robot master search in the sticky bar: matches names, games and serials; Enter or a click jumps to the row
+// Robot master search in the sticky bar: matches names, games and serials; Enter or a click jumps to the row and
+// plays its track
 function setupReportSearch() {
   const input = $("rpFind"), list = $("rpFindList");
   const norm = x => x.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
@@ -780,6 +792,7 @@ function setupReportSearch() {
     input.value = "";
     input.blur();
     goToRow(h.gi, h.ti);
+    if (selectable(h.t)) playTrack(h.gi, h.ti);
   };
 
   input.addEventListener("input", search);
