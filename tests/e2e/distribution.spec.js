@@ -46,13 +46,14 @@ test.describe("score distribution", () => {
     await expect(tip).toBeVisible();
     await expect(tip).toContainText("Cut Man");
     await expect(tip).toContainText("Mega Man");
-    await expect(tip).toContainText("433");
-    await expect(tip).toContainText("intensity 10");
+    const cut = await inPage(page, ({ model }) => model.GAMES[0].tracks[0].vals);
+    await expect(tip).toContainText(cut.join(""));
+    await expect(tip).toContainText(`intensity ${cut[0] + cut[1] + cut[2]}`);
     await page.mouse.move(5, 5);
     await expect(tip).toBeHidden();
     await tab(page, "0").click();
     await dot.hover();
-    await expect(tip).toContainText("energy 4");
+    await expect(tip).toContainText(`energy ${cut[0]}`);
   });
 
   test("clicking a dot plays its track", async ({ page }) => {

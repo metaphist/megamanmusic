@@ -21,7 +21,7 @@ describe("hex", () => {
   test("covers the extremes and a real track", () => {
     assert.equal(hex([1, 1, 1]), "#000000");
     assert.equal(hex([5, 5, 5]), "#FFFFFF");
-    assert.equal(hex([4, 3, 3]), "#BF8080");   // Cut Man
+    assert.equal(hex([4, 3, 3]), "#BF8080");
   });
   test("is uppercase and zero-padded", () => {
     assert.match(hex([2, 1, 2]), /^#[0-9A-F]{6}$/);

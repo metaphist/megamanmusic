@@ -16,9 +16,10 @@ test.describe("filters", () => {
     expect(names.every(n => /metal man/i.test(n))).toBe(true);
     await page.locator("#fText").fill("DWN-009");
     await expect(rows(page)).toHaveCount(await inPage(page, ({ model }) => model.GAMES.flatMap(g => g.scored).filter(t => t.dln === "DWN-009").length));
-    await page.locator("#fText").fill("#BF8080");
-    expect(await column(page, 9)).toEqual(expect.arrayContaining(["#BF8080"]));
-    expect((await column(page, 9)).every(c => c === "#BF8080")).toBe(true);
+    const hex = await inPage(page, ({ model }) => model.GAMES[0].tracks[0].color);   // Cut Man's
+    await page.locator("#fText").fill(hex);
+    expect(await column(page, 9)).toEqual(expect.arrayContaining([hex]));
+    expect((await column(page, 9)).every(c => c === hex)).toBe(true);
   });
 
   test("the count says how many of the scored tracks are showing", async ({ page }) => {

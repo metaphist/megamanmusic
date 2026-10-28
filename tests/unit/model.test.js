@@ -37,11 +37,12 @@ describe("scores", () => {
       assert.equal(t.color, undefined);
     }
   });
-  test("Cut Man is Rosy Brown", () => {
-    const cut = GAMES[0].tracks[0];
+  test("Cut Man's row in scores.csv gives his code, color and name", () => {
+    const cut = GAMES[0].tracks[0], row = scores.get("mm1|Cut Man").map(Number);
     assert.equal(cut.name, "Cut Man");
-    assert.equal(cut.color, "#BF8080");
-    assert.equal(cut.cname, "Rosy Brown");
+    assert.equal(cut.code, row.join(""));
+    assert.equal(cut.color, hex(row));
+    assert.equal(cut.cname, colorName(row));
   });
 });
 
