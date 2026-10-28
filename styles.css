@@ -2741,11 +2741,14 @@ button.rp-row:focus-visible {
     font-size: 10px
   }
 
-  /* Play all and the badges to its left move together; the title makes room for both */
+  /* Play all moves to the top right, with the badges stacked under it; the title makes room for the wider of the two */
   .rp-band .rp-actions {
     position: absolute;
     top: 12px;
-    right: 12px
+    right: 12px;
+    flex-direction: column-reverse;
+    align-items: flex-end;
+    gap: 8px
   }
 
   .rp-band:has(.rp-actions > *)>div:first-child {
@@ -2753,7 +2756,7 @@ button.rp-row:focus-visible {
   }
 
   .rp-band:has(.rp-viz)>div:first-child {
-    padding-right: calc(var(--nb) * 26px + 110px)
+    padding-right: max(110px, calc(var(--nb) * 26px + 12px))
   }
 }
 
