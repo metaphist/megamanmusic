@@ -659,7 +659,7 @@ function reportGame(g) {
   const toggle = `<button type="button" class="rp-toggle" aria-expanded="false" aria-controls="rpt-${g.id}">${esc(g.title)}<span class="rp-chev" aria-hidden="true"></span></button>`;
   return `<section class="rp-game" id="rp-${g.id}" aria-labelledby="rph-${g.id}">
         <header class="rp-band${bandClass}" style="${g.avg ? `background:${g.color};color:${ink};` : ""}--nb:${g.badges.length}">
-          <div><div class="rp-eyebrow">${g.year || "Upcoming"}${g.composer ? " · " + esc(g.composer) : ""}</div><h3 id="rph-${g.id}">${toggle}</h3></div>
+          <div><h3 id="rph-${g.id}">${toggle}</h3><div class="rp-byline">${g.year || "Upcoming"}${g.composer ? " · " + esc(g.composer) : ""}</div></div>
           <div class="rp-right">${stats}</div>
           <div class="rp-foot"><div class="rp-lineup" aria-hidden="true">${lineup}</div><div class="rp-actions">${badges}${playAll}</div></div>
         </header>

@@ -81,7 +81,7 @@ test.describe("game sections", () => {
     await open(page);
     await section(page, "mm2").locator(".rp-gstats").click();
     await expect(section(page, "mm2")).toHaveClass(/open/);
-    await section(page, "mm2").locator(".rp-eyebrow").click();
+    await section(page, "mm2").locator(".rp-byline").click();
     await expect(section(page, "mm2")).not.toHaveClass(/open/);
   });
 
