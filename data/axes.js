@@ -3,5 +3,5 @@
 export const AXES = [
   { label: "Energy", lo: "Chill", hi: "Hype", tok: "--r", ang: 90 },
   { label: "Density", lo: "Simple", hi: "Busy", tok: "--g", ang: -30 },
-  { label: "Gravity", lo: "Light", hi: "Dramatic", tok: "--b", ang: 210 },
+  { label: "Gravity", lo: "Light", hi: "Serious", tok: "--b", ang: 210 },
 ];
