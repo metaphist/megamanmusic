@@ -2399,7 +2399,6 @@ svg text {
   font-family: var(--mono);
   font-size: 12px;
   opacity: .85;
-  margin-top: 4px
 }
 
 /* The badges sit just left of Play all. They sit on the game's own color,
