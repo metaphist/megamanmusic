@@ -51,6 +51,11 @@ test.describe("first load", () => {
       if (g.color) await expect(band).toHaveAttribute("style", new RegExp(`background:${g.color}`));
       else await expect(band).toHaveClass(/empty/);
       await expect(page.locator(`#rp-${g.id} .rp-badges .ticon`)).toHaveCount(g.badges);
+      // Its averages end with the exact hex, without the approximate color name
+      if (g.color) {
+        await expect(page.locator(`#rp-${g.id} .rp-gstats > div`).last()).toHaveText(`${g.color}Color`);
+        await expect(page.locator(`#rp-${g.id} .rp-gstats`)).not.toContainText("≈");
+      }
     }
   });
 

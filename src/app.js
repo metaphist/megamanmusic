@@ -649,7 +649,7 @@ function reportGame(g) {
   const stats = g.avg ? `<div class="rp-gstats">
           ${g.avg.map((v, k) => `<div><b>${v.toFixed(1)}</b><span>${AXES[k].label}</span></div>`).join("")}
           <div><b>${intensity(g.avg).toFixed(1)}</b><span>Intensity</span></div>
-          <div><b>${esc(g.cname)}</b><span>${g.color}</span></div>
+          <div><b>${g.color}</b><span>Color</span></div>
         </div>` : `<div class="rp-gstats"><div><b>–</b><span>Not scored yet</span></div></div>`;
   const lineup = g.tracks.map(t => { const s = spriteOf(t); return s ? sprImg(s, 48, "", 1) : ""; }).join("");
   const playAll = g.tracks.some(t => t.audio)
