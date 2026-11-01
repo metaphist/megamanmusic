@@ -37,7 +37,7 @@ test.describe("first load", () => {
       scoredTracks: model.GAMES.flatMap(g => g.scored).length,
     }));
     await expect(page.locator("#compare .crow")).toHaveCount(scoredGames);
-    await expect(page.locator("#rpBody .rp-all button")).toHaveCount(scoredTracks);
+    await expect(page.locator("#viewReport .rp-colorbar button")).toHaveCount(scoredTracks);
     await expect(page.locator("#trackTable tbody tr")).toHaveCount(scoredTracks);
     await expect(page.locator("#fCount")).toHaveText(`${scoredTracks} tracks`);
     await expect(page.locator("#ibars .idot")).toHaveCount(scoredTracks);

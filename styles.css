@@ -2236,27 +2236,27 @@ svg text {
   color: var(--muted)
 }
 
-.rp-all {
+.rp-colorbar {
   display: flex;
   height: 34px;
   border: 1px solid var(--line)
 }
 
-.rp-all button {
+.rp-colorbar button {
   all: unset;
   flex: 1;
   min-width: 1px;
   cursor: pointer
 }
 
-.rp-all button:hover {
+.rp-colorbar button:hover {
   outline: 2px solid var(--ink);
   outline-offset: -2px;
   position: relative;
   z-index: 1
 }
 
-.rp-all button:focus-visible {
+.rp-colorbar button:focus-visible {
   outline: 2px solid var(--b);
   outline-offset: -2px;
   position: relative;

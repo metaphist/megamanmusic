@@ -611,11 +611,12 @@ function setupSavedLists() {
 
 // The main view: every game in release order and every robot master in it, with sprite, serial, composer, scores,
 // intensity, shape and color. A sticky bar jumps to each game and searches for robot masters.
-const reportBody = $("rpBody"), jumpBar = $("rpJump");
+const reportWrap = $("viewReport"), reportBody = $("rpBody"), jumpBar = $("rpJump");
 const reportRow = t => reportBody.querySelector(`.rp-row[data-gi="${t.gi}"][data-ti="${t.ti}"]`);
 
 function renderReport() {
-  reportBody.innerHTML = reportIntro() + RELEASE_ORDER.map(reportGame).join("");
+  reportWrap.insertAdjacentHTML("afterbegin", reportRollup());
+  reportBody.innerHTML = RELEASE_ORDER.map(reportGame).join("");
   markFavs();
   jumpBar.innerHTML = RELEASE_ORDER.map(g => `<button type="button" data-jump="rp-${g.id}" title="${esc(g.title)}" aria-label="${esc(g.title)}"><i style="${g.color ? `background:${g.color}` : ""}" class="${g.color ? "" : "chip empty"}"></i>${esc(tableTitle(g))}</button>`).join("");
   // Each robot master's own hexagon, drawn the same way as the visualizer's cards
@@ -627,7 +628,7 @@ function renderReport() {
 }
 
 // A strip of every scored track's color in release order (each jumps to its row), and totals (hidden for now)
-function reportIntro() {
+function reportRollup() {
   const colors = new Set(SCORED.map(r => r.color));
   const strip = RELEASE_ORDER.flatMap(g => g.scored).map(t => `<button type="button" data-to-gi="${t.gi}" data-to-ti="${t.ti}" style="background:${t.color}" title="${esc(t.name)} · ${esc(t.game.title)} · ${t.color}" aria-label="Go to ${esc(t.name)}, ${esc(t.game.title)}"></button>`).join("");
   return `<section class="rp-intro">
@@ -637,7 +638,7 @@ function reportIntro() {
         <div class="rp-stat"><b>${SCORED.length}</b><span>scored</span></div>
         <div class="rp-stat"><b>${colors.size}</b><span>distinct colors of 125</span></div>
       </div>
-      <div class="rp-all" aria-label="Every scored track's color, in release order">${strip}</div>
+      <div class="rp-colorbar" aria-label="Every scored track's color, in release order">${strip}</div>
       <p class="rp-note" hidden>Every scored track's color, left to right in release order. Click any robot master below to play its theme.</p>
     </section>`;
 }
@@ -821,8 +822,14 @@ function setupReport() {
   renderReport();
   setupGameToggles();
   setupPlayAll();
-  // Each color in the intro strip jumps to its robot master's row
-  reportBody.addEventListener("click", e => { const b = e.target.closest("[data-to-gi]"); if (b) goToRow(b.dataset.toGi, b.dataset.toTi); });
+  // Each color in the color bar jumps to its robot master's row and plays it, like picking it from the search
+  reportWrap.querySelector(".rp-colorbar").addEventListener("click", e => {
+    const b = e.target.closest("[data-to-gi]");
+    if (!b) return;
+    const gi = +b.dataset.toGi, ti = +b.dataset.toTi;
+    goToRow(gi, ti);
+    if (selectable(GAMES[gi].tracks[ti])) playTrack(gi, ti);
+  });
   setupReportSearch();
   // The jump bar's scrollbar height, for the sticky bar's layout
   const syncScrollbar = () => jumpBar.parentElement.style.setProperty("--sbh", (jumpBar.offsetHeight - jumpBar.clientHeight) + "px");

@@ -403,7 +403,7 @@ function flickerTargets() {
   return [
     q(`#lg${pinned} .chip`), q(`#cd${pinned} .band`), $("rSw"), q("#trackTable tr.on .cc i"),
     q(`#ibars .idot${at}`), q(`#compare .strip span${at}`), q(`#rpBody .rp-row${at} .rp-col i`),
-    q(`#rpBody .rp-all button[data-to-gi="${t.gi}"][data-to-ti="${t.ti}"]`),
+    q(`#viewReport .rp-colorbar button[data-to-gi="${t.gi}"][data-to-ti="${t.ti}"]`),
     t.vals ? $("vizFab") : null,
   ].filter(Boolean);
 }
@@ -462,7 +462,7 @@ function resetLive() {
   document.querySelectorAll("#rpBody .rp-hex .tri").forEach(unpulse);
   ring.setAttribute("opacity", 0);
   ghost.setAttribute("opacity", 0);
-  document.querySelectorAll(".legend .chip, .card .band, #rSw, #trackTable .cc i, #ibars .idot, #compare .strip span, #rpBody .rp-col i, #rpBody .rp-all button")
+  document.querySelectorAll(".legend .chip, .card .band, #rSw, #trackTable .cc i, #ibars .idot, #compare .strip span, #rpBody .rp-col i, #viewReport .rp-colorbar button")
     .forEach(e => e.style.filter = "");
   const fab = $("vizFab");
   if (fab) fab.style.filter = fab.style.background = fab.style.color = fab.style.borderColor = "";

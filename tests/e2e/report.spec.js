@@ -112,7 +112,7 @@ test.describe("game sections", () => {
 
   test("going to a row opens its game: the color strip and the search", async ({ page }) => {
     await open(page);
-    await page.locator('#rpBody .rp-all button[data-to-gi="4"][data-to-ti="0"]').click();
+    await page.locator('#viewReport .rp-colorbar button[data-to-gi="4"][data-to-ti="0"]').click();
     await expect(page.locator('#rpBody .rp-game:has(.rp-row[data-gi="4"][data-ti="0"])')).toHaveClass(/open/);
     await page.locator("#rpFind").fill("quick");
     await page.locator("#rpFind").press("Enter");
@@ -142,11 +142,15 @@ test.describe("navigating the report", () => {
     expect(await inViewport(page.locator("#rp-mm5 .rp-band"))).toBe(true);
   });
 
-  test("the color strip jumps to a track's row and flashes it", async ({ page }) => {
+  test("the color strip jumps to a track's row, flashes it and plays it", async ({ page }) => {
     await open(page);
-    await page.locator('#rpBody .rp-all button[data-to-gi="4"][data-to-ti="0"]').click();
+    const name = await inPage(page, ({ model }) => model.GAMES[4].tracks[0].name);
+    await page.locator('#viewReport .rp-colorbar button[data-to-gi="4"][data-to-ti="0"]').click();
     await expect(row(page, 4, 0)).toHaveClass(/flash/);
     await expect.poll(() => inViewport(row(page, 4, 0))).toBe(true);
+    await expect(page.locator("#viewReport")).toBeVisible();
+    expect(await selectedTrack(page)).toBe(name);
+    await expectPlaying(page);
   });
 });
 
