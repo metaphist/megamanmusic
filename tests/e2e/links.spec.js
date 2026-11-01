@@ -134,7 +134,7 @@ test.describe("the link follows along", () => {
     await open(page);
     expect(query(page)).toBe("");
     await openGame(page, "mm1");
-    await page.locator("#rpBody button.rp-row").first().click();
+    await page.locator("#rpBody .rp-row[data-gi]").first().click();
     expect(query(page)).toBe("?view=report&game=mm1&track=0");
   });
 

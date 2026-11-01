@@ -2477,15 +2477,6 @@ svg text {
   border-bottom: 1px solid var(--line)
 }
 
-/* Each row's favorite star sits over the row's right edge; the row leaves room for it */
-.rp-tracks li {
-  position: relative
-}
-
-.rp-tracks .rp-row {
-  padding-right: 52px
-}
-
 .rp-fav {
   all: unset;
   box-sizing: border-box;
@@ -2496,19 +2487,21 @@ svg text {
   transform: translateY(-50%);
   padding: 8px;
   color: var(--muted);
-  opacity: .35
+  opacity: .2
 }
 
-/* In the report rows the star sits in the top right corner */
+/* In the report rows the star follows the name on its line, its padding overlapping the lines around it */
 .rp-tracks .rp-fav {
-  top: 4px;
-  right: 4px;
-  transform: none
+  position: static;
+  transform: none;
+  display: inline-block;
+  vertical-align: middle;
+  margin: -8px -8px -3px 0px
 }
 
 .rp-fav svg {
-  width: 18px;
-  height: 18px;
+  width: 16px;
+  height: 16px;
   display: block
 }
 
@@ -2531,11 +2524,11 @@ svg text {
   border-bottom: 0
 }
 
-button.rp-row {
+.rp-row[data-gi] {
   cursor: pointer
 }
 
-button.rp-row:hover,
+.rp-row[data-gi]:hover,
 .rp-row.on {
   background: var(--grid)
 }
@@ -2544,7 +2537,7 @@ button.rp-row:hover,
   box-shadow: inset 3px 0 0 var(--ink)
 }
 
-button.rp-row:focus-visible {
+.rp-row[data-gi]:focus-visible {
   outline: 2px solid var(--b);
   outline-offset: -2px
 }
@@ -2559,7 +2552,7 @@ button.rp-row:focus-visible {
 }
 
 .rp-id b {
-  display: block;
+  display: inline;
   font-family: var(--display);
   font-size: 17px;
   font-weight: 400;
@@ -2571,7 +2564,6 @@ button.rp-row:focus-visible {
   font-family: var(--mono);
   font-size: 12px;
   color: var(--muted);
-  margin-top: 2px
 }
 
 .rp-id small {

@@ -54,6 +54,6 @@ export async function openGame(page, id) {
 }
 
 export const toVisualizer = async page => {
-  if (await page.locator("#viewViz").isHidden()) await page.locator("#viewBtn").click();
+  if (await page.locator("#viewViz").isHidden()) await page.getByTestId("view-btn").click();
   await expect(page.locator("#viewViz")).toBeVisible();
 };

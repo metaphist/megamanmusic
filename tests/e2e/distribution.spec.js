@@ -69,7 +69,7 @@ test.describe("score distribution", () => {
     await page.locator("#gameSel").selectOption("custom");
     await expect(page.locator("#ibars .idot.cur")).toHaveCount(0);
     await page.locator("#gameSel").selectOption({ label: "Mega Man 2 (1988)" });
-    await page.locator("#viewBtn").click();   // the tabs are on the report
+    await page.getByTestId("view-btn").click();   // the tabs are on the report
     await tab(page, "2").click();             // the marks survive re-rendering
     await expect(page.locator("#ibars .idot.cur")).toHaveCount(scored);
   });

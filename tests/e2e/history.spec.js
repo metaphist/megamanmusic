@@ -42,8 +42,8 @@ test.describe("back button history", () => {
   test("switching views replaces the entry rather than adding one", async ({ page }) => {
     await open(page, "?game=mm1");
     const start = await historyLength(page);
-    await page.locator("#viewBtn").click();
-    await page.locator("#viewBtn").click();
+    await page.getByTestId("view-btn").click();
+    await page.getByTestId("view-btn").click();
     expect(await historyLength(page)).toBe(start);
   });
 

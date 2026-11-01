@@ -33,15 +33,15 @@
       <div class="titlebar">
         <h1>Robot Master Color Project</h1>
         <div class="tbtns">
-          <button type="button" class="themetoggle rpopen" id="viewBtn">
+          <button type="button" class="themetoggle rpopen" id="viewBtn" data-testid="view-btn">
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <path fill="currentColor"
                 d="M11 2h2v4h-2V2zm0 16h2v4h-2v-4zM2 11h4v2H2v-2zm16 0h4v2h-4v-2zM8 8h8v8H8V8zm2 2v4h4v-4h-4z" />
             </svg>
-            <span class="tlabel tl-long" id="viewBtnLong">Viz</span><!-- <span class="tl-short"
+            <span class="tlabel tl-long" id="viewBtnLong" data-testid="view-btn-label">Viz</span><!-- <span class="tl-short"
               id="viewBtnShort">Visualizer</span> -->
           </button>
-          <button type="button" class="themetoggle" id="favBtn" aria-label="Open favorites">
+          <button type="button" class="themetoggle" id="favBtn" data-testid="fav-btn" aria-label="Open favorites">
             <svg viewBox="0 0 12 12" aria-hidden="true" shape-rendering="crispEdges">
               <path fill="currentColor"
                 d="M5 0h2v2H5zM4 2h4v1H4zM0 3h12v1H0zM1 4h10v1H1zM2 5h8v1H2zM3 6h6v2H3zM2 8h8v1H2zM2 9h3v1H2zM7 9h3v1H7zM1 10h3v1H1zM8 10h3v1H8zM1 11h2v1H1zM9 11h2v1H9z" />
@@ -49,7 +49,7 @@
             <span class="tlabel tl-long" id="favBtnLong">Fav</span><span class="tl-short"
               id="favBtnShort">Favorites</span>
           </button>
-          <button type="button" class="themetoggle" id="themeToggle" aria-label="Switch to dark mode">
+          <button type="button" class="themetoggle" id="themeToggle" data-testid="theme-toggle" aria-label="Switch to dark mode">
             <svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true">
               <path fill="currentColor"
                 d="M6 2h8v2h-2v2h-2V4H6V2ZM4 6V4h2v2H4Zm0 10H2V6h2v10Zm2 2H4v-2h2v2Zm2 2H6v-2h2v2Zm10 0v2H8v-2h10Zm2-2v2h-2v-2h2Zm-2-4h2v4h2v-8h-2v2h-2v2Zm-6 0v2h6v-2h-6Zm-2-2h2v2h-2v-2Zm0 0V6H8v6h2Z" />
@@ -332,14 +332,14 @@
 
   <!-- Floating shortcuts to the visualizer and favorites: show on the report once the title bar's buttons have scrolled away -->
   <div class="fabs">
-    <button type="button" class="themetoggle vizfab" id="vizFab" hidden>
+    <button type="button" class="themetoggle vizfab" id="vizFab" data-testid="viz-fab" hidden>
       <svg viewBox="0 0 24 24" aria-hidden="true">
         <path fill="currentColor"
           d="M11 2h2v4h-2V2zm0 16h2v4h-2v-4zM2 11h4v2H2v-2zm16 0h4v2h-4v-2zM8 8h8v8H8V8zm2 2v4h4v-4h-4z" />
       </svg>
       <!-- <span>Viz</span> -->
     </button>
-    <button type="button" class="themetoggle vizfab favfab" id="favFab" aria-label="Open favorites" hidden>
+    <button type="button" class="themetoggle vizfab favfab" id="favFab" data-testid="fav-fab" aria-label="Open favorites" hidden>
       <svg viewBox="0 0 12 12" aria-hidden="true" shape-rendering="crispEdges">
         <path fill="currentColor"
           d="M5 0h2v2H5zM4 2h4v1H4zM0 3h12v1H0zM1 4h10v1H1zM2 5h8v1H2zM3 6h6v2H3zM2 8h8v1H2zM2 9h3v1H2zM7 9h3v1H7zM1 10h3v1H1zM8 10h3v1H8zM1 11h2v1H1zM9 11h2v1H9z" />

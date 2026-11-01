@@ -6,7 +6,7 @@ test.describe("first load", () => {
     await open(page);
     await expect(page.locator("#viewReport")).toBeVisible();
     await expect(page.locator("#viewViz")).toBeHidden();
-    await expect(page.locator("#viewBtnLong")).toHaveText("Open the visualizer");
+    await expect(page.getByTestId("view-btn-label")).toHaveText("Viz");
     expect(new URL(page.url()).search).toBe("");
   });
 
@@ -19,7 +19,7 @@ test.describe("first load", () => {
     }));
     await expect(page.locator("#rpBody .rp-game")).toHaveCount(games);
     await expect(page.locator("#rpBody .rp-row")).toHaveCount(tracks);
-    await expect(page.locator("#rpBody button.rp-row")).toHaveCount(selectable);
+    await expect(page.locator("#rpBody .rp-row[data-gi]")).toHaveCount(selectable);
     await expect(page.locator("#rpBody .rp-fav")).toHaveCount(selectable);
     await expect(page.locator("#rpJump button")).toHaveCount(games);
   });
@@ -81,24 +81,24 @@ test.describe("first load", () => {
 test.describe("switching views", () => {
   test("the title bar button switches between the report and the visualizer", async ({ page }) => {
     await open(page);
-    await page.locator("#viewBtn").click();
+    await page.getByTestId("view-btn").click();
     await expect(page.locator("#viewViz")).toBeVisible();
     await expect(page.locator("#viewReport")).toBeHidden();
-    await expect(page.locator("#viewBtnLong")).toHaveText("View full color report");
+    await expect(page.getByTestId("view-btn-label")).toHaveText("Home");
     await expect(page).toHaveURL(/\?game=mm1$/);
-    await page.locator("#viewBtn").click();
+    await page.getByTestId("view-btn").click();
     await expect(page.locator("#viewReport")).toBeVisible();
     expect(new URL(page.url()).search).toBe("");
   });
 
   test("the floating visualizer button appears once the title bar scrolls away, and opens the visualizer", async ({ page }) => {
     await open(page);
-    await expect(page.locator("#vizFab")).toBeHidden();
+    await expect(page.getByTestId("viz-fab")).toBeHidden();
     await page.locator("#rp-mm3").scrollIntoViewIfNeeded();
-    await expect(page.locator("#vizFab")).toBeVisible();
-    await page.locator("#vizFab").click();
+    await expect(page.getByTestId("viz-fab")).toBeVisible();
+    await page.getByTestId("viz-fab").click();
     await expect(page.locator("#viewViz")).toBeVisible();
-    await expect(page.locator("#vizFab")).toBeHidden();
+    await expect(page.getByTestId("viz-fab")).toBeHidden();
   });
 });
 
@@ -106,14 +106,14 @@ test.describe("theme", () => {
   test("toggles between light and dark, and remembers the choice", async ({ page }) => {
     await page.emulateMedia({ colorScheme: "light" });
     await open(page);
-    const toggle = page.locator("#themeToggle");
+    const toggle = page.getByTestId("theme-toggle");
     await expect(toggle).toHaveAttribute("aria-label", "Switch to dark mode");
     await toggle.click();
     await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
     await expect(toggle).toHaveAttribute("aria-label", "Switch to light mode");
     await page.reload();
     await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
-    await page.locator("#themeToggle").click();
+    await page.getByTestId("theme-toggle").click();
     await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
   });
 
@@ -121,7 +121,7 @@ test.describe("theme", () => {
     await page.emulateMedia({ colorScheme: "dark" });
     await open(page);
     await expect(page.locator("html")).not.toHaveAttribute("data-theme", /./);
-    await expect(page.locator("#themeToggle")).toHaveAttribute("aria-label", "Switch to light mode");
+    await expect(page.getByTestId("theme-toggle")).toHaveAttribute("aria-label", "Switch to light mode");
   });
 });
 

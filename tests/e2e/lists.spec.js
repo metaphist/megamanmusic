@@ -10,12 +10,12 @@ const listKeys = page => inPage(page, ({ viz }) => viz.G.tracks.map(t => `${t.ga
 test.describe("favorites", () => {
   test("a star adds and removes a track, and is remembered", async ({ page }) => {
     await open(page);
-    await expect(page.locator("#favBtn")).toBeDisabled();
+    await expect(page.getByTestId("fav-btn")).toBeDisabled();
     await clickStar(page, "mm2.0");
     await clickStar(page, "mm1.3");
     await expect(star(page, "mm2.0")).toHaveAttribute("aria-pressed", "true");
-    await expect(page.locator("#favBtn")).toBeEnabled();
-    await expect(page.locator("#favBtn")).toHaveAttribute("title", "Open favorites (2)");
+    await expect(page.getByTestId("fav-btn")).toBeEnabled();
+    await expect(page.getByTestId("fav-btn")).toHaveAttribute("title", "Favorites (2)");
     expect(await stored(page, "rmcp-favorites")).toEqual(["mm2.0", "mm1.3"]);
 
     await page.reload();
@@ -35,7 +35,7 @@ test.describe("favorites", () => {
     await open(page);
     await clickStar(page, "mm2.0");
     await clickStar(page, "mm1.3");
-    await page.locator("#favBtn").click();
+    await page.getByTestId("fav-btn").click();
     await expect(page.locator("#viewViz")).toBeVisible();
     expect(await listKeys(page)).toEqual(["mm2.0", "mm1.3"]);
     await expect(page.locator("#savedSel")).toHaveValue("fav");
@@ -45,7 +45,7 @@ test.describe("favorites", () => {
   test("the banner's star favorites the shown track, and an open favorites list follows along", async ({ page }) => {
     await open(page);
     await clickStar(page, "mm2.0");
-    await page.locator("#favBtn").click();
+    await page.getByTestId("fav-btn").click();
     await page.locator("#lg0").click();
     await page.locator("#rFav").click();   // unfavorite Metal Man from the banner
     expect(await stored(page, "rmcp-favorites")).toEqual([]);
@@ -62,8 +62,8 @@ test.describe("favorites", () => {
     await open(page);
     await clickStar(page, "mm1.0");
     await page.locator("#rp-mm3").scrollIntoViewIfNeeded();
-    await expect(page.locator("#favFab")).toBeVisible();
-    await page.locator("#favFab").click();
+    await expect(page.getByTestId("fav-fab")).toBeVisible();
+    await page.getByTestId("fav-fab").click();
     await expect(page.locator("#viewViz")).toBeVisible();
   });
 });

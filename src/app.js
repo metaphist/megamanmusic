@@ -124,7 +124,8 @@ function showView(v) {
   $("viewViz").hidden = !viz;
   $("viewReport").hidden = viz;
   $("viewBtnLong").textContent = viz ? "Home" : "Viz";
-  $("viewBtnShort").textContent = viz ? "List" : "Viz";
+  const short = $("viewBtnShort");
+  if (short) short.textContent = viz ? "List" : "Viz";
   syncFab();
   syncHistory();
 }
@@ -668,21 +669,21 @@ function reportGame(g) {
 }
 
 // A robot master's row: sprite, name, serial and composer, small hexagon (drawn after), score bars, intensity and
-// color. Selectable rows are buttons, with a favorite star beside them.
+// color. Selectable rows are focusable like table rows (not buttons, so the favorite star beside the name can be one).
 function reportTrack(t, g) {
-  const play = selectable(t), tag = play ? "button" : "div";
-  const attrs = play ? ` type="button" data-gi="${t.gi}" data-ti="${t.ti}" aria-label="Play ${esc(t.name)}, ${esc(g.title)}"` : "";
+  const play = selectable(t);
+  const attrs = play ? ` data-gi="${t.gi}" data-ti="${t.ti}" tabindex="0" aria-label="Play ${esc(t.name)}, ${esc(g.title)}"` : "";
   const s = spriteOf(t);
   const bars = t.vals ? scoreBars(t.vals) : `<span class="rp-none">Not scored yet</span>`;
   const star = play ? `<button type="button" class="rp-fav" data-fav="${trackKey(t)}" aria-pressed="false" aria-label="Favorite ${esc(t.name)}, ${esc(g.title)}">${ICON_STAR}</button>` : "";
-  return `<li><${tag} class="rp-row"${attrs}>
+  return `<li><div class="rp-row"${attrs}>
           <span class="rp-spr">${s ? sprImg(s, 128, "", 2) : ""}</span>
-          <span class="rp-id"><b>${esc(t.name)}</b><span>${esc(t.dln)}</span><small>${esc(t.composer || g.composer || "")}</small></span>
+          <span class="rp-id"><b>${esc(t.name)}</b>${star}<span>${esc(t.dln)}</span><small>${esc(t.composer || g.composer || "")}</small></span>
           <span class="rp-hex" data-gi="${t.gi}" data-ti="${t.ti}"></span>
           <span class="rp-bars">${bars}</span>
           <span class="rp-int"><b>${t.vals ? intensity(t.vals) : "–"}</b><span>Intensity</span></span>
           <span class="rp-col"><i class="${t.vals ? "" : "empty"}" style="${t.vals ? `background:${t.color}` : ""}"></i><div><b>${t.vals ? esc(t.cname) : "No color yet"}</b><span>${t.vals ? t.color : "–"}</span></div></span>
-        </${tag}>${star}</li>`;
+        </div></li>`;
 }
 
 // Scrolls to a robot master's row and flashes it
@@ -829,7 +830,15 @@ function setupReport() {
   syncScrollbar();
   jumpBar.addEventListener("click", e => { const b = e.target.closest("[data-jump]"); if (b) $(b.dataset.jump).scrollIntoView({ block: "start" }); });
   // Playing from the report works like a table row: it loads the track's game in the visualizer and plays it
-  trackClicks(reportBody, ".rp-row[data-gi]");
+  // Clicks and keys on a row's star favorite it instead
+  reportBody.addEventListener("click", e => {
+    const row = !e.target.closest("[data-fav]") && e.target.closest(".rp-row[data-gi]");
+    if (row) toggleTrack(+row.dataset.gi, +row.dataset.ti);
+  });
+  reportBody.addEventListener("keydown", e => {
+    const row = e.target.closest(".rp-row[data-gi]");
+    if (row === e.target && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); toggleTrack(+row.dataset.gi, +row.dataset.ti); }
+  });
 }
 
 // ---- Start ----
