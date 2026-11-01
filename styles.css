@@ -360,7 +360,8 @@ h1 {
   display: flex;
   align-items: center;
   gap: 8px;
-  margin: 0 0 14px
+  margin: 0 0 14px;
+  overflow: hidden; /* for some reason it causes scroll at narrow dims without this */
 }
 
 .shead h2.sh {

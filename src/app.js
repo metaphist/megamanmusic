@@ -123,8 +123,8 @@ function showView(v) {
   root.dataset.view = v;
   $("viewViz").hidden = !viz;
   $("viewReport").hidden = viz;
-  $("viewBtnLong").textContent = viz ? "View full color report" : "Open the visualizer";
-  $("viewBtnShort").textContent = viz ? "Report" : "Visualizer";
+  $("viewBtnLong").textContent = viz ? "Home" : "Viz";
+  $("viewBtnShort").textContent = viz ? "List" : "Viz";
   syncFab();
   syncHistory();
 }
@@ -172,7 +172,7 @@ function setupTheme() {
   const sync = () => {
     const to = current() === "dark" ? "light" : "dark";
     btn.dataset.to = to;
-    btn.querySelector(".tlabel").textContent = to === "dark" ? "Dark" : "Light";
+    //btn.querySelector(".tlabel").textContent = to === "dark" ? "Eye" : "Eye";
     btn.setAttribute("aria-label", `Switch to ${to} mode`);
   };
   let saved = null;
@@ -516,7 +516,7 @@ function markFavs() {
   });
   const btn = $("favBtn");
   btn.disabled = !favs.length;
-  btn.title = favs.length ? `Open favorites (${favs.length})` : "Star tracks in the report to add favorites";
+  btn.title = favs.length ? `Favorites (${favs.length})` : "Star tracks in the report to add favorites";
   $("favFab").title = btn.title;
   syncFab();
 }
