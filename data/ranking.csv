@@ -1,0 +1,122 @@
+game,name,expression,synergy,arrangement
+mm1,Cut Man,5,1,3
+mm1,Guts Man,2,3,1
+mm1,Ice Man,5,4,2
+mm1,Bomb Man,5,1,4
+mm1,Fire Man,3,3,3
+mm1,Elec Man,3,3,3
+mmpu,Cut Man,3,3,3
+mmpu,Guts Man,3,3,3
+mmpu,Ice Man,3,3,3
+mmpu,Bomb Man,3,3,3
+mmpu,Fire Man,3,3,3
+mmpu,Elec Man,3,3,3
+mmpu,Time Man,3,3,3
+mmpu,Oil Man,3,3,3
+mm2,Metal Man,3,3,3
+mm2,Air Man,3,3,3
+mm2,Bubble Man,3,3,3
+mm2,Quick Man,3,3,3
+mm2,Crash Man,3,3,3
+mm2,Flash Man,3,3,3
+mm2,Heat Man,3,3,3
+mm2,Wood Man,3,3,3
+mm3,Needle Man,3,3,3
+mm3,Magnet Man,3,3,3
+mm3,Gemini Man,3,3,3
+mm3,Hard Man,3,3,3
+mm3,Top Man,3,3,3
+mm3,Snake Man,3,3,3
+mm3,Spark Man,3,3,3
+mm3,Shadow Man,3,3,3
+mm4,Bright Man,3,3,3
+mm4,Toad Man,3,3,3
+mm4,Drill Man,3,3,3
+mm4,Pharaoh Man,3,3,3
+mm4,Ring Man,3,3,3
+mm4,Dust Man,3,3,3
+mm4,Dive Man,3,3,3
+mm4,Skull Man,3,3,3
+mm5,Gravity Man,3,3,3
+mm5,Wave Man,3,3,3
+mm5,Stone Man,3,3,3
+mm5,Gyro Man,3,3,3
+mm5,Star Man,3,3,3
+mm5,Charge Man,3,3,3
+mm5,Napalm Man,3,3,3
+mm5,Crystal Man,3,3,3
+mm6,Blizzard Man,3,3,3
+mm6,Centaur Man,3,3,3
+mm6,Flame Man,3,3,3
+mm6,Knight Man,3,3,3
+mm6,Plant Man,3,3,3
+mm6,Tomahawk Man,3,3,3
+mm6,Yamato Man,3,3,3
+mm6,Wind Man,3,3,3
+mm7,Freeze Man,3,3,3
+mm7,Junk Man,3,3,3
+mm7,Burst Man,3,3,3
+mm7,Cloud Man,3,3,3
+mm7,Spring Man,3,3,3
+mm7,Slash Man,3,3,3
+mm7,Shade Man,3,3,3
+mm7,Turbo Man,3,3,3
+mm8,Tengu Man (PS),3,3,3
+mm8,Tengu Man (SS),3,3,3
+mm8,Astro Man,3,3,3
+mm8,Sword Man,3,3,3
+mm8,Clown Man,3,3,3
+mm8,Search Man,3,3,3
+mm8,Frost Man,3,3,3
+mm8,Grenade Man,3,3,3
+mm8,Aqua Man,3,3,3
+mm9,Concrete Man,3,3,3
+mm9,Tornado Man,3,3,3
+mm9,Splash Woman,3,3,3
+mm9,Plug Man,3,3,3
+mm9,Jewel Man,3,3,3
+mm9,Hornet Man,3,3,3
+mm9,Magma Man,3,3,3
+mm9,Galaxy Man,3,3,3
+mm10,Blade Man,3,3,3
+mm10,Pump Man,3,3,3
+mm10,Commando Man,3,3,3
+mm10,Chill Man,3,3,3
+mm10,Sheep Man,3,3,3
+mm10,Strike Man,3,3,3
+mm10,Nitro Man,3,3,3
+mm10,Solar Man,3,3,3
+mm11,Block Man,3,3,3
+mm11,Fuse Man,3,3,3
+mm11,Blast Man,3,3,3
+mm11,Acid Man,3,3,3
+mm11,Tundra Man,3,3,3
+mm11,Torch Man,3,3,3
+mm11,Impact Man,3,3,3
+mm11,Bounce Man,3,3,3
+mmii,Metal Man,3,3,3
+mmii,Air Man,3,3,3
+mmii,Crash Man,3,3,3
+mmii,Wood Man,3,3,3
+mmii,Needle Man,3,3,3
+mmii,Magnet Man,3,3,3
+mmii,Hard Man,3,3,3
+mmii,Top Man,3,3,3
+mmv,Mercury,3,3,3
+mmv,Venus,3,3,3
+mmv,Mars,3,3,3
+mmv,Neptune,3,3,3
+mmv,Jupiter,3,3,3
+mmv,Saturn,3,3,3
+mmv,Uranus,3,3,3
+mmv,Pluto,3,3,3
+mmb,Tengu Man,3,3,3
+mmb,Astro Man,3,3,3
+mmb,Cold Man,3,3,3
+mmb,Ground Man,3,3,3
+mmb,Pirate Man,3,3,3
+mmb,Burner Man,3,3,3
+mmb,Magic Man,3,3,3
+mmb,Dynamo Man,3,3,3
+mmdo,Twinkle Girl,,,
+mmdo,Jet Man,,,

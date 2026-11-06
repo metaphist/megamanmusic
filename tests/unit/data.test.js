@@ -48,6 +48,23 @@ describe("games", () => {
   });
 });
 
+describe("ranking.csv", () => {
+  const readRanking = async () => (await readFile(new URL("data/ranking.csv", ROOT), "utf8")).split(/\r?\n/).filter(l => l.trim());
+  test("has the expected header", async () => {
+    assert.equal((await readRanking())[0], "game,name,expression,synergy,arrangement");
+  });
+  test("every row names a real track, once, with ratings from 1 to 5 or blank", async () => {
+    const seen = new Set();
+    for (const line of (await readRanking()).slice(1)) {
+      const [game, name, ...ratings] = line.split(",");
+      assert.ok(trackNamed(game, name), `no track ${game} ${name}`);
+      assert.ok(!seen.has(game + "|" + name), `duplicate row ${game} ${name}`);
+      seen.add(game + "|" + name);
+      assert.match(ratings.join(","), /^([1-5],[1-5],[1-5]|,,)$/, `${game} ${name}`);
+    }
+  });
+});
+
 describe("scores.csv", () => {
   test("has the expected header", async () => {
     const text = await readFile(new URL("data/scores.csv", ROOT), "utf8");

@@ -66,7 +66,9 @@ function deriveColors() {
   }
 }
 
-function parseScores(csv) {
+// Reads rows of game,name and three scores from 1 to 5 into a map of "game|name" to a code like "352".
+// Also reads the tier list's data/ranking.csv, which has the same shape.
+export function parseScores(csv) {
   const codes = new Map();
   for (const line of csv.split(/\r?\n/).slice(1)) {
     if (!line.trim()) continue;

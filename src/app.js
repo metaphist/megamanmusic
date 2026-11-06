@@ -8,7 +8,7 @@ import { GAMES, AXES, RELEASE_ORDER, trackKey, trackOf, selectable, shortTitle, 
 import { inkOn, intensity } from "./colors.js";
 import { el, drawSmallHexagon, scoreBars, sprite, spriteOf, sprImg, badgeIcon } from "./draw.js";
 import { ICON_STAR, ICON_PLAY } from "../data/icons.js";
-import { $, esc, track, readStored, writeStored } from "./util.js";
+import { $, esc, track, readStored, writeStored, setupTheme } from "./util.js";
 import { G, pinned, player, CUSTOM, initViz, setGame, setPinned, togglePinned, viewIndex, isPinned, applyCustom } from "./viz.js";
 
 // ---- Links ----
@@ -161,32 +161,6 @@ function setupViewButtons() {
     new IntersectionObserver(([e]) => { viewBtnSeen = e.isIntersecting; syncFab(); }).observe($("viewBtn"));
   } catch (e) { }
   $("vizFab").addEventListener("click", () => { showView("viz"); landView("viz"); syncFab(); });
-}
-
-// ---- Theme ----
-
-// Light/dark toggle. With no saved choice the page follows the system setting.
-function setupTheme() {
-  const root = document.documentElement, btn = $("themeToggle");
-  const system = matchMedia("(prefers-color-scheme: dark)");
-  const current = () => root.dataset.theme || (system.matches ? "dark" : "light");
-  const sync = () => {
-    const to = current() === "dark" ? "light" : "dark";
-    btn.dataset.to = to;
-    //btn.querySelector(".tlabel").textContent = to === "dark" ? "Eye" : "Eye";
-    btn.setAttribute("aria-label", `Switch to ${to} mode`);
-  };
-  let saved = null;
-  try { saved = localStorage.getItem("rmcp-theme"); } catch (e) { }
-  if (saved === "light" || saved === "dark") root.dataset.theme = saved;
-  btn.addEventListener("click", () => {
-    const next = current() === "dark" ? "light" : "dark";
-    root.dataset.theme = next;
-    try { localStorage.setItem("rmcp-theme", next); } catch (e) { }
-    sync();
-  });
-  system.addEventListener("change", sync);
-  sync();
 }
 
 // ---- Tracks across the page ----

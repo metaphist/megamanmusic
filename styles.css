@@ -2808,3 +2808,304 @@ svg text {
     display: none
   }
 }
+
+/* Tier list page: a row per grade, each with its letter block and a grid of track tiles */
+.tl-S { --tier: #ff7f7f }
+.tl-A { --tier: #ffbf7f }
+.tl-B { --tier: #ffdf7f }
+.tl-C { --tier: #a8e67f }
+.tl-D { --tier: #7fbfff }
+.tl-F { --tier: #c9a0e0 }
+
+.tl-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px
+}
+
+.tl-tier {
+  display: grid;
+  grid-template-columns: 88px minmax(0, 1fr);
+  border: 1px solid var(--line);
+  background: var(--surface)
+}
+
+/* The letter stays in view while scrolling through a long tier */
+.tl-letter {
+  background: var(--tier);
+  color: #1e272d;
+  border-right: 1px solid var(--halo)
+}
+
+.tl-letter>div {
+  position: sticky;
+  top: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 12px 4px;
+  text-align: center
+}
+
+.tl-letter b {
+  font-family: var(--display);
+  font-size: 44px;
+  font-weight: 700;
+  line-height: 1
+}
+
+.tl-letter span {
+  font-family: var(--mono);
+  font-size: 12px;
+  line-height: 1.2;
+  margin-top: 4px
+}
+
+.tl-tier.tl-none>.tl-letter {
+  background: repeating-linear-gradient(135deg, var(--grid) 0 6px, transparent 6px 12px);
+  color: var(--ink)
+}
+
+.tl-tiles {
+  list-style: none;
+  margin: 0;
+  padding: 8px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(116px, 1fr));
+  gap: 6px
+}
+
+.tl-tile {
+  all: unset;
+  box-sizing: border-box;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  text-align: center;
+  overflow: hidden
+}
+
+a.tl-tile {
+  cursor: pointer
+}
+
+a.tl-tile:hover {
+  background: var(--grid);
+  border-color: var(--muted)
+}
+
+a.tl-tile:focus-visible {
+  outline: 2px solid var(--b);
+  outline-offset: 2px
+}
+
+/* The track's color from the color project */
+.tl-swatch {
+  align-self: stretch;
+  height: 6px;
+  flex: none;
+  border-bottom: 1px solid var(--halo)
+}
+
+.tl-spr {
+  min-height: 88px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-top: 6px
+}
+
+.tl-spr img {
+  image-rendering: pixelated;
+  image-rendering: crisp-edges
+}
+
+.tl-name {
+  font-family: var(--display);
+  font-size: 13px;
+  line-height: 1.15;
+  padding: 6px 6px 0
+}
+
+.tl-game {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+  padding: 2px 6px 6px
+}
+
+.tl-scores {
+  margin-top: auto;
+  align-self: stretch;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 3px 8px;
+  border-top: 1px solid var(--line);
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--muted)
+}
+
+.tl-scores b {
+  font-size: 14px;
+  color: var(--ink)
+}
+
+.tl-scores.tl-none {
+  justify-content: center;
+  font-size: 11px
+}
+
+.tl-empty {
+  margin: 0;
+  padding: 16px;
+  align-self: center;
+  font-size: 13px;
+  color: var(--muted)
+}
+
+.tl-key h3 {
+  font-family: var(--display);
+  font-size: 14px;
+  font-weight: 400;
+  margin: 0 0 8px
+}
+
+.tl-metrics {
+  list-style: none;
+  margin: 0 0 20px;
+  padding: 0
+}
+
+.tl-metrics li {
+  display: grid;
+  grid-template-columns: 110px minmax(0, 1fr);
+  gap: 12px;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--line)
+}
+
+.tl-metrics b {
+  font-weight: 600
+}
+
+.tl-metrics span {
+  color: var(--muted)
+}
+
+.tl-ratings {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 4px
+}
+
+.tl-ratings li {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 6px 2px;
+  background: var(--surface);
+  border: 1px solid var(--line)
+}
+
+.tl-ratings b {
+  font-family: var(--mono);
+  font-size: 16px
+}
+
+.tl-ratings span {
+  font-size: 11px;
+  color: var(--muted)
+}
+
+.tl-grades {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  margin-bottom: 10px;
+  font-size: 14px
+}
+
+.tl-grades th,
+.tl-grades td {
+  padding: 5px 12px;
+  text-align: left;
+  border-bottom: 1px solid var(--line)
+}
+
+.tl-grades thead th {
+  font-family: var(--display);
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--muted)
+}
+
+.tl-grades .n {
+  font-family: var(--mono)
+}
+
+.tl-chip {
+  display: block;
+  width: 28px;
+  height: 28px;
+  line-height: 28px;
+  text-align: center;
+  background: var(--tier);
+  color: #1e272d;
+  border: 1px solid var(--halo);
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 16px
+}
+
+@media (max-width:560px) {
+  .tl-tier {
+    grid-template-columns: 52px minmax(0, 1fr)
+  }
+
+  .tl-letter b {
+    font-size: 30px
+  }
+
+  .tl-letter span {
+    font-size: 10px
+  }
+
+  .tl-tiles {
+    padding: 6px;
+    grid-template-columns: repeat(auto-fill, minmax(92px, 1fr))
+  }
+
+  .tl-spr {
+    min-height: 76px
+  }
+
+  .tl-name {
+    font-size: 12px
+  }
+}
+
+
+/* The title bar on phones: tighter buttons, which drop below the title when they still do not fit beside it */
+@media (max-width:480px) {
+  .titlebar {
+    flex-wrap: wrap;
+    gap: 8px
+  }
+
+  .titlebar h1 {
+    flex: 1 1 min-content
+  }
+
+  .tbtns {
+    gap: 4px
+  }
+}

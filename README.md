@@ -2,6 +2,16 @@
 
 A music player, visualizer, and playlist creator, featuring music from the classic Mega Man series (for now). All tracks are rated along "instensity" vectors (energy, density, gravity) to give an RGB color value and shape to the visualizer.
 
+## Tier list
+
+`tiers.html` grades every track from `data/ranking.csv` (`game,name,expression,synergy,arrangement`, each rated 1–5). The three ratings count equally and add up to a total from 3 to 15, which sets the grade (ranges in `src/grades.js`):
+
+| Grade | S | A | B | C | D | F |
+| --- | --- | --- | --- | --- | --- | --- |
+| Total | 14–15 | 12–13 | 10–11 | 8–9 | 6–7 | 3–5 |
+
+A row with blank ratings shows as "Not graded".
+
 ## Running it
 
 The page loads its scores with `fetch`, so it needs to be served over http rather than opened as a file:
