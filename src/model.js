@@ -36,18 +36,23 @@ export const tableTitle = g => TABLE_ABBR[shortTitle(g)] || shortTitle(g);
 
 // ---- Loading ----
 
-// Scores live in data/scores.csv (game,name,energy,density,gravity; blank scores = not scored yet), matched to tracks by
-// game id and name. Each scored track gets a code of its three scores, like "352"; the rest get null.
+// Scores live in data/scores.csv (game,name,energy,density,gravity,expression,synergy,arrangement; blank = not scored
+// yet), matched to tracks by game id and name. Each scored track gets a code of its three color scores, like "352", and
+// each rated track gets its three tier list ratings, like [5, 1, 3]; the rest get null.
 async function loadScores() {
-  let codes = new Map();
+  let rows = new Map();
   try {
     const r = await fetch("data/scores.csv", { cache: "no-cache" });
     if (!r.ok) throw new Error("scores.csv " + r.status);
-    codes = parseScores(await r.text());
+    rows = parseScores(await r.text());
   } catch (e) {
     console.error("Couldn't load scores", e);
   }
-  GAMES.forEach(g => g.tracks.forEach(t => { t.code = codes.get(g.id + "|" + t.name) || null; }));
+  GAMES.forEach(g => g.tracks.forEach(t => {
+    const row = rows.get(g.id + "|" + t.name);
+    t.code = row?.code || null;
+    t.ratings = row?.ratings || null;
+  }));
 }
 
 // Each scored track's scores and color, and each game's scored tracks, averages and average color
@@ -66,20 +71,20 @@ function deriveColors() {
   }
 }
 
-// Reads rows of game,name and three scores from 1 to 5 into a map of "game|name" to a code like "352".
-// Also reads the tier list's data/ranking.csv, which has the same shape.
-export function parseScores(csv) {
-  const codes = new Map();
+// Three whole numbers from 1 to 5, or null
+const oneToFive = cells => cells.length === 3 && cells.every(v => /^[1-5]$/.test(v)) ? cells.map(Number) : null;
+
+function parseScores(csv) {
+  const rows = new Map();
   for (const line of csv.split(/\r?\n/).slice(1)) {
     if (!line.trim()) continue;
     // Cells may be quoted, with "" for a quote inside
     const cells = line.match(/("([^"]|"")*"|[^,]*)(,|$)/g)
       .map(c => c.replace(/,$/, "").replace(/^"|"$/g, "").replace(/""/g, '"').trim());
     const [game, name, ...vals] = cells;
-    const scores = vals.slice(0, 3);
-    if (scores.length === 3 && scores.every(v => /^[1-5]$/.test(v))) codes.set(game + "|" + name, scores.join(""));
+    rows.set(game + "|" + name, { code: oneToFive(vals.slice(0, 3))?.join(""), ratings: oneToFive(vals.slice(3, 6)) });
   }
-  return codes;
+  return rows;
 }
 
 // ---- Distinction badges ----

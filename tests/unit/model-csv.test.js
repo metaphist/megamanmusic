@@ -5,7 +5,9 @@ import { stubFetch } from "./helpers.js";
 
 const CSV = [
   "mm2,Metal Man,1,1,1",                 // the first line is the header, whatever it says
-  "mm1,Cut Man,1,2,3",
+  "mm1,Cut Man,1,2,3,5,1,4",             // tier list ratings after the color scores
+  "mm2,Crash Man,,,,2,3,1",              // rated, without color scores
+  "mm2,Flash Man,1,2,3,5,,",             // partly rated: not rated
   "",
   '"mm1","Guts Man",5,5,5,extra column',  // quoted cells, extra columns ignored
   "mm1,Ice Man,6,2,2",                   // out of range: not scored
@@ -44,7 +46,21 @@ describe("reading scores.csv", () => {
   });
   test("ignores rows for tracks that don't exist", () => {
     const scored = GAMES.flatMap(g => g.tracks).filter(t => t.code).map(t => `${t.game.id} ${t.name}`);
-    assert.deepEqual(scored.sort(), ["mm1 Cut Man", "mm1 Fire Man", "mm1 Guts Man", "mm2 Air Man"]);
+    assert.deepEqual(scored.sort(), ["mm1 Cut Man", "mm1 Fire Man", "mm1 Guts Man", "mm2 Air Man", "mm2 Flash Man"]);
+  });
+  test("reads tier list ratings separately from color scores", () => {
+    const track = (gameId, name) => GAMES.find(g => g.id === gameId).tracks.find(t => t.name === name);
+    assert.deepEqual(track("mm1", "Cut Man").ratings, [5, 1, 4]);
+    assert.equal(track("mm1", "Cut Man").code, "123");
+    assert.deepEqual(track("mm2", "Crash Man").ratings, [2, 3, 1]);
+    assert.equal(track("mm2", "Crash Man").code, null);
+  });
+  test("leaves tracks unrated when ratings are partial, invalid or absent", () => {
+    const ratings = (gameId, name) => GAMES.find(g => g.id === gameId).tracks.find(t => t.name === name).ratings;
+    assert.equal(ratings("mm2", "Flash Man"), null);
+    assert.equal(ratings("mm1", "Guts Man"), null);   // its extra column isn't a rating
+    assert.equal(ratings("mm2", "Air Man"), null);
+    assert.equal(ratings("mm2", "Metal Man"), null);  // never read: it's the header line
   });
   test("works out averages from what was read", () => {
     const mm1 = GAMES.find(g => g.id === "mm1");

@@ -2,7 +2,7 @@
 import { test, describe } from "node:test";
 import assert from "node:assert/strict";
 import { readFile, access } from "node:fs/promises";
-import { ROOT, readScores } from "./helpers.js";
+import { ROOT, readScores, readRatings } from "./helpers.js";
 import { GAMES } from "../../data/games.js";
 import { SPRITES } from "../../data/sprites.js";
 import { COLOR_NAMES } from "../../data/color-names.js";
@@ -48,27 +48,10 @@ describe("games", () => {
   });
 });
 
-describe("ranking.csv", () => {
-  const readRanking = async () => (await readFile(new URL("data/ranking.csv", ROOT), "utf8")).split(/\r?\n/).filter(l => l.trim());
-  test("has the expected header", async () => {
-    assert.equal((await readRanking())[0], "game,name,expression,synergy,arrangement");
-  });
-  test("every row names a real track, once, with ratings from 1 to 5 or blank", async () => {
-    const seen = new Set();
-    for (const line of (await readRanking()).slice(1)) {
-      const [game, name, ...ratings] = line.split(",");
-      assert.ok(trackNamed(game, name), `no track ${game} ${name}`);
-      assert.ok(!seen.has(game + "|" + name), `duplicate row ${game} ${name}`);
-      seen.add(game + "|" + name);
-      assert.match(ratings.join(","), /^([1-5],[1-5],[1-5]|,,)$/, `${game} ${name}`);
-    }
-  });
-});
-
 describe("scores.csv", () => {
   test("has the expected header", async () => {
     const text = await readFile(new URL("data/scores.csv", ROOT), "utf8");
-    assert.equal(text.split(/\r?\n/)[0], "game,name,energy,density,gravity");
+    assert.equal(text.split(/\r?\n/)[0], "game,name,energy,density,gravity,expression,synergy,arrangement");
   });
   test("every row names a real track, once", async () => {
     const rows = await readScores(), seen = new Set();
@@ -83,6 +66,11 @@ describe("scores.csv", () => {
       assert.equal(vals.length, 3, `${game} ${name}`);
       const blank = vals.every(v => v === ""), scored = vals.every(v => /^[1-5]$/.test(v));
       assert.ok(blank || scored, `${game} ${name}: ${vals.join(",")}`);
+    }
+  });
+  test("every row's tier list ratings are either all 1–5 or left blank", async () => {
+    for (const [game, name, ...vals] of await readRatings()) {
+      assert.match(vals.join(","), /^([1-5],[1-5],[1-5]|,,)$/, `${game} ${name}`);
     }
   });
 });

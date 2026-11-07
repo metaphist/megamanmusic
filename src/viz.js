@@ -8,6 +8,7 @@ import { hex, colorName, inkOn, digits, fmt } from "./colors.js";
 import { el, drawFrame, drawTop, triangle, ps, shapePts, SINGLE, STACKED, setGrad, drawSmallHexagon, scoreBars, sprite, spriteOf, sprImg, badgeIcon } from "./draw.js";
 import { ICON_PLAY, ICON_PAUSE } from "../data/icons.js";
 import { $, plural, track } from "./util.js";
+import { liveAudio } from "./live.js";
 
 // Hooks from app.js (set by initViz) that keep the rest of the page in step: the link and history, the track table,
 // the dot plot, favorite stars and the saved-list picker
@@ -273,13 +274,14 @@ function renderBanner(t) {
 // One shared player, tied to the selected track: selecting a track with audio plays it from the start;
 // selecting one without audio, or none, pauses it
 export const player = new Audio();
+const live = liveAudio(player);
 
 function syncAudio(play = true) {
   const t = selected();
   if (t && t.audio && play) {
     if (!player.src.endsWith(t.audio)) player.src = t.audio;
     player.currentTime = 0;
-    connectAnalyser();
+    live.connect();
     player.play()
       .then(() => track("play_track", { track_name: t.name, game_id: t.game.id, game_title: t.game.title, custom_list: !!current.custom }))
       .catch(() => { })   // blocked until the visitor has interacted with the page
@@ -304,7 +306,6 @@ function audioIcons() {
 // dashed "live reading" that maps low/mid/high frequencies to Energy/Density/Gravity.
 // Off for reduced motion; everything resets when playback stops.
 const LIVE = { pulse: true, flicker: true, ring: false, ghost: false };
-const REDUCED_MOTION = matchMedia("(prefers-reduced-motion: reduce)").matches;
 const PULSE_REST = .82;   // resting size of the playing shape, as a share of its true size
 // Spectrum ring: bars in each mirrored half, inner radius and longest bar
 const RING_BARS = 24, RING_R = R * 1.04, RING_LEN = 11;
@@ -316,43 +317,13 @@ const toScale = (v, [lo, mid, hi]) => {
   return Math.max(.3, Math.min(5, score));
 };
 
-let audioCtx = null, analyser, bins, frameId = 0;
+let frameId = 0;
 let ring, ringBars, ghost;   // drawn in initViz
-// Smoothed readings, updated every frame
-let bassLevel = 0;      // bass, following quickly
-let loudness = 0;       // overall level
-let bassAvg = 0;        // bass, slow average: a beat is bass rising above it
-let beat = 0;           // jumps on a beat and decays between beats
-let beatAvg = 0;        // slow average of beat, so the flicker centers on the base color
 let restScale = 1;      // the playing shape's resting size, easing down to PULSE_REST
 let reading = [0, 0, 0];   // the live reading's Energy, Density and Gravity
 
-// Routes the player through an analyser the first time something plays (skipped for reduced motion)
-function connectAnalyser() {
-  if (audioCtx) { if (audioCtx.state === "suspended") audioCtx.resume(); return; }
-  if (REDUCED_MOTION) return;
-  try {
-    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    analyser = audioCtx.createAnalyser();
-    analyser.fftSize = 512;
-    analyser.smoothingTimeConstant = .75;
-    audioCtx.createMediaElementSource(player).connect(analyser);
-    analyser.connect(audioCtx.destination);
-    bins = new Uint8Array(analyser.frequencyBinCount);
-  } catch (e) { audioCtx = null; }
-}
-
-// Mean level (0–1) of the frequency bins between lo and hi Hz
-function bandLevel(lo, hi) {
-  const binHz = audioCtx.sampleRate / analyser.fftSize;
-  const first = Math.max(1, Math.round(lo / binHz)), last = Math.min(bins.length - 1, Math.round(hi / binHz));
-  let sum = 0;
-  for (let i = first; i <= last; i++) sum += bins[i];
-  return last >= first ? sum / (last - first + 1) / 255 : 0;
-}
-
 function startLive() {
-  if (!audioCtx || !analyser) return;
+  if (!live.connected()) return;
   resetLive();
   const t = selected();
   if (!t) return;
@@ -370,12 +341,7 @@ function startLive() {
 
 function liveFrame() {
   frameId = requestAnimationFrame(liveFrame);
-  analyser.getByteFrequencyData(bins);
-  const bass = bandLevel(30, 160);
-  bassLevel += (bass - bassLevel) * .35;
-  loudness += (bandLevel(30, 8000) - loudness) * .2;
-  bassAvg += (bass - bassAvg) * .04;
-  beat = Math.max(Math.min(1, Math.max(0, (bass - bassAvg) * 10)), beat * .8);
+  live.update();
 
   if (LIVE.flicker) flicker();
   if (LIVE.pulse) pulse();
@@ -383,14 +349,10 @@ function liveFrame() {
   if (LIVE.ghost) drawReading();
 }
 
-// Swings the swatches both ways around the base color: lighter on a beat, darker in the lull after it.
-// The beat is measured against its own slow average, so the flash centers on the base color.
-// Beats are short spikes with long lulls, so the dark side swings more gently to keep the two balanced.
+// Flickers the playing track's swatches
 function flicker() {
-  beatAvg += (beat - beatAvg) * .03;
-  const swing = beat - beatAvg;
-  const brightness = Math.min(2.1, Math.max(.45, 1 + (swing > 0 ? 1.6 : .9) * swing));
-  flickerTargets().forEach(e => e.style.filter = `brightness(${brightness.toFixed(3)})`);
+  const filter = live.flickerFilter();
+  flickerTargets().forEach(e => e.style.filter = filter);
 }
 
 // The selected track's swatches: legend chip, card band, banner, table-row swatch, dot-plot dot, game-profile strip,
@@ -415,8 +377,8 @@ function pulse() {
   const shape = pinned == null ? null : shapes[pinned];
   if (!shape) return;
   restScale += (PULSE_REST - restScale) * .08;
-  const scale = `scale(${Math.min(1.25, restScale * (1 + .06 * bassLevel * bassLevel + .55 * beat)).toFixed(4)})`;
-  const glow = 3 + 20 * loudness + 28 * beat, color = current.tracks[pinned].color;
+  const scale = `scale(${Math.min(1.25, restScale * (1 + .06 * live.bassLevel * live.bassLevel + .55 * live.beat)).toFixed(4)})`;
+  const glow = 3 + 20 * live.loudness + 28 * live.beat, color = current.tracks[pinned].color;
   shape.setAttribute("transform", scale);
   shape.style.filter = `drop-shadow(0 0 ${glow.toFixed(1)}px ${color})`;
   // Same pulse on the report row's small shape; its glow is halved to suit the smaller hexagon
@@ -435,7 +397,7 @@ function reportShape() {
 
 // Spectrum ring (off): bars around the hexagon, low frequencies at the top, mirrored left and right
 function drawRing() {
-  const binHz = audioCtx.sampleRate / analyser.fftSize, top = Math.min(bins.length - 1, Math.round(10000 / binHz));
+  const bins = live.bins, top = Math.min(bins.length - 1, Math.round(10000 / live.binHz()));
   ringBars.forEach(({ x, y, line }, k) => {
     const j = k < RING_BARS ? k : RING_BARS * 2 - 1 - k;   // mirrored halves
     const v = bins[Math.round(1 + Math.pow(j / (RING_BARS - 1), 1.8) * (top - 1))] / 255;
@@ -449,7 +411,7 @@ function drawRing() {
 
 // Live reading (off): a dashed shape from the low, mid and high bands, eased toward each new reading
 function drawReading() {
-  const target = [bandLevel(30, 250), bandLevel(250, 2000), bandLevel(2000, 8000)].map((v, i) => toScale(v, LIVE_CAL[i]));
+  const target = [live.bandLevel(30, 250), live.bandLevel(250, 2000), live.bandLevel(2000, 8000)].map((v, i) => toScale(v, LIVE_CAL[i]));
   reading = reading.map((v, i) => v + (target[i] - v) * .2);
   ghost.setAttribute("points", ps(shapePts(reading, R)));
 }
@@ -466,7 +428,7 @@ function resetLive() {
     .forEach(e => e.style.filter = "");
   const fab = $("vizFab");
   if (fab) fab.style.filter = fab.style.background = fab.style.color = fab.style.borderColor = "";
-  bassLevel = loudness = bassAvg = beat = beatAvg = 0;
+  live.reset();
   restScale = 1;
   reading = [0, 0, 0];
 }

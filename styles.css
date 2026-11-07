@@ -2810,6 +2810,7 @@ svg text {
 }
 
 /* Tier list page: a row per grade, each with its letter block and a grid of track tiles */
+.tl-S\+ { --tier: #ffffff }
 .tl-S { --tier: #ff7f7f }
 .tl-A { --tier: #ffbf7f }
 .tl-B { --tier: #ffdf7f }
@@ -2888,18 +2889,88 @@ svg text {
   overflow: hidden
 }
 
-a.tl-tile {
+button.tl-tile {
+  width: 100%;
+  position: relative;
   cursor: pointer
 }
 
-a.tl-tile:hover {
+button.tl-tile:hover {
   background: var(--grid);
   border-color: var(--muted)
 }
 
-a.tl-tile:focus-visible {
+button.tl-tile:focus-visible {
   outline: 2px solid var(--b);
   outline-offset: 2px
+}
+
+/* The tile that is playing: its color stripe grows to fill the tile, behind everything else, and flickers with the
+   music (see tiers.js). The padding stands in for the stripe, so the contents stay put. */
+button.tl-tile[aria-pressed="true"] {
+  isolation: isolate;
+  padding-top: 6px;
+  background: var(--grid);
+  color: var(--track-ink, var(--ink));
+  border-color: var(--ink);
+  box-shadow: 0 0 0 1px var(--ink)
+}
+
+button.tl-tile[aria-pressed="true"] .tl-swatch {
+  position: absolute;
+  inset: 0;
+  height: auto;
+  z-index: -1;
+  border-bottom: 0
+}
+
+button.tl-tile[aria-pressed="true"] .tl-game,
+button.tl-tile[aria-pressed="true"] .tl-scores,
+button.tl-tile[aria-pressed="true"] .tl-scores b {
+  color: inherit
+}
+
+button.tl-tile[aria-pressed="true"] .tl-scores {
+  border-top-color: currentColor
+}
+
+/* A play icon in the corner of each tile, which turns to a stop icon while it plays */
+.tl-pi {
+  position: absolute;
+  top: 12px;
+  right: 6px;
+  width: 20px;
+  height: 20px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--muted)
+}
+
+.tl-pi svg {
+  width: 9px;
+  height: 9px;
+  display: block
+}
+
+button.tl-tile:hover .tl-pi {
+  color: var(--ink)
+}
+
+.tl-pi .i-stop,
+button.tl-tile[aria-pressed="true"] .i-play {
+  display: none
+}
+
+button.tl-tile[aria-pressed="true"] .i-stop {
+  display: block
+}
+
+button.tl-tile[aria-pressed="true"] .tl-pi {
+  background: var(--ink);
+  color: var(--bg);
+  border-color: var(--ink)
 }
 
 /* The track's color from the color project */
@@ -3107,5 +3178,20 @@ a.tl-tile:focus-visible {
 
   .tbtns {
     gap: 4px
+  }
+}
+
+/* S+ has two characters, so it's set smaller to fit the letter block */
+.tl-S\+ .tl-letter b {
+  font-size: 36px
+}
+
+.tl-S\+ .tl-chip {
+  font-size: 12px
+}
+
+@media (max-width:560px) {
+  .tl-S\+ .tl-letter b {
+    font-size: 22px
   }
 }

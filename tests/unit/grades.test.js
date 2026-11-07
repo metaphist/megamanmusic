@@ -1,7 +1,7 @@
 // The tier list's grading: how three ratings become a letter grade
 import { test, describe } from "node:test";
 import assert from "node:assert/strict";
-import { GRADES, METRICS, RATINGS, gradeOf, totalOf } from "../../src/grades.js";
+import { GRADES, METRICS, RATINGS, gradeOf, rangeOf, totalOf } from "../../src/grades.js";
 
 const letter = (...ratings) => gradeOf(ratings).letter;
 
@@ -17,7 +17,7 @@ describe("grades", () => {
     GRADES.slice(1).forEach((g, k) => assert.equal(g.max + 1, GRADES[k].min, g.letter));
   });
   test("change at the edge of each range", () => {
-    const cuts = [[5, 5, 4, "S"], [5, 4, 4, "A"], [4, 4, 4, "A"], [4, 4, 3, "B"], [4, 3, 3, "B"], [3, 3, 3, "C"],
+    const cuts = [[5, 5, 5, "S+"], [5, 5, 4, "S"], [5, 4, 4, "A"], [4, 4, 4, "A"], [4, 4, 3, "B"], [4, 3, 3, "B"], [3, 3, 3, "C"],
       [3, 3, 2, "C"], [3, 2, 2, "D"], [2, 2, 2, "D"], [2, 2, 1, "F"], [1, 1, 1, "F"]];
     for (const [a, b, c, want] of cuts) assert.equal(letter(a, b, c), want, `${a} ${b} ${c}`);
   });
@@ -26,12 +26,16 @@ describe("grades", () => {
     assert.equal(letter(5, 1, 3), letter(1, 3, 5));
     assert.equal(letter(5, 1, 3), letter(3, 5, 1));
   });
-  test("a perfect score and an all-decent score get the grades that share their meaning", () => {
-    assert.equal(gradeOf([5, 5, 5]).word, RATINGS[4]);
+  test("scores near each rating get the grades that share its meaning", () => {
+    assert.equal(gradeOf([5, 5, 4]).word, RATINGS[4]);
     assert.equal(gradeOf([4, 4, 4]).word, RATINGS[3]);
     assert.equal(gradeOf([3, 3, 3]).word, RATINGS[2]);
     assert.equal(gradeOf([2, 2, 2]).word, RATINGS[1]);
     assert.equal(gradeOf([1, 1, 1]).word, RATINGS[0]);
+  });
+  test("show a single total on its own, and a range with a dash", () => {
+    assert.equal(rangeOf(GRADES[0]), "15");
+    assert.equal(rangeOf(GRADES.find(g => g.letter === "A")), "12–13");
   });
   test("there are three metrics", () => {
     assert.deepEqual(METRICS.map(m => m.label), ["Expression", "Synergy", "Arrangement"]);

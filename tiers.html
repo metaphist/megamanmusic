@@ -51,12 +51,20 @@
         </div>
       </div>
       <p class="lede">Every track is rated from 1 to 5 on expression, synergy and arrangement, in that order on each tile.
-        The ratings add up to a total from 3 to 15, and the total sets the grade. Click a track to open it in the
-        visualizer.</p>
+        The ratings add up to a total from 3 to 15, and the total sets the grade. Click a track to play it, and click
+        it again to stop.</p>
     </header>
 
     <main class="view">
-      <div class="tl-list" id="tiers"></div>
+      <div>
+        <div class="tfilters" id="tlFilters" role="search" aria-label="Filter the tier list" hidden>
+          <label class="pick"><span class="plabel">Game</span><select id="tlGame">
+              <option value="">All games</option>
+            </select></label>
+          <div class="tf-meta"><span id="tlCount" aria-live="polite"></span></div>
+        </div>
+        <div class="tl-list" id="tiers"></div>
+      </div>
 
       <section aria-labelledby="keyHead">
         <h2 class="sh" id="keyHead">How Grades Work</h2>

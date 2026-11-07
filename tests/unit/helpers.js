@@ -22,11 +22,15 @@ export function stubFetch(overrides = {}) {
   };
 }
 
-// data/scores.csv as rows of [game, name, energy, density, gravity] (the file has no quoted cells)
-export async function readScores() {
+// data/scores.csv as rows of cells (the file has no quoted cells)
+async function readRows() {
   const text = await readFile(new URL("data/scores.csv", ROOT), "utf8");
   return text.split(/\r?\n/).slice(1).filter(l => l.trim()).map(l => l.split(",").map(c => c.trim()));
 }
+// Its color scores, as rows of [game, name, energy, density, gravity]
+export const readScores = async () => (await readRows()).map(r => r.slice(0, 5));
+// Its tier list ratings, as rows of [game, name, expression, synergy, arrangement]
+export const readRatings = async () => (await readRows()).map(r => [...r.slice(0, 2), ...r.slice(5)]);
 
 // A minimal stand-in for the SVG DOM: enough of createElementNS, attributes and querySelectorAll(tag) for draw.js
 export class FakeElement {

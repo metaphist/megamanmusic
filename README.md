@@ -4,11 +4,11 @@ A music player, visualizer, and playlist creator, featuring music from the class
 
 ## Tier list
 
-`tiers.html` grades every track from `data/ranking.csv` (`game,name,expression,synergy,arrangement`, each rated 1–5). The three ratings count equally and add up to a total from 3 to 15, which sets the grade (ranges in `src/grades.js`):
+`tiers.html` grades every track from the `expression`, `synergy` and `arrangement` columns of `data/scores.csv`, each rated 1–5. The three ratings count equally and add up to a total from 3 to 15, which sets the grade (ranges in `src/grades.js`):
 
-| Grade | S | A | B | C | D | F |
-| --- | --- | --- | --- | --- | --- | --- |
-| Total | 14–15 | 12–13 | 10–11 | 8–9 | 6–7 | 3–5 |
+| Grade | S+ | S | A | B | C | D | F |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| Total | 15 | 14 | 12–13 | 10–11 | 8–9 | 6–7 | 3–5 |
 
 A row with blank ratings shows as "Not graded".
 

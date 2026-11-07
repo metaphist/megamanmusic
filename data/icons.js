@@ -17,4 +17,5 @@ export const ICON_STAR = `<svg viewBox="0 0 12 12" aria-hidden="true" shape-rend
 
 // Player icons for the legend and the report's "Play all" buttons
 export const ICON_PLAY = `<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 1.5v9l7.5-4.5z" fill="currentColor"/></svg>`;
-export const ICON_PAUSE = `<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 1.5h2.5v9H2.5zM7 1.5h2.5v9H7z" fill="currentColor"/></svg>`;
+export const ICON_STOP = `<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2 2h8v8H2z" fill="currentColor"/></svg>`;
+export const ICON_PAUSE =`<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 1.5h2.5v9H2.5zM7 1.5h2.5v9H7z" fill="currentColor"/></svg>`;
