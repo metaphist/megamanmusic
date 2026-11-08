@@ -36,7 +36,7 @@ export const tableTitle = g => TABLE_ABBR[shortTitle(g)] || shortTitle(g);
 
 // ---- Loading ----
 
-// Scores live in data/scores.csv (game,name,energy,density,gravity,expression,synergy,arrangement; blank = not scored
+// Scores live in data/scores.csv (game,name,energy,density,gravity,expression,synergy,range; blank = not scored
 // yet), matched to tracks by game id and name. Each scored track gets a code of its three color scores, like "352", and
 // each rated track gets its three tier list ratings, like [5, 1, 3]; the rest get null.
 async function loadScores() {

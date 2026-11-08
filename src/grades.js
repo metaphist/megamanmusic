@@ -2,9 +2,9 @@
 // and each grade covers a range of totals. The tier list page and its "How Grades Work" key both read from here.
 
 export const METRICS = [
-  { label: "Expression", question: "Does it conjure a vivid image?" },
-  { label: "Synergy", question: "Does the expression match the robot master?" },
-  { label: "Arrangement", question: "Is the idea fully realized?" },
+  { label: "Expression", question: "Does it evoke a strong feeling?" },
+  { label: "Synergy", question: "Does the feeling match the robot master?" },
+  { label: "Range", question: "How many unique sections are there?" },
 ];
 
 // What each rating means, from 1 to 5

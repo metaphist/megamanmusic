@@ -38,6 +38,6 @@ describe("grades", () => {
     assert.equal(rangeOf(GRADES.find(g => g.letter === "A")), "12–13");
   });
   test("there are three metrics", () => {
-    assert.deepEqual(METRICS.map(m => m.label), ["Expression", "Synergy", "Arrangement"]);
+    assert.deepEqual(METRICS.map(m => m.label), ["Expression", "Synergy", "Range"]);
   });
 });

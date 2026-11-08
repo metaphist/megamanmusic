@@ -3,7 +3,7 @@ import { test as plainTest } from "@playwright/test";
 import { test, expect, open } from "./fixtures.js";
 
 const CSV = [
-  "game,name,energy,density,gravity,expression,synergy,arrangement",
+  "game,name,energy,density,gravity,expression,synergy,range",
   "mm2,Metal Man,3,3,3,5,5,5",    // 15: S+
   "mm1,Cut Man,3,3,3,5,5,4",      // 14: S
   "mm1,Ice Man,1,1,1,4,4,4",      // 12: A, whatever its color scores
@@ -45,7 +45,7 @@ test.describe("tier list", () => {
     const tile = page.locator('[data-tier="B"] .tl-tile');
     await expect(tile.locator(".tl-scores span")).toHaveText("5 1 4");
     await expect(tile.locator(".tl-scores b")).toHaveText("10");
-    await expect(tile).toHaveAttribute("aria-label", "Play Bomb Man, Mega Man: expression 5, synergy 1, arrangement 4, total 10");
+    await expect(tile).toHaveAttribute("aria-label", "Play Bomb Man, Mega Man: expression 5, synergy 1, range 4, total 10");
   });
 
   test("lists blank and missing rows as not graded, without the ??? placeholders", async ({ page }) => {

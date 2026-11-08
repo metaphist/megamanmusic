@@ -1,0 +1,201 @@
+/* The robot master profile page (robot-master.html). Colors come from styles.css; --c is the track's own color. */
+
+.rm { display: flex; flex-direction: column; gap: 24px }
+.rm-pick select { min-width: 220px }
+
+/* ---- Hero: artwork over the track's color ---- */
+.rm-hero {
+  --c: var(--surface);
+  --ink-on: var(--ink);
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(180px, 300px) minmax(0, 1fr);
+  align-items: end;
+  gap: 8px 32px;
+  padding: 28px 32px 0;
+  border-radius: 18px;
+  overflow: hidden;
+  color: var(--ink-on);
+  background:
+    radial-gradient(120% 90% at 20% 100%, color-mix(in srgb, var(--c) 60%, #fff 40%) 0%, transparent 60%),
+    linear-gradient(160deg, var(--c), color-mix(in srgb, var(--c) 55%, #000 45%));
+}
+.rm-hero.rm-plain { border: 1px solid var(--line) }
+.rm-hero-art { align-self: end; display: flex; justify-content: center }
+.rm-hero-art .rm-art {
+  display: block;
+  max-height: 340px;
+  width: auto;
+  filter: drop-shadow(0 10px 18px rgba(0, 0, 0, .35));
+}
+.rm-hero-art .rm-sprite { height: 180px; image-rendering: pixelated; margin-bottom: 24px }
+/* The badges sit absolutely at the top right (20px down, 52px tall), so the text starts below them: 20 + 52 + 12px gap, minus the hero's 28px top padding */
+.rm-hero-text { padding: 56px 0 28px; display: flex; flex-direction: column; gap: 8px; align-items: flex-start }
+.rm-hero .eyebrow { color: inherit; opacity: .8 }
+.rm-hero h1 { font-size: clamp(36px, 7vw, 64px) }
+.rm-composer { margin: 0; opacity: .85 }
+.rm-badges { position: absolute; top: 20px; right: 20px; display: flex; gap: 10px; flex-wrap: nowrap; justify-content: flex-end }
+.rm-badge {
+  display: grid;
+  grid-template-columns: auto auto;
+  grid-template-rows: auto auto;
+  column-gap: 10px;
+  align-items: center;
+  padding: 8px 14px 8px 8px;
+  border-radius: 12px;
+  background: var(--surface);
+  color: var(--ink);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, .18);
+}
+.rm-badge > :first-child { grid-row: span 2 }
+.rm-badge b { font-size: 15px; line-height: 1.1 }
+.rm-badge code { font: 12px var(--mono); color: var(--muted) }
+.rm-sw { width: 36px; height: 36px; border-radius: 8px; box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .12) }
+.rm-grade {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: var(--tier);
+  color: #141a2b;
+  font: 700 18px var(--display);
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .15);
+}
+.rm-play {
+  all: unset;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 6px;
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: var(--ink-on);
+  color: var(--c);
+  font: 700 12px var(--display);
+  letter-spacing: .04em;
+}
+.rm-play:focus-visible { outline: 2px solid var(--ink-on); outline-offset: 3px }
+.rm-play svg { width: 16px; height: 16px }
+.rm-play .i-stop, .rm-play[aria-pressed="true"] .i-play { display: none }
+.rm-play[aria-pressed="true"] .i-stop { display: inline }
+
+/* ---- Cards ---- */
+.rm-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px; align-items: start }
+.rm-card {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 22px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--surface);
+}
+.rm-wide { grid-column: 1 / -1 }
+.rm-card .sh { margin: 0 }
+.rm-card .hint { margin: 0 }
+.rm-colorhead { display: flex; gap: 14px; align-items: center }
+.rm-colorhead b { display: block; font-size: 20px; line-height: 1.2 }
+.rm-colorhead code { font: 13px var(--mono); color: var(--muted) }
+.rm-sub { display: block; font-size: 13px; color: var(--muted) }
+.rm-swatch { width: 64px; height: 64px; border-radius: 12px; flex: none; box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .12) }
+.rm-swatch.rm-grade { font-size: 28px; width: 64px; height: 64px; border-radius: 12px }
+
+.rm-axis, .rm-metric { display: flex; flex-direction: column; gap: 6px }
+.rm-axis-head { display: flex; justify-content: space-between; align-items: baseline }
+.rm-num { font: 600 15px var(--mono) }
+.rm-num small { font-weight: 400; color: var(--muted) }
+.rm-track { position: relative; height: 12px; border-radius: 6px; background: var(--grid) }
+.rm-fill { position: absolute; inset: 0 auto 0 0; min-width: 12px; border-radius: 6px; background: var(--ax) }
+.rm-avg, .rm-avgkey {
+  display: inline-block;
+  width: 4px;
+  height: 20px;
+  border-radius: 2px;
+  background: var(--ink);
+  box-shadow: 0 0 0 2px var(--surface);
+}
+.rm-avg { position: absolute; top: -4px; translate: -50% 0 }
+.rm-avgkey { height: 12px; vertical-align: -1px; margin-right: 4px }
+.rm-ends { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted) }
+.rm-pips { display: flex; gap: 4px }
+.rm-pips i { flex: 1; height: 12px; border-radius: 3px; background: var(--grid) }
+.rm-pips.tier i.on { background: var(--tier); box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .15) }
+.rm-q { font-size: 13px; color: var(--muted) }
+.rm-stand { display: flex; gap: 12px; margin: 0 }
+.rm-stand div { flex: 1; padding: 10px 12px; border-radius: 10px; background: var(--grid) }
+.rm-stand dt { font-size: 12px; color: var(--muted) }
+.rm-stand dd { margin: 0 }
+
+/* ---- Structure ---- */
+.rm-secs { display: flex; gap: 6px; list-style: none; margin: 0; padding: 0; flex-wrap: wrap }
+.rm-sec {
+  flex: 2 1 90px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 12px;
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--c) calc(100% - var(--k, 0) * 45%), #000);
+  color: var(--ink);
+}
+.rm-sec.inner { color: #fff; text-shadow: 0 1px 2px rgba(0, 0, 0, .4) }
+.rm-sec.intro, .rm-sec.outro { flex: 1 1 70px; background: var(--grid) }
+.rm-sec.tiny { flex: .5 1 50px }
+.rm-sec b { font: 700 18px var(--display) }
+.rm-sec span { font-size: 12px; opacity: .85 }
+
+/* ---- Tiles ---- */
+.rm-tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 12px }
+.rm-tile {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 0 0 10px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  color: var(--ink);
+  text-decoration: none;
+  background: var(--surface);
+}
+.rm-tile:hover { border-color: var(--muted) }
+.rm-tile:focus-visible { outline: 2px solid var(--b); outline-offset: 2px }
+.rm-tile.me { border-color: var(--ink); box-shadow: 0 0 0 1px var(--ink) }
+.rm-tile-art {
+  height: 110px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-top: 8px;
+  margin-bottom: 6px;
+  background: linear-gradient(170deg, var(--c), color-mix(in srgb, var(--c) 60%, #000 40%));
+}
+.rm-tile-art .rm-art { max-height: 100px; width: auto; object-fit: contain }
+.rm-tile-art .rm-sprite { height: 64px; image-rendering: pixelated; margin-bottom: 8px }
+.rm-tile-name { padding: 0 10px; font-weight: 600; font-size: 13px; line-height: 1.25 }
+.rm-tile-meta { padding: 0 10px; font-size: 12px; color: var(--muted) }
+.rm-mini {
+  display: inline-block;
+  padding: 0 5px;
+  border-radius: 4px;
+  background: var(--tier);
+  color: #141a2b;
+  font: 700 11px var(--display);
+}
+
+@media (max-width: 760px) {
+  .rm-grid { grid-template-columns: minmax(0, 1fr) }
+  .rm-hero { grid-template-columns: minmax(0, 1fr); padding: 84px 20px 0; text-align: left }
+  .rm-hero-art { order: 2 }
+  .rm-hero-art .rm-art { max-height: 240px }
+  .rm-hero-text { padding: 0 0 8px }
+  .rm-badges { left: 16px; right: 16px; justify-content: flex-start; flex-wrap: wrap }
+  .rm-pick select { min-width: 0; max-width: 52vw }
+}
+
+/* Artwork with a solid white background, framed instead of cut out */
+.rm-hero-art .rm-boxed { max-height: 280px; margin-bottom: 28px; border-radius: 12px; border: 6px solid #fff; filter: none; box-shadow: 0 10px 24px rgba(0, 0, 0, .3) }
+.rm-tile-art:has(.rm-boxed) { padding: 0 }
+.rm-tile-art .rm-boxed { width: 100%; height: 100%; max-height: none; object-fit: cover; object-position: top }

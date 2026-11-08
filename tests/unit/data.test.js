@@ -51,7 +51,7 @@ describe("games", () => {
 describe("scores.csv", () => {
   test("has the expected header", async () => {
     const text = await readFile(new URL("data/scores.csv", ROOT), "utf8");
-    assert.equal(text.split(/\r?\n/)[0], "game,name,energy,density,gravity,expression,synergy,arrangement");
+    assert.equal(text.split(/\r?\n/)[0], "game,name,energy,density,gravity,expression,synergy,range");
   });
   test("every row names a real track, once", async () => {
     const rows = await readScores(), seen = new Set();

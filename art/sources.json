@@ -1,0 +1,849 @@
+[
+ {
+  "file": "mm1-cutman.png",
+  "game": "mm1",
+  "name": "Cut Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/2/22/Cutman.png/revision/latest?cb=20230607184733",
+  "wikiFile": "Cutman.png"
+ },
+ {
+  "file": "mm1-gutsman.png",
+  "game": "mm1",
+  "name": "Guts Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/6/60/Gutsman.png/revision/latest?cb=20230607185251",
+  "wikiFile": "Gutsman.png"
+ },
+ {
+  "file": "mm1-iceman.png",
+  "game": "mm1",
+  "name": "Ice Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/0/03/Iceman.png/revision/latest?cb=20230607185248",
+  "wikiFile": "Iceman.png"
+ },
+ {
+  "file": "mm1-bombman.png",
+  "game": "mm1",
+  "name": "Bomb Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/1/19/Bombman.png/revision/latest?cb=20230607185245",
+  "wikiFile": "Bombman.png"
+ },
+ {
+  "file": "mm1-fireman.png",
+  "game": "mm1",
+  "name": "Fire Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/0/04/Fireman.png/revision/latest?cb=20230607185242",
+  "wikiFile": "Fireman.png"
+ },
+ {
+  "file": "mm1-elecman.png",
+  "game": "mm1",
+  "name": "Elec Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/2/26/Elecman.png/revision/latest?cb=20230607185239",
+  "wikiFile": "Elecman.png"
+ },
+ {
+  "file": "mmpu-cutman.png",
+  "game": "mmpu",
+  "name": "Cut Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/2/22/Cutman.png/revision/latest?cb=20230607184733",
+  "wikiFile": "Cutman.png"
+ },
+ {
+  "file": "mmpu-gutsman.png",
+  "game": "mmpu",
+  "name": "Guts Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/6/60/Gutsman.png/revision/latest?cb=20230607185251",
+  "wikiFile": "Gutsman.png"
+ },
+ {
+  "file": "mmpu-iceman.png",
+  "game": "mmpu",
+  "name": "Ice Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/0/03/Iceman.png/revision/latest?cb=20230607185248",
+  "wikiFile": "Iceman.png"
+ },
+ {
+  "file": "mmpu-bombman.png",
+  "game": "mmpu",
+  "name": "Bomb Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/1/19/Bombman.png/revision/latest?cb=20230607185245",
+  "wikiFile": "Bombman.png"
+ },
+ {
+  "file": "mmpu-fireman.png",
+  "game": "mmpu",
+  "name": "Fire Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/0/04/Fireman.png/revision/latest?cb=20230607185242",
+  "wikiFile": "Fireman.png"
+ },
+ {
+  "file": "mmpu-elecman.png",
+  "game": "mmpu",
+  "name": "Elec Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/2/26/Elecman.png/revision/latest?cb=20230607185239",
+  "wikiFile": "Elecman.png"
+ },
+ {
+  "file": "mmpu-timeman.png",
+  "game": "mmpu",
+  "name": "Time Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/6/64/MmPu_Timeman.png/revision/latest?cb=20100505185816",
+  "wikiFile": "MmPu_Timeman.png"
+ },
+ {
+  "file": "mmpu-oilman.jpg",
+  "game": "mmpu",
+  "name": "Oil Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/c/cd/Oilmanpco.jpg/revision/latest?cb=20210721024207",
+  "wikiFile": "Oilmanpco.jpg"
+ },
+ {
+  "file": "mm2-metalman.png",
+  "game": "mm2",
+  "name": "Metal Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/0/03/Metal_Man.png/revision/latest?cb=20231220172945",
+  "wikiFile": "Metal_Man.png"
+ },
+ {
+  "file": "mm2-airman.png",
+  "game": "mm2",
+  "name": "Air Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/5/5b/AirMan-MM2.png/revision/latest?cb=20230908074759",
+  "wikiFile": "AirMan-MM2.png"
+ },
+ {
+  "file": "mm2-bubbleman.png",
+  "game": "mm2",
+  "name": "Bubble Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/f/fe/BubbleMan-CW.png/revision/latest?cb=20231220000703",
+  "wikiFile": "BubbleMan-CW.png"
+ },
+ {
+  "file": "mm2-quickman.png",
+  "game": "mm2",
+  "name": "Quick Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/7/71/Quick_Man.png/revision/latest?cb=20231220173250",
+  "wikiFile": "Quick_Man.png"
+ },
+ {
+  "file": "mm2-crashman.png",
+  "game": "mm2",
+  "name": "Crash Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/5/58/Crashman.png/revision/latest?cb=20230912223623",
+  "wikiFile": "Crashman.png"
+ },
+ {
+  "file": "mm2-flashman.png",
+  "game": "mm2",
+  "name": "Flash Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/9/9d/Flashman.png/revision/latest?cb=20260825051547",
+  "wikiFile": "Flashman.png"
+ },
+ {
+  "file": "mm2-heatman.png",
+  "game": "mm2",
+  "name": "Heat Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/4/4b/Heat_Man.png/revision/latest?cb=20231220000125",
+  "wikiFile": "Heat_Man.png"
+ },
+ {
+  "file": "mm2-woodman.png",
+  "game": "mm2",
+  "name": "Wood Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/2/20/CW-Woodman.png/revision/latest?cb=20231221220627",
+  "wikiFile": "CW-Woodman.png"
+ },
+ {
+  "file": "mm3-needleman.png",
+  "game": "mm3",
+  "name": "Needle Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/c/cf/Needleman.png/revision/latest?cb=20260825051159",
+  "wikiFile": "Needleman.png"
+ },
+ {
+  "file": "mm3-magnetman.png",
+  "game": "mm3",
+  "name": "Magnet Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/7/7e/Magnetman.png/revision/latest?cb=20260825024947",
+  "wikiFile": "Magnetman.png"
+ },
+ {
+  "file": "mm3-geminiman.png",
+  "game": "mm3",
+  "name": "Gemini Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/6/65/Geminiman.png/revision/latest?cb=20260825021750",
+  "wikiFile": "Geminiman.png"
+ },
+ {
+  "file": "mm3-hardman.png",
+  "game": "mm3",
+  "name": "Hard Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/5/5e/Hardman.png/revision/latest?cb=20260825022208",
+  "wikiFile": "Hardman.png"
+ },
+ {
+  "file": "mm3-topman.png",
+  "game": "mm3",
+  "name": "Top Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/d/d3/Topman.png/revision/latest?cb=20230607190801",
+  "wikiFile": "Topman.png"
+ },
+ {
+  "file": "mm3-snakeman.png",
+  "game": "mm3",
+  "name": "Snake Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/c/c8/SnakeMan-MM3.png/revision/latest?cb=20230908074424",
+  "wikiFile": "SnakeMan-MM3.png"
+ },
+ {
+  "file": "mm3-sparkman.png",
+  "game": "mm3",
+  "name": "Spark Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/8/8e/Sparkman.png/revision/latest?cb=20230607190754",
+  "wikiFile": "Sparkman.png"
+ },
+ {
+  "file": "mm3-shadowman.png",
+  "game": "mm3",
+  "name": "Shadow Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/c/c1/Shadowman.png/revision/latest?cb=20230725221732",
+  "wikiFile": "Shadowman.png"
+ },
+ {
+  "file": "mm4-brightman.png",
+  "game": "mm4",
+  "name": "Bright Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/9/9b/Brightman.png/revision/latest?cb=20260825050623",
+  "wikiFile": "Brightman.png"
+ },
+ {
+  "file": "mm4-toadman.png",
+  "game": "mm4",
+  "name": "Toad Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/b/bf/Toadman.png/revision/latest?cb=20260825024034",
+  "wikiFile": "Toadman.png"
+ },
+ {
+  "file": "mm4-drillman.png",
+  "game": "mm4",
+  "name": "Drill Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/1/1d/Drillman.png/revision/latest?cb=20240104232803",
+  "wikiFile": "Drillman.png"
+ },
+ {
+  "file": "mm4-pharaohman.png",
+  "game": "mm4",
+  "name": "Pharaoh Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/6/6c/Pharaohman.png/revision/latest?cb=20260825023723",
+  "wikiFile": "Pharaohman.png"
+ },
+ {
+  "file": "mm4-ringman.png",
+  "game": "mm4",
+  "name": "Ring Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/8/84/Ringman.png/revision/latest?cb=20260825023342",
+  "wikiFile": "Ringman.png"
+ },
+ {
+  "file": "mm4-dustman.png",
+  "game": "mm4",
+  "name": "Dust Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/7/7c/Dustman.png/revision/latest?cb=20260825022758",
+  "wikiFile": "Dustman.png"
+ },
+ {
+  "file": "mm4-diveman.png",
+  "game": "mm4",
+  "name": "Dive Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/d/db/RCW_Dive_Man.png/revision/latest?cb=20230607190954",
+  "wikiFile": "RCW_Dive_Man.png"
+ },
+ {
+  "file": "mm4-skullman.png",
+  "game": "mm4",
+  "name": "Skull Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/4/47/Skullman.png/revision/latest?cb=20230607190958",
+  "wikiFile": "Skullman.png"
+ },
+ {
+  "file": "mm5-gravityman.png",
+  "game": "mm5",
+  "name": "Gravity Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/d/d5/Gravityman.png/revision/latest?cb=20230607191135",
+  "wikiFile": "Gravityman.png"
+ },
+ {
+  "file": "mm5-waveman.png",
+  "game": "mm5",
+  "name": "Wave Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/a/a1/Waveman.png/revision/latest?cb=20260825054447",
+  "wikiFile": "Waveman.png"
+ },
+ {
+  "file": "mm5-stoneman.png",
+  "game": "mm5",
+  "name": "Stone Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/d/dd/Stoneman.png/revision/latest?cb=20260825061010",
+  "wikiFile": "Stoneman.png"
+ },
+ {
+  "file": "mm5-gyroman.png",
+  "game": "mm5",
+  "name": "Gyro Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/d/d5/Gyroman_2.png/revision/latest?cb=20260825064605",
+  "wikiFile": "Gyroman_2.png"
+ },
+ {
+  "file": "mm5-starman.png",
+  "game": "mm5",
+  "name": "Star Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/0/02/Starman.png/revision/latest?cb=20260825065933",
+  "wikiFile": "Starman.png"
+ },
+ {
+  "file": "mm5-chargeman.png",
+  "game": "mm5",
+  "name": "Charge Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/1/18/Chargeman.png/revision/latest?cb=20260825045810",
+  "wikiFile": "Chargeman.png"
+ },
+ {
+  "file": "mm5-napalmman.png",
+  "game": "mm5",
+  "name": "Napalm Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/9/98/Napalmman.png/revision/latest?cb=20230607191138",
+  "wikiFile": "Napalmman.png"
+ },
+ {
+  "file": "mm5-crystalman.png",
+  "game": "mm5",
+  "name": "Crystal Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/a/ac/CrystalManCW.png/revision/latest?cb=20260825024519",
+  "wikiFile": "CrystalManCW.png"
+ },
+ {
+  "file": "mm6-blizzardman.png",
+  "game": "mm6",
+  "name": "Blizzard Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/a/a6/Blizzardman.png/revision/latest?cb=20260825062206",
+  "wikiFile": "Blizzardman.png"
+ },
+ {
+  "file": "mm6-centaurman.png",
+  "game": "mm6",
+  "name": "Centaur Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/2/29/Centaurman.png/revision/latest?cb=20260825052402",
+  "wikiFile": "Centaurman.png"
+ },
+ {
+  "file": "mm6-flameman.png",
+  "game": "mm6",
+  "name": "Flame Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/3/35/Flameman.png/revision/latest?cb=20260825053556",
+  "wikiFile": "Flameman.png"
+ },
+ {
+  "file": "mm6-knightman.png",
+  "game": "mm6",
+  "name": "Knight Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/0/04/Knightman.png/revision/latest?cb=20230607191141",
+  "wikiFile": "Knightman.png"
+ },
+ {
+  "file": "mm6-plantman.png",
+  "game": "mm6",
+  "name": "Plant Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/0/0d/Plantman.png/revision/latest?cb=20260825071556",
+  "wikiFile": "Plantman.png"
+ },
+ {
+  "file": "mm6-tomahawkman.png",
+  "game": "mm6",
+  "name": "Tomahawk Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/2/2e/Tomahawkman.png/revision/latest?cb=20260825053058",
+  "wikiFile": "Tomahawkman.png"
+ },
+ {
+  "file": "mm6-yamatoman.png",
+  "game": "mm6",
+  "name": "Yamato Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/c/c6/Yamatoman.png/revision/latest?cb=20260825055740",
+  "wikiFile": "Yamatoman.png"
+ },
+ {
+  "file": "mm6-windman.png",
+  "game": "mm6",
+  "name": "Wind Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/1/13/Windman.png/revision/latest?cb=20230607191215",
+  "wikiFile": "Windman.png"
+ },
+ {
+  "file": "mm7-freezeman.png",
+  "game": "mm7",
+  "name": "Freeze Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/6/67/Mm7freezeman-digi.png/revision/latest?cb=20260919125017",
+  "wikiFile": "Mm7freezeman-digi.png"
+ },
+ {
+  "file": "mm7-junkman.png",
+  "game": "mm7",
+  "name": "Junk Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/1/1d/Mm7junkman-digi.png/revision/latest?cb=20260919125016",
+  "wikiFile": "Mm7junkman-digi.png"
+ },
+ {
+  "file": "mm7-burstman.png",
+  "game": "mm7",
+  "name": "Burst Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/b/b0/Mm7burstman-digi.png/revision/latest?cb=20260919125014",
+  "wikiFile": "Mm7burstman-digi.png"
+ },
+ {
+  "file": "mm7-cloudman.png",
+  "game": "mm7",
+  "name": "Cloud Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/0/0a/Mm7cloudman-digi.png/revision/latest?cb=20260919124851",
+  "wikiFile": "Mm7cloudman-digi.png"
+ },
+ {
+  "file": "mm7-springman.png",
+  "game": "mm7",
+  "name": "Spring Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/a/a1/Mm7springman-digi.png/revision/latest?cb=20260919124618",
+  "wikiFile": "Mm7springman-digi.png"
+ },
+ {
+  "file": "mm7-slashman.png",
+  "game": "mm7",
+  "name": "Slash Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/f/f5/Mm7slashman-digi.png/revision/latest?cb=20260919124852",
+  "wikiFile": "Mm7slashman-digi.png"
+ },
+ {
+  "file": "mm7-shademan.png",
+  "game": "mm7",
+  "name": "Shade Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/9/91/Mm7shademan-digi.png/revision/latest?cb=20260919124748",
+  "wikiFile": "Mm7shademan-digi.png"
+ },
+ {
+  "file": "mm7-turboman.png",
+  "game": "mm7",
+  "name": "Turbo Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/a/a7/Mm7turboman-digital.png/revision/latest?cb=20260919124737",
+  "wikiFile": "Mm7turboman-digital.png"
+ },
+ {
+  "file": "mm8-tengumanps.png",
+  "game": "mm8",
+  "name": "Tengu Man (PS)",
+  "source": "https://static.wikia.nocookie.net/megaman/images/e/e3/Tenguman.png/revision/latest?cb=20260430210731",
+  "wikiFile": "Tenguman.png"
+ },
+ {
+  "file": "mm8-tengumanss.png",
+  "game": "mm8",
+  "name": "Tengu Man (SS)",
+  "source": "https://static.wikia.nocookie.net/megaman/images/e/e3/Tenguman.png/revision/latest?cb=20260430210731",
+  "wikiFile": "Tenguman.png"
+ },
+ {
+  "file": "mm8-astroman.png",
+  "game": "mm8",
+  "name": "Astro Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/a/a0/Astroman.png/revision/latest?cb=20260430210837",
+  "wikiFile": "Astroman.png"
+ },
+ {
+  "file": "mm8-swordman.png",
+  "game": "mm8",
+  "name": "Sword Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/6/66/MM8_Sword_Man.png/revision/latest?cb=20230606015644",
+  "wikiFile": "MM8_Sword_Man.png"
+ },
+ {
+  "file": "mm8-clownman.png",
+  "game": "mm8",
+  "name": "Clown Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/6/65/MM8_Clown_Man.png/revision/latest?cb=20230606015635",
+  "wikiFile": "MM8_Clown_Man.png"
+ },
+ {
+  "file": "mm8-searchman.png",
+  "game": "mm8",
+  "name": "Search Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/c/cd/MM8_Search_Man.png/revision/latest?cb=20240908233020",
+  "wikiFile": "MM8_Search_Man.png"
+ },
+ {
+  "file": "mm8-frostman.png",
+  "game": "mm8",
+  "name": "Frost Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/c/c9/MM8_Frost_Man.png/revision/latest?cb=20220303063255",
+  "wikiFile": "MM8_Frost_Man.png"
+ },
+ {
+  "file": "mm8-grenademan.png",
+  "game": "mm8",
+  "name": "Grenade Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/a/ab/MM8_Grenade_Man.png/revision/latest?cb=20220303063205",
+  "wikiFile": "MM8_Grenade_Man.png"
+ },
+ {
+  "file": "mm8-aquaman.png",
+  "game": "mm8",
+  "name": "Aqua Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/b/b7/MM8_Aqua_Man.png/revision/latest?cb=20220303063103",
+  "wikiFile": "MM8_Aqua_Man.png"
+ },
+ {
+  "file": "mm9-concreteman.png",
+  "game": "mm9",
+  "name": "Concrete Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/1/1f/MM9-ConcreteMan.png/revision/latest?cb=20220925013305",
+  "wikiFile": "MM9-ConcreteMan.png"
+ },
+ {
+  "file": "mm9-tornadoman.png",
+  "game": "mm9",
+  "name": "Tornado Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/0/0e/MM9-TornadoMan.png/revision/latest?cb=20251220145643",
+  "wikiFile": "MM9-TornadoMan.png"
+ },
+ {
+  "file": "mm9-splashwoman.png",
+  "game": "mm9",
+  "name": "Splash Woman",
+  "source": "https://static.wikia.nocookie.net/megaman/images/a/a6/MM9-SplashWoman.png/revision/latest?cb=20220925023429",
+  "wikiFile": "MM9-SplashWoman.png"
+ },
+ {
+  "file": "mm9-plugman.png",
+  "game": "mm9",
+  "name": "Plug Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/7/7e/MM9-PlugMan.png/revision/latest?cb=20220925024513",
+  "wikiFile": "MM9-PlugMan.png"
+ },
+ {
+  "file": "mm9-jewelman.png",
+  "game": "mm9",
+  "name": "Jewel Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/6/6a/MM9-JewelMan.png/revision/latest?cb=20220925025622",
+  "wikiFile": "MM9-JewelMan.png"
+ },
+ {
+  "file": "mm9-hornetman.png",
+  "game": "mm9",
+  "name": "Hornet Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/e/e0/MM9-HornetMan.png/revision/latest?cb=20220925030105",
+  "wikiFile": "MM9-HornetMan.png"
+ },
+ {
+  "file": "mm9-magmaman.png",
+  "game": "mm9",
+  "name": "Magma Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/1/19/MM9-MagmaMan.png/revision/latest?cb=20251220145909",
+  "wikiFile": "MM9-MagmaMan.png"
+ },
+ {
+  "file": "mm9-galaxyman.png",
+  "game": "mm9",
+  "name": "Galaxy Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/f/f3/MM9-GalaxyMan.png/revision/latest?cb=20220925031514",
+  "wikiFile": "MM9-GalaxyMan.png"
+ },
+ {
+  "file": "mm10-blademan.png",
+  "game": "mm10",
+  "name": "Blade Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/a/a5/Blade_Man_-_Mega_Man_10.png/revision/latest?cb=20260124115946",
+  "wikiFile": "Blade_Man_-_Mega_Man_10.png"
+ },
+ {
+  "file": "mm10-pumpman.png",
+  "game": "mm10",
+  "name": "Pump Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/0/00/Pumpman.png/revision/latest?cb=20260111023813",
+  "wikiFile": "Pumpman.png"
+ },
+ {
+  "file": "mm10-commandoman.png",
+  "game": "mm10",
+  "name": "Commando Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/5/59/CommandoMan.png/revision/latest?cb=20260111023906",
+  "wikiFile": "CommandoMan.png"
+ },
+ {
+  "file": "mm10-chillman.png",
+  "game": "mm10",
+  "name": "Chill Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/f/ff/Chillman.png/revision/latest?cb=20220925012630",
+  "wikiFile": "Chillman.png"
+ },
+ {
+  "file": "mm10-sheepman.png",
+  "game": "mm10",
+  "name": "Sheep Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/b/bd/SheepMan.png/revision/latest?cb=20260111024004",
+  "wikiFile": "SheepMan.png"
+ },
+ {
+  "file": "mm10-strikeman.png",
+  "game": "mm10",
+  "name": "Strike Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/2/2d/Strikeman10.png/revision/latest?cb=20260111024128",
+  "wikiFile": "Strikeman10.png"
+ },
+ {
+  "file": "mm10-nitroman.png",
+  "game": "mm10",
+  "name": "Nitro Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/2/2b/Nitro_Man_-_Mega_Man_10.png/revision/latest?cb=20260124120008",
+  "wikiFile": "Nitro_Man_-_Mega_Man_10.png"
+ },
+ {
+  "file": "mm10-solarman.png",
+  "game": "mm10",
+  "name": "Solar Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/9/96/Solarman.png/revision/latest?cb=20221201221850",
+  "wikiFile": "Solarman.png"
+ },
+ {
+  "file": "mm11-blockman.png",
+  "game": "mm11",
+  "name": "Block Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/f/f1/Blockman.png/revision/latest?cb=20190127075440",
+  "wikiFile": "Blockman.png"
+ },
+ {
+  "file": "mm11-fuseman.png",
+  "game": "mm11",
+  "name": "Fuse Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/e/ec/Fuseman.png/revision/latest?cb=20190127075728",
+  "wikiFile": "Fuseman.png"
+ },
+ {
+  "file": "mm11-blastman.png",
+  "game": "mm11",
+  "name": "Blast Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/f/f0/MM11_BlastMan.png/revision/latest?cb=20180703154204",
+  "wikiFile": "MM11_BlastMan.png"
+ },
+ {
+  "file": "mm11-acidman.png",
+  "game": "mm11",
+  "name": "Acid Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/c/c1/Acidman.png/revision/latest?cb=20180920020648",
+  "wikiFile": "Acidman.png"
+ },
+ {
+  "file": "mm11-tundraman.png",
+  "game": "mm11",
+  "name": "Tundra Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/3/3c/MM11TundraMan.png/revision/latest?cb=20180922004458",
+  "wikiFile": "MM11TundraMan.png"
+ },
+ {
+  "file": "mm11-torchman.png",
+  "game": "mm11",
+  "name": "Torch Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/c/c7/MM11TorchMan.png/revision/latest?cb=20180720014916",
+  "wikiFile": "MM11TorchMan.png"
+ },
+ {
+  "file": "mm11-impactman.png",
+  "game": "mm11",
+  "name": "Impact Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/1/1b/MM11ImpactMan.png/revision/latest?cb=20190127075826",
+  "wikiFile": "MM11ImpactMan.png"
+ },
+ {
+  "file": "mm11-bounceman.png",
+  "game": "mm11",
+  "name": "Bounce Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/9/99/MM11BounceMan.png/revision/latest?cb=20190127075557",
+  "wikiFile": "MM11BounceMan.png"
+ },
+ {
+  "file": "mmii-metalman.png",
+  "game": "mmii",
+  "name": "Metal Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/0/03/Metal_Man.png/revision/latest?cb=20231220172945",
+  "wikiFile": "Metal_Man.png"
+ },
+ {
+  "file": "mmii-airman.png",
+  "game": "mmii",
+  "name": "Air Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/5/5b/AirMan-MM2.png/revision/latest?cb=20230908074759",
+  "wikiFile": "AirMan-MM2.png"
+ },
+ {
+  "file": "mmii-crashman.png",
+  "game": "mmii",
+  "name": "Crash Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/5/58/Crashman.png/revision/latest?cb=20230912223623",
+  "wikiFile": "Crashman.png"
+ },
+ {
+  "file": "mmii-woodman.png",
+  "game": "mmii",
+  "name": "Wood Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/2/20/CW-Woodman.png/revision/latest?cb=20231221220627",
+  "wikiFile": "CW-Woodman.png"
+ },
+ {
+  "file": "mmii-needleman.png",
+  "game": "mmii",
+  "name": "Needle Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/c/cf/Needleman.png/revision/latest?cb=20260825051159",
+  "wikiFile": "Needleman.png"
+ },
+ {
+  "file": "mmii-magnetman.png",
+  "game": "mmii",
+  "name": "Magnet Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/7/7e/Magnetman.png/revision/latest?cb=20260825024947",
+  "wikiFile": "Magnetman.png"
+ },
+ {
+  "file": "mmii-hardman.png",
+  "game": "mmii",
+  "name": "Hard Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/5/5e/Hardman.png/revision/latest?cb=20260825022208",
+  "wikiFile": "Hardman.png"
+ },
+ {
+  "file": "mmii-topman.png",
+  "game": "mmii",
+  "name": "Top Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/d/d3/Topman.png/revision/latest?cb=20230607190801",
+  "wikiFile": "Topman.png"
+ },
+ {
+  "file": "mmv-mercury.jpg",
+  "game": "mmv",
+  "name": "Mercury",
+  "source": "https://static.wikia.nocookie.net/megaman/images/9/9e/MMGB5-Mercury-Art.jpg/revision/latest?cb=20260624193756",
+  "wikiFile": "MMGB5-Mercury-Art.jpg"
+ },
+ {
+  "file": "mmv-venus.jpg",
+  "game": "mmv",
+  "name": "Venus",
+  "source": "https://static.wikia.nocookie.net/megaman/images/4/49/MMGB5-Venus-Art.jpg/revision/latest?cb=20260624193748",
+  "wikiFile": "MMGB5-Venus-Art.jpg"
+ },
+ {
+  "file": "mmv-mars.jpg",
+  "game": "mmv",
+  "name": "Mars",
+  "source": "https://static.wikia.nocookie.net/megaman/images/9/92/MMGB5-Mars-Art.jpg/revision/latest?cb=20260624193451",
+  "wikiFile": "MMGB5-Mars-Art.jpg"
+ },
+ {
+  "file": "mmv-neptune.jpg",
+  "game": "mmv",
+  "name": "Neptune",
+  "source": "https://static.wikia.nocookie.net/megaman/images/d/df/MMGB5-Neptune-Art.jpg/revision/latest?cb=20260624190932",
+  "wikiFile": "MMGB5-Neptune-Art.jpg"
+ },
+ {
+  "file": "mmv-jupiter.jpg",
+  "game": "mmv",
+  "name": "Jupiter",
+  "source": "https://static.wikia.nocookie.net/megaman/images/1/13/MMGB5-Jupiter-Art.jpg/revision/latest?cb=20260624193329",
+  "wikiFile": "MMGB5-Jupiter-Art.jpg"
+ },
+ {
+  "file": "mmv-saturn.jpg",
+  "game": "mmv",
+  "name": "Saturn",
+  "source": "https://static.wikia.nocookie.net/megaman/images/c/ca/MMGB5-Saturn-Art.jpg/revision/latest?cb=20260624193214",
+  "wikiFile": "MMGB5-Saturn-Art.jpg"
+ },
+ {
+  "file": "mmv-uranus.jpg",
+  "game": "mmv",
+  "name": "Uranus",
+  "source": "https://static.wikia.nocookie.net/megaman/images/9/9c/MMGB5-Uranus-Art.jpg/revision/latest?cb=20260624193051",
+  "wikiFile": "MMGB5-Uranus-Art.jpg"
+ },
+ {
+  "file": "mmv-pluto.jpg",
+  "game": "mmv",
+  "name": "Pluto",
+  "source": "https://static.wikia.nocookie.net/megaman/images/c/c6/MMGB5-Pluto-Art.jpg/revision/latest?cb=20260624192934",
+  "wikiFile": "MMGB5-Pluto-Art.jpg"
+ },
+ {
+  "file": "mmb-tenguman.png",
+  "game": "mmb",
+  "name": "Tengu Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/e/e3/Tenguman.png/revision/latest?cb=20260430210731",
+  "wikiFile": "Tenguman.png"
+ },
+ {
+  "file": "mmb-astroman.png",
+  "game": "mmb",
+  "name": "Astro Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/a/a0/Astroman.png/revision/latest?cb=20260430210837",
+  "wikiFile": "Astroman.png"
+ },
+ {
+  "file": "mmb-coldman.png",
+  "game": "mmb",
+  "name": "Cold Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/c/c6/Coldman.png/revision/latest?cb=20260430210901",
+  "wikiFile": "Coldman.png"
+ },
+ {
+  "file": "mmb-groundman.png",
+  "game": "mmb",
+  "name": "Ground Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/f/f9/Groundman.png/revision/latest?cb=20260430210911",
+  "wikiFile": "Groundman.png"
+ },
+ {
+  "file": "mmb-pirateman.png",
+  "game": "mmb",
+  "name": "Pirate Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/7/79/Pirateman.png/revision/latest?cb=20260430210921",
+  "wikiFile": "Pirateman.png"
+ },
+ {
+  "file": "mmb-burnerman.png",
+  "game": "mmb",
+  "name": "Burner Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/b/b3/Burnerman.png/revision/latest?cb=20260430210934",
+  "wikiFile": "Burnerman.png"
+ },
+ {
+  "file": "mmb-magicman.png",
+  "game": "mmb",
+  "name": "Magic Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/3/39/Magicman.png/revision/latest?cb=20260430210944",
+  "wikiFile": "Magicman.png"
+ },
+ {
+  "file": "mmb-dynamoman.png",
+  "game": "mmb",
+  "name": "Dynamo Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/e/e5/Dynamoman.png/revision/latest?cb=20260430210849",
+  "wikiFile": "Dynamoman.png"
+ },
+ {
+  "file": "mmdo-twinklegirl.png",
+  "game": "mmdo",
+  "name": "Twinkle Girl",
+  "source": "https://static.wikia.nocookie.net/megaman/images/2/20/Twinkle_Girl_-_MM_Dual_Override_artwork.png/revision/latest?cb=20261029121039",
+  "wikiFile": "Twinkle_Girl_-_MM_Dual_Override_artwork.png"
+ },
+ {
+  "file": "mmdo-jetman.png",
+  "game": "mmdo",
+  "name": "Jet Man",
+  "source": "https://static.wikia.nocookie.net/megaman/images/c/c8/Jet_Man_Official_Artwork.png/revision/latest?cb=20260921125137",
+  "wikiFile": "Jet_Man_Official_Artwork.png"
+ }
+]

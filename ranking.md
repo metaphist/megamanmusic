@@ -1,12 +1,116 @@
-ranking idea:
+# tier ranking notes
 
-ratings 1-5: poor / lacking / decent / excellent / exemplary
+## metrics
+- expression - does it evoke a strong feeling?
+- synergy - does the feeling match the robot master?
+- range - how many unique sections are there?
 
-metrics:
+## ratings
+1-5: poor / lacking / decent / excellent / exemplary
 
-- expression - does it conjure a vivid image
+## music range scoring system
 
-- synergy - does the expression match the robot master
+### legend
+- i = intro (not included in loop)
+- i(r) = intro (repeated in loop)
+- i- = tiny intro (half point only)
+- o = outro (short unique ending section)
+- a-e = distinct inner section
+- \+ = possible half point for unique extensions
 
-- arrangement - is the idea fully realized
+### rules
+- Each unique letter is worth a point
+- Sections repeating with only slight variations will use the same letter (notated or not)
+- Score is rounded down, so a single half point will not move the score
 
+### mm1
+- bomb: i a b c (4)
+- ice: i(b) a b (3)
+- fire: a b (2)
+- guts: i a (2)
+- elec: i a b (3)
+- cut: i a b (3)
+
+### mm2
+- air: a b c (3)
+- quick: a b c (3)
+- metal: a b c (3)
+- flash: i a b (3) 
+- bubble: i a b c (4)
+- crash: a b c b d (4)
+- heat: a b (2)
+- wood: i a o (3)
+
+### mm3
+- snake: i a b c (4)
+- gemini: a b c o (4)
+- hard: a b c (3)
+- top: i a b c (4)
+- shadow: i a b c (4)
+- magnet: i a b o (4)
+- needle: i a b c (4)
+- spark: i a b (3)
+
+### mm4
+- dust: i a b c (4)
+- dive: a b c (3)
+- bright: i a b (3)
+- toad: i a b o (4)
+- drill: a b c d o (5)
+- phar: i a b c d (5)
+- ring: a b c (3)
+- skill: a b c o (4)
+
+### mm5
+- gyro: i a b o (4)
+- star: a b c (3)
+- wave: a b a c d (4)
+- charge: i a b c (4)
+- grav: i a b c (4)
+- napalm: i a b (3)
+- crystal: a b c (3)
+- stone: i a b o (4)
+
+### mm6
+- centaur: a b o (3)
+- wind: i a a b b c (4)
+- blizzard: a b c d (4)
+- tomahawk: i a b c (4)
+- knight: i a a b c o (5)
+- yamato: a b c d (4)
+- flower: i a b c (4)
+- flame: i a b c (4)
+
+### mm7
+- freeze: a b c b e (4)
+- junk: i a b a c d (5)
+- burst: a a b c (3)
+- cloud: a b c b c o (4)
+- spring: a b o (3)
+- slash: i a b c (4)
+- shade: i a b (3)
+- turbo: i- a b c+ (4)
+
+### mm8
+
+
+### mm9
+- tornado: i(r) a b c d (5)
+- galaxy: a b c d (4)
+
+### mm10
+
+
+### mm11
+
+
+### mmii
+
+
+### mmv
+
+
+### mmpu
+
+
+### mm&b
