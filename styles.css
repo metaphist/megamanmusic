@@ -3654,3 +3654,13 @@ button.tl-tile[aria-pressed="true"] .tl-pi {
     padding-inline: 4px
   }
 }
+
+/* The color deep dive's link back to the home page's list of robot masters */
+.backlink {
+  align-self: flex-start;
+  text-decoration: none
+}
+
+.backlink:hover {
+  color: var(--ink)
+}

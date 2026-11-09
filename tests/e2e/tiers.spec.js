@@ -272,12 +272,12 @@ test.describe("tier list", () => {
     await expect(page.locator("#gradeKey tr")).toHaveCount(7);
   });
 
-  test("links to and from the color project", async ({ page }) => {
+  test("links from the color deep dive, and home to the list of robot masters", async ({ page }) => {
     await open(page);
     await page.getByTestId("tiers-link").click();
     await expect(page).toHaveURL(/tiers\.html$/);
     await page.getByTestId("home-link").click();
-    await expect(page.locator("#viewReport")).toBeVisible();
+    await expect(page.locator("#roster .rm-tile").first()).toBeVisible();
   });
 
   test("shares the color project's saved theme", async ({ page }) => {

@@ -1,0 +1,82 @@
+/* The home page (index.html). The robot master tiles are .rm-tile from robot-master.css. */
+
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap }
+
+/* ---- The two deep dives ---- */
+.hm-features { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px }
+.hm-feature {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--surface);
+  color: var(--ink);
+  text-decoration: none;
+}
+.hm-feature:hover { border-color: var(--muted) }
+.hm-feature:focus-visible { outline: 2px solid var(--b); outline-offset: 2px }
+.hm-feature b { display: block; font-family: var(--display); font-size: 15px; letter-spacing: .02em; margin-bottom: 2px }
+.hm-feature span span { font-size: 13px; color: var(--muted) }
+.hm-feature-art { flex: none; width: 64px; height: 64px; border-radius: 12px }
+.hm-spectrum { background: conic-gradient(from 90deg, #ff4040, #ffbf00, #40ff40, #00bfff, #4040ff, #bf40ff, #ff4040) }
+.hm-tiers { display: grid; gap: 3px; padding: 8px; background: var(--grid) }
+.hm-tiers i:nth-child(1) { background: #ff7f7f; width: 100% }
+.hm-tiers i:nth-child(2) { background: #ffbf7f; width: 80% }
+.hm-tiers i:nth-child(3) { background: #ffdf7f; width: 60% }
+.hm-tiers i:nth-child(4) { background: #a8e67f; width: 40% }
+.hm-tiers i { border-radius: 2px }
+
+/* ---- Jump bar and search ---- */
+.hm-bar {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0;
+  background: var(--bg);
+  border-bottom: 1px solid var(--line);
+}
+.hm-jump { display: flex; flex-wrap: wrap; gap: 4px }
+.hm-jump a {
+  padding: 4px 8px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--surface);
+  color: var(--ink);
+  font: 12px var(--display);
+  text-decoration: none;
+}
+.hm-jump a:hover { background: var(--grid) }
+.hm-search input {
+  width: 200px;
+  padding: 7px 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--ink);
+  font: 14px var(--body);
+}
+.hm-search input:focus-visible { outline: 2px solid var(--b); outline-offset: 1px }
+.hm-count { margin: 10px 0 0 }
+
+/* ---- Games ---- */
+.hm-roster { display: flex; flex-direction: column; gap: 36px; margin-top: 20px }
+.hm-game { scroll-margin-top: 64px }
+.hm-gamehead { display: flex; align-items: center; flex-wrap: wrap; gap: 4px 12px; margin-bottom: 12px }
+.hm-gamehead .sh { margin: 0 }
+.hm-gamesw { width: 18px; height: 18px; border-radius: 5px; box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .15) }
+.hm-gamemeta { font-size: 13px; color: var(--muted) }
+.hm-roster .rm-tiles { grid-template-columns: repeat(auto-fill, minmax(132px, 1fr)) }
+
+@media (max-width: 640px) {
+  .hm-features { grid-template-columns: minmax(0, 1fr) }
+  .hm-bar { flex-direction: column; align-items: stretch }
+  .hm-jump { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 2px }
+  .hm-jump a { flex: none }
+  .hm-search input { width: 100% }
+}

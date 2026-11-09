@@ -1,10 +1,21 @@
 <!doctype html>
-<html>
+<html lang="en">
 
 <head>
   <meta charset=utf8>
   <meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>Mega Man Robot Masters</title>
+  <script>
+    // The color deep dive used to live here: send its old shared links (?game=, ?list=, #mm2/1 and the like) there
+    (() => {
+      const q = new URLSearchParams(location.search);
+      if (["game", "list", "view", "track", "pin"].some(k => q.has(k)) || (location.hash.length > 1 && !location.hash.startsWith("#game-")))
+        location.replace("colors.html" + location.search + location.hash);
+    })();
+  </script>
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="robot-master.css">
+  <link rel="stylesheet" href="home.css">
   <!-- Google tag (gtag.js), skipped on local copies so testing doesn't send hits -->
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -18,37 +29,21 @@
       gtag('config', 'G-KF4LRREJ77');
     }
   </script>
-</head>
-
-<body>
-  <title>Robot Master Color Project</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet"
     href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
-  
+</head>
 
+<body>
   <div class="wrap">
     <header>
       <div class="titlebar">
-        <h1>Mega Man Robot Master Color Project</h1>
+        <div>
+          <p class="eyebrow">metaphist Presents</p>
+          <h1>Mega Man Music Rating Project</h1>
+        </div>
         <div class="tbtns">
-          <button type="button" class="themetoggle rpopen" id="viewBtn" data-testid="view-btn">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path fill="currentColor"
-                d="M11 2h2v4h-2V2zm0 16h2v4h-2v-4zM2 11h4v2H2v-2zm16 0h4v2h-4v-2zM8 8h8v8H8V8zm2 2v4h4v-4h-4z" />
-            </svg>
-            <span class="tlabel tl-long" id="viewBtnLong" data-testid="view-btn-label">Viz</span><!-- <span class="tl-short"
-              id="viewBtnShort">Visualizer</span> -->
-          </button>
-          <button type="button" class="themetoggle" id="favBtn" data-testid="fav-btn" aria-label="Open favorites">
-            <svg viewBox="0 0 12 12" aria-hidden="true" shape-rendering="crispEdges">
-              <path fill="currentColor"
-                d="M5 0h2v2H5zM4 2h4v1H4zM0 3h12v1H0zM1 4h10v1H1zM2 5h8v1H2zM3 6h6v2H3zM2 8h8v1H2zM2 9h3v1H2zM7 9h3v1H7zM1 10h3v1H1zM8 10h3v1H8zM1 11h2v1H1zM9 11h2v1H9z" />
-            </svg>
-            <span class="tlabel tl-long" id="favBtnLong">Fav</span><span class="tl-short"
-              id="favBtnShort">Favorites</span>
-          </button>
           <a class="themetoggle" href="tiers.html" data-testid="tiers-link" aria-label="Open the tier list">
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <path fill="currentColor" d="M2 4h20v4H2V4zm0 6h14v4H2v-4zm0 6h8v4H2v-4z" />
@@ -64,299 +59,37 @@
               <path fill="currentColor"
                 d="M11 1h2v3h-2V1Zm-2 6h6v2H9V7Zm6 2h2v6h-2V9Zm-6 6h6v2H9v-2ZM7 9h2v6H7V9Zm4 11h2v3h-2v-3ZM1 11h3v2H1v-2Zm19 0h3v2h-3v-2ZM4 4h2v2H4V4Zm2 2h2v2H6V6Zm12-2h2v2h-2V4Zm-2 2h2v2h-2V6ZM4 18h2v2H4v-2Zm2-2h2v2H6v-2Zm12 2h2v2h-2v-2Zm-2-2h2v2h-2v-2Z" />
             </svg>
-            <!-- <span class="tlabel">Eye</span> -->
           </button>
         </div>
       </div>
+      <p class="lede">Every robot master theme in the "Classic" series, each scored for color and graded for the tier list. Pick
+        one to see its profile.</p>
     </header>
 
-    <!-- Main view: the full color report, with the game, distribution and buddy summaries under it -->
-    <div class="view" id="viewReport">
-      <!-- Intro: the foreword on the left and the Intensity to Color key on the right (stacked on narrow screens) -->
-      <div class="intro">
-        <section class="foreword" aria-label="Foreword">
-          <p>This is an offshoot of a previous ranking project, wherein I aimed to rank all the classic mega man themes
-            according to some semi-objective musical criteria. There are clear problems with such an undertaking, based
-            mainly on the fact that there are not a lot of “bad” mega man themes. This project is more reasonably
-            designed to measure the feel of a theme, along 3 vectors of intensity, where a low scoring “relaxed” track
-            is a style, not a grade.</p>
-          <p>Energy, density and gravity are simply three aspects of the music that I could easily identify. “Intensity”
-            is simply the culmination of all three—I think it works well because Mega Man is traditionally intense, and
-            so it tends to stand out when it’s not. But more obviously, this is all really just a glorified reason to
-            listen to Mega Man music! <span class="sig">— <a href="https://metaphist.com/" target="_blank"
-                rel="noopener">metaphist</a></span></p>
-        </section>
+    <nav class="hm-features" aria-label="Deep dives">
+      <a class="hm-feature" href="colors.html" data-testid="colors-link">
+        <span class="hm-feature-art hm-spectrum" aria-hidden="true"></span>
+        <span><b>Color Profiles</b><span>How energy, density and gravity become a color, with the visualizer,
+            game profiles and playlists.</span></span>
+      </a>
+      <a class="hm-feature" href="tiers.html">
+        <span class="hm-feature-art hm-tiers" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+        <span><b>Tier List</b><span>Every graded theme from S+ to F, by expression, synergy and range.</span></span>
+      </a>
+    </nav>
 
-        <section aria-labelledby="vecHead">
-          <h2 class="sh" id="vecHead">Intensity to Color</h2>
-          <figure class="scales">
-            <div class="scale bandrow" aria-label="Bands: low is 1–2, mid is 3, high is 4–5">
-              <span aria-hidden="true"></span>
-              <div class="bands" aria-hidden="true"><span class="bd lo">Low</span><span class="bd">Mid</span><span
-                  class="bd hi">High</span></div>
-            </div>
-            <div class="scale">
-              <div class="sname"><b class="ch-r">Energy</b><span>chill → hype</span></div>
-              <ol class="steps" aria-label="Energy from 1 (chill) to 5 (hype)">
-                <li><i style="background:#000000"></i><span>1</span></li>
-                <li><i style="background:#400000"></i><span>2</span></li>
-                <li><i style="background:#800000"></i><span>3</span></li>
-                <li><i style="background:#BF0000"></i><span>4</span></li>
-                <li><i style="background:#FF0000"></i><span>5</span></li>
-              </ol>
-            </div>
-            <div class="scale">
-              <div class="sname"><b class="ch-g">Density</b><span>simple → busy</span></div>
-              <ol class="steps" aria-label="Density from 1 (simple) to 5 (busy)">
-                <li><i style="background:#000000"></i><span>1</span></li>
-                <li><i style="background:#004000"></i><span>2</span></li>
-                <li><i style="background:#008000"></i><span>3</span></li>
-                <li><i style="background:#00BF00"></i><span>4</span></li>
-                <li><i style="background:#00FF00"></i><span>5</span></li>
-              </ol>
-            </div>
-            <div class="scale">
-              <div class="sname"><b class="ch-b">Gravity</b><span>light → serious</span></div>
-              <ol class="steps" aria-label="Gravity from 1 (light) to 5 (serious)">
-                <li><i style="background:#000000"></i><span>1</span></li>
-                <li><i style="background:#000040"></i><span>2</span></li>
-                <li><i style="background:#000080"></i><span>3</span></li>
-                <li><i style="background:#0000BF"></i><span>4</span></li>
-                <li><i style="background:#0000FF"></i><span>5</span></li>
-              </ol>
-            </div>
-          </figure>
-          <aside class="vnote" aria-label="About intensity">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path fill="currentColor" d="M11 6h2v2h-2zM10 10h3v7h1.5v2h-5v-2H11v-5h-1z" />
-            </svg>
-            <p><b>Intensity</b> is a track's three scores added together, from 3 (all 1s) to 15 (all 5s). For intensity,
-              low is 3–7, mid is 8–10 and high is 11–15.</p>
-          </aside>
-        </section>
+    <main>
+      <div class="hm-bar">
+        <nav class="hm-jump" id="hmJump" aria-label="Jump to a game"></nav>
+        <label class="hm-search"><span class="sr-only">Find a robot master</span>
+          <input type="search" id="hmSearch" placeholder="Find a robot master" autocomplete="off" data-testid="hm-search">
+        </label>
       </div>
-
-      <section class="rp" aria-labelledby="rpTitle">
-        <h2 class="sh" id="rpTitle">Master List</h2>
-        <div class="rp-sticky">
-          <nav class="rp-jump" id="rpJump" aria-label="Jump to a game"></nav>
-          <div class="rp-find">
-            <input type="search" id="rpFind" placeholder="Find a robot master" aria-label="Find a robot master"
-              autocomplete="off" spellcheck="false" role="combobox" aria-expanded="false" aria-controls="rpFindList"
-              aria-autocomplete="list">
-            <ul id="rpFindList" role="listbox" aria-label="Matching robot masters" hidden></ul>
-          </div>
-        </div>
-        <div class="rp-body" id="rpBody"></div>
-      </section>
-
-      <section>
-        <h2 class="sh" id="metricHead">Intensity Distribution</h2>
-        <div class="tabs mtabs" id="metricTabs" role="group" aria-label="Choose a score">
-          <button type="button" class="tab" data-metric="total" aria-pressed="true"><span
-              class="chip mchip-all"></span>Intensity</button>
-          <button type="button" class="tab" data-metric="0" aria-pressed="false"><span class="chip"
-              style="background:var(--r)"></span>Energy</button>
-          <button type="button" class="tab" data-metric="1" aria-pressed="false"><span class="chip"
-              style="background:var(--g)"></span>Density</button>
-          <button type="button" class="tab" data-metric="2" aria-pressed="false"><span class="chip"
-              style="background:var(--b)"></span>Gravity</button>
-        </div>
-        <div class="intensity" id="intensity">
-          <div class="ibars" id="ibars" role="group"></div>
-          <div class="iaxis" id="iaxis" aria-hidden="true"></div>
-          <div class="iends" aria-hidden="true"><span id="iLo"></span><span id="iHi"></span></div>
-          <div class="itip" id="itip" hidden></div>
-        </div>
-      </section>
-
-      <section>
-        <h2 class="sh">Color Comparison</h2>
-        <div class="compare" id="compare"></div>
-      </section>
-
-      <section aria-labelledby="budHead">
-        <div class="shead">
-          <h2 class="sh" id="budHead">Color Buddies</h2>
-          <div class="cinfo inline">
-            <button type="button" class="cinfo-btn" aria-label="About color buddies" aria-expanded="false"
-              aria-controls="budNote">
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path fill="currentColor" d="M11 6h2v2h-2zM10 10h3v7h1.5v2h-5v-2H11v-5h-1z" />
-              </svg>
-            </button>
-            <p class="cinfo-tip" id="budNote" role="tooltip">Tracks with identical scores share the exact same color.
-              Click a track to play it, or load a whole group into the visualizer as a custom track list.</p>
-          </div>
-        </div>
-        <div class="buddies" id="buddies"></div>
-      </section>
-    </div>
-
-    <!-- Visualizer view: pickers, hexagon and track list, side-by-side cards, and the quick search table -->
-    <div class="view" id="viewViz" hidden>
-      <section>
-        <h2 class="sh">The Visualizer</h2>
-        <div class="pickers" id="gamePick">
-          <label class="pick"><span class="plabel">Game</span>
-            <select id="gameSel"></select>
-          </label>
-          <div class="pick cpick">
-            <span class="plabel" id="customLbl">Custom track list</span>
-            <button type="button" class="cbtn" id="customBtn" aria-haspopup="true" aria-expanded="false"
-              aria-controls="customPanel" aria-labelledby="customLbl customBtnText"><span id="customBtnText">Pick tracks
-                from any game</span><svg viewBox="0 0 12 12" aria-hidden="true">
-                <path d="M2 4h8L6 8.5z" fill="currentColor" />
-              </svg></button>
-            <div class="cpanel" id="customPanel" hidden>
-              <input type="text" id="customFilter" placeholder="Filter by robot master or game"
-                aria-label="Filter tracks" autocomplete="off" spellcheck="false">
-              <div class="clist" id="customList" role="group" aria-label="Tracks to add to the custom list"></div>
-              <div class="cfoot"><span id="customCount">0 selected</span><button type="button" class="tab"
-                  id="customClear">Clear</button><button type="button" class="tab" id="customDone">Done</button></div>
-            </div>
-          </div>
-          <div class="pick spick">
-            <span class="plabel" id="savedLbl">Saved lists</span>
-            <div class="srow">
-              <select id="savedSel" aria-labelledby="savedLbl">
-                <option value="">No saved lists yet</option>
-              </select>
-              <button type="button" class="tab" id="saveBtn" disabled>Save list</button>
-              <button type="button" class="tab" id="delBtn" hidden>Delete</button>
-            </div>
-            <form class="sform" id="saveForm" hidden>
-              <input type="text" id="saveName" maxlength="60" placeholder="Name this list" aria-label="List name"
-                autocomplete="off" required>
-              <button type="submit" class="tab">Save</button><button type="button" class="tab"
-                id="saveCancel">Cancel</button>
-            </form>
-            <span class="snote" id="saveNote" aria-live="polite"></span>
-          </div>
-        </div>
-      </section>
-
-      <section class="stage">
-        <div>
-          <div class="chart"><svg id="big" viewBox="-215 -152 430 304" role="img"
-              aria-label="Hexagon chart of the selected game's stage themes" aria-describedby="chartNote"></svg>
-            <div class="cinfo">
-              <button type="button" class="cinfo-btn" id="chartInfo" aria-label="How to read this chart"
-                aria-expanded="false" aria-controls="chartNote">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path fill="currentColor" d="M11 6h2v2h-2zM10 10h3v7h1.5v2h-5v-2H11v-5h-1z" />
-                </svg>
-              </button>
-              <p class="cinfo-tip" id="chartNote" role="tooltip">Every axis starts at 0 in the center and grows to 5 in
-                both directions, so each score marks two opposite points and every shape is symmetric through the
-                center. The rings mark 1 through 4, and the outer edge is 5.</p>
-            </div>
-          </div>
-        </div>
-        <div class="side">
-          <div class="readout">
-            <div class="rbanner" id="rSw"><span class="sprbox spr-banner" id="rSprite" hidden></span>
-              <h2 id="rName"></h2>
-              <div class="rbadges" id="rBadges"></div><span class="rserial" id="rSerial"></span>
-            </div>
-            <div class="rinfo">
-              <p class="sub" id="rSub"></p>
-              <div class="code" id="rCode"></div>
-              <button type="button" class="rp-fav" id="rFav" aria-pressed="false" hidden><svg viewBox="0 0 12 12"
-                  aria-hidden="true" shape-rendering="crispEdges">
-                  <path fill="currentColor"
-                    d="M5 0h2v2H5zM4 2h4v1H4zM0 3h12v1H0zM1 4h10v1H1zM2 5h8v1H2zM3 6h6v2H3zM2 8h8v1H2zM2 9h3v1H2zM7 9h3v1H7zM1 10h3v1H1zM8 10h3v1H8zM1 11h2v1H1zM9 11h2v1H9z" />
-                </svg></button>
-            </div>
-          </div>
-          <ul class="legend" id="legend"></ul>
-        </div>
-      </section>
-
-      <!-- Side by Side Comparison: hidden for now; remove the hidden attribute to show it again -->
-      <section id="sideBySide" hidden>
-        <h2 class="sh">Side by Side Comparison</h2>
-        <div class="grid" id="cards"></div>
-      </section>
-
-      <section>
-        <div class="shead">
-          <h2 class="sh">Quick Search</h2>
-          <div class="cinfo inline">
-            <button type="button" class="cinfo-btn" aria-label="How to use this table" aria-expanded="false"
-              aria-controls="tableNote">
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path fill="currentColor" d="M11 6h2v2h-2zM10 10h3v7h1.5v2h-5v-2H11v-5h-1z" />
-              </svg>
-            </button>
-            <p class="cinfo-tip" id="tableNote" role="tooltip">Click a column heading to sort the table, and click it
-              again to reverse the order. Click a row to play its theme.</p>
-          </div>
-        </div>
-        <div class="tfilters" role="search" aria-label="Filter the table">
-          <label class="pick tf-q"><span class="plabel">Search</span>
-            <input type="search" id="fText" placeholder="Robot master, serial, color…" autocomplete="off"
-              spellcheck="false"></label>
-          <label class="pick"><span class="plabel">Game</span><select id="fGame">
-              <option value="">All games</option>
-            </select></label>
-          <label class="pick"><span class="plabel">Color</span><select id="fColor">
-              <option value="">All colors</option>
-            </select></label>
-          <label class="pick"><span class="plabel">Composer</span><select id="fComposer">
-              <option value="">All composers</option>
-            </select></label>
-          <div class="tf-meta"><span id="fCount" aria-live="polite"></span><button type="button" class="tab" id="fClear"
-              hidden>Clear filters</button></div>
-        </div>
-        <div class="tablewrap">
-          <table class="tracks" id="trackTable" aria-describedby="tableNote">
-            <thead>
-              <tr>
-                <th scope="col" data-key="game"><button type="button">Game</button></th>
-                <th scope="col" data-key="dln"><button type="button">Serial</button></th>
-                <th scope="col" data-key="name"><button type="button">Robot master</button></th>
-                <th scope="col" data-key="e" class="n"><button type="button" aria-label="Energy"
-                    title="Energy">Enr</button></th>
-                <th scope="col" data-key="d" class="n"><button type="button" aria-label="Density"
-                    title="Density">Den</button></th>
-                <th scope="col" data-key="g" class="n"><button type="button" aria-label="Gravity"
-                    title="Gravity">Grv</button></th>
-                <th scope="col" data-key="total" class="n"><button type="button" aria-label="Intensity"
-                    title="Intensity">Int</button></th>
-                <th scope="col" data-key="cname"><button type="button">Color</button></th>
-                <th scope="col" data-key="color"><button type="button">Hex</button></th>
-                <th scope="col" data-key="composer"><button type="button">Composer</button></th>
-              </tr>
-            </thead>
-            <tbody></tbody>
-          </table>
-        </div>
-      </section>
-    </div>
+      <p class="hint hm-count" id="hmCount" aria-live="polite"></p>
+      <div id="roster" class="hm-roster"></div>
+    </main>
   </div>
-
-  <!-- Floating shortcuts to the visualizer and favorites: show on the report once the title bar's buttons have scrolled away -->
-  <div class="fabs">
-    <button type="button" class="themetoggle vizfab" id="vizFab" data-testid="viz-fab" hidden>
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path fill="currentColor"
-          d="M11 2h2v4h-2V2zm0 16h2v4h-2v-4zM2 11h4v2H2v-2zm16 0h4v2h-4v-2zM8 8h8v8H8V8zm2 2v4h4v-4h-4z" />
-      </svg>
-      <!-- <span>Viz</span> -->
-    </button>
-    <button type="button" class="themetoggle vizfab favfab" id="favFab" data-testid="fav-fab" aria-label="Open favorites" hidden>
-      <svg viewBox="0 0 12 12" aria-hidden="true" shape-rendering="crispEdges">
-        <path fill="currentColor"
-          d="M5 0h2v2H5zM4 2h4v1H4zM0 3h12v1H0zM1 4h10v1H1zM2 5h8v1H2zM3 6h6v2H3zM2 8h8v1H2zM2 9h3v1H2zM7 9h3v1H7zM1 10h3v1H1zM8 10h3v1H8zM1 11h2v1H1zM9 11h2v1H9z" />
-      </svg>
-      <!-- <span>Fav</span> -->
-    </button>
-  </div>
-
-  <!-- Shared badge tooltip, outside both views so it works in the visualizer and the report -->
-  <div class="gtip" id="gtip" role="tooltip" hidden></div>
-  <script type="module" src="src/app.js"></script>
+  <script type="module" src="src/home.js"></script>
 </body>
 
 </html>

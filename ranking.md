@@ -6,7 +6,7 @@
 - range - how many unique sections are there?
 
 ## ratings
-1-5: poor / lacking / decent / excellent / exemplary
+1-5: lacking / basic / decent / excellent / exemplary
 
 ## music range scoring system
 
@@ -16,7 +16,7 @@
 - i- = tiny intro (half point only)
 - o = outro (short unique ending section)
 - a-e = distinct inner section
-- \+ = possible half point for unique extensions
+- `x` = possible half point for unique extensions
 
 ### rules
 - Each unique letter is worth a point

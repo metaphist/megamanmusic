@@ -3,7 +3,7 @@
 import { GAMES, AXES, trackKey, trackOf } from "./model.js";
 import { inkOn, fmt, channel } from "./colors.js";
 import { GRADES, METRICS, RATINGS, gradeOf, totalOf } from "./grades.js";
-import { SPRITES } from "../data/sprites.js";
+import { portrait, artKey as keyOf } from "./art.js";
 import { $, esc, setupTheme } from "./util.js";
 
 const DEFAULT = "mm5|Gyro Man";
@@ -12,15 +12,6 @@ const GRADED = ALL.filter(t => t.ratings);
 const player = $("player");
 
 // ---- Data the model doesn't load ----
-
-// Modern artwork, keyed like the sprites ("mm5|Gyro Man")
-async function loadArt() {
-  try {
-    const r = await fetch("art/sources.json");
-    if (!r.ok) throw new Error(r.status);
-    return new Map((await r.json()).map(a => [a.game + "|" + a.name, "art/" + a.file]));
-  } catch (e) { return new Map(); }
-}
 
 // Song structures from ranking.md's range notes, like "i a b o", keyed like the sprites. Each note names its track by
 // the start of its name ("gyro"), and a few by a nickname.
@@ -44,8 +35,7 @@ async function loadStructures() {
   return out;
 }
 
-const [ART, STRUCTURES] = await Promise.all([loadArt(), loadStructures()]);
-const keyOf = t => t.game.id + "|" + t.name;
+const STRUCTURES = await loadStructures();
 
 // ---- Pieces ----
 
@@ -57,13 +47,6 @@ function standing(t, pool) {
   const place = pool.filter(o => totalOf(o.ratings) > total).length + 1;
   const tied = pool.filter(o => o !== t && totalOf(o.ratings) === total);
   return { place, tied, of: pool.length, text: (tied.length ? "tied for " : "") + ordinal(place) };
-}
-
-function portrait(t, cls = "") {
-  const art = ART.get(keyOf(t));
-  if (art) return `<img class="rm-art ${cls}" src="${art}" alt="">`;
-  const s = SPRITES[keyOf(t)];
-  return s ? `<img class="rm-art rm-sprite ${cls}" src="${s.src}" width="${s.w}" height="${s.h}" alt="">` : "";
 }
 
 // Five pips with the first n lit

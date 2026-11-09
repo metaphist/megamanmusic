@@ -3,15 +3,18 @@
 .rm { display: flex; flex-direction: column; gap: 24px }
 .rm-pick select { min-width: 220px }
 
-/* ---- Hero: artwork over the track's color ---- */
+/* ---- Hero: the track's color, with the artwork at the right, layered under the text ---- */
+/* Art and text share one grid cell: the art sits at the bottom right, the text on top of it from the left, so on
+   mid-size screens the name runs over the art. The art can fill the hero's full height (400px less the 28px top
+   padding), running under the badges, which stay on top. */
 .rm-hero {
   --c: var(--surface);
   --ink-on: var(--ink);
   position: relative;
   display: grid;
-  grid-template-columns: minmax(180px, 300px) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr);
   align-items: end;
-  gap: 8px 32px;
+  min-height: 400px;
   padding: 28px 32px 0;
   border-radius: 18px;
   overflow: hidden;
@@ -21,20 +24,23 @@
     linear-gradient(160deg, var(--c), color-mix(in srgb, var(--c) 55%, #000 45%));
 }
 .rm-hero.rm-plain { border: 1px solid var(--line) }
-.rm-hero-art { align-self: end; display: flex; justify-content: center }
+.rm-hero-art, .rm-hero-text { grid-area: 1 / 1 }
+.rm-hero-art { z-index: 0; justify-self: end; align-self: end; display: flex; justify-content: center; margin-right: 8px }
 .rm-hero-art .rm-art {
   display: block;
-  max-height: 340px;
+  max-height: 372px;
+  max-width: min(460px, 62vw);
   width: auto;
   filter: drop-shadow(0 10px 18px rgba(0, 0, 0, .35));
 }
 .rm-hero-art .rm-sprite { height: 180px; image-rendering: pixelated; margin-bottom: 24px }
-/* The badges sit absolutely at the top right (20px down, 52px tall), so the text starts below them: 20 + 52 + 12px gap, minus the hero's 28px top padding */
-.rm-hero-text { padding: 56px 0 28px; display: flex; flex-direction: column; gap: 8px; align-items: flex-start }
-.rm-hero .eyebrow { color: inherit; opacity: .8 }
+.rm-hero-text { z-index: 1; padding: 0 0 28px; display: flex; flex-direction: column; gap: 8px; align-items: flex-start }
+/* A glow in the track's color keeps the text readable where it crosses the art */
+.rm-hero-text h1, .rm-hero-text p { text-shadow: 0 0 3px var(--c), 0 0 10px var(--c), 0 0 22px var(--c) }
+.rm-hero .eyebrow { color: inherit; opacity: .85 }
 .rm-hero h1 { font-size: clamp(36px, 7vw, 64px) }
 .rm-composer { margin: 0; opacity: .85 }
-.rm-badges { position: absolute; top: 20px; right: 20px; display: flex; gap: 10px; flex-wrap: nowrap; justify-content: flex-end }
+.rm-badges { z-index: 2; position: absolute; top: 20px; left: 32px; display: flex; gap: 10px; flex-wrap: nowrap; justify-content: flex-start }
 .rm-badge {
   display: grid;
   grid-template-columns: auto auto;
@@ -187,15 +193,21 @@
 
 @media (max-width: 760px) {
   .rm-grid { grid-template-columns: minmax(0, 1fr) }
-  .rm-hero { grid-template-columns: minmax(0, 1fr); padding: 84px 20px 0; text-align: left }
-  .rm-hero-art { order: 2 }
-  .rm-hero-art .rm-art { max-height: 240px }
-  .rm-hero-text { padding: 0 0 8px }
-  .rm-badges { left: 16px; right: 16px; justify-content: flex-start; flex-wrap: wrap }
+  .rm-hero { padding: 28px 24px 0 }
+  .rm-badges { left: 24px }
   .rm-pick select { min-width: 0; max-width: 52vw }
 }
 
+/* At the narrowest sizes the art drops below the text instead of sitting under it, and the badges go above */
+@media (max-width: 520px) {
+  .rm-hero { min-height: 0; padding: 20px 20px 0; row-gap: 16px }
+  .rm-hero-art, .rm-hero-text { grid-area: auto }
+  .rm-hero-art { order: 2; justify-self: center; margin-right: 0 }
+  .rm-hero-art .rm-art { max-height: 240px; max-width: 100% }
+  .rm-hero-text { padding: 0 0 8px }
+  .rm-badges { position: static; order: -1; justify-content: flex-start; flex-wrap: wrap }
+}
 /* Artwork with a solid white background, framed instead of cut out */
-.rm-hero-art .rm-boxed { max-height: 280px; margin-bottom: 28px; border-radius: 12px; border: 6px solid #fff; filter: none; box-shadow: 0 10px 24px rgba(0, 0, 0, .3) }
+.rm-hero-art .rm-boxed { max-height: 320px; margin-bottom: 28px; border-radius: 12px; border: 6px solid #fff; filter: none; box-shadow: 0 10px 24px rgba(0, 0, 0, .3) }
 .rm-tile-art:has(.rm-boxed) { padding: 0 }
 .rm-tile-art .rm-boxed { width: 100%; height: 100%; max-height: none; object-fit: cover; object-position: top }
