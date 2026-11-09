@@ -91,7 +91,7 @@
   "wikiFile": "MmPu_Timeman.png"
  },
  {
-  "file": "mmpu-oilman.jpg",
+  "file": "mmpu-oilman.png",
   "game": "mmpu",
   "name": "Oil Man",
   "source": "https://static.wikia.nocookie.net/megaman/images/c/cd/Oilmanpco.jpg/revision/latest?cb=20210721024207",
@@ -721,56 +721,56 @@
   "wikiFile": "Topman.png"
  },
  {
-  "file": "mmv-mercury.jpg",
+  "file": "mmv-mercury.png",
   "game": "mmv",
   "name": "Mercury",
   "source": "https://static.wikia.nocookie.net/megaman/images/9/9e/MMGB5-Mercury-Art.jpg/revision/latest?cb=20260624193756",
   "wikiFile": "MMGB5-Mercury-Art.jpg"
  },
  {
-  "file": "mmv-venus.jpg",
+  "file": "mmv-venus.png",
   "game": "mmv",
   "name": "Venus",
   "source": "https://static.wikia.nocookie.net/megaman/images/4/49/MMGB5-Venus-Art.jpg/revision/latest?cb=20260624193748",
   "wikiFile": "MMGB5-Venus-Art.jpg"
  },
  {
-  "file": "mmv-mars.jpg",
+  "file": "mmv-mars.png",
   "game": "mmv",
   "name": "Mars",
   "source": "https://static.wikia.nocookie.net/megaman/images/9/92/MMGB5-Mars-Art.jpg/revision/latest?cb=20260624193451",
   "wikiFile": "MMGB5-Mars-Art.jpg"
  },
  {
-  "file": "mmv-neptune.jpg",
+  "file": "mmv-neptune.png",
   "game": "mmv",
   "name": "Neptune",
   "source": "https://static.wikia.nocookie.net/megaman/images/d/df/MMGB5-Neptune-Art.jpg/revision/latest?cb=20260624190932",
   "wikiFile": "MMGB5-Neptune-Art.jpg"
  },
  {
-  "file": "mmv-jupiter.jpg",
+  "file": "mmv-jupiter.png",
   "game": "mmv",
   "name": "Jupiter",
   "source": "https://static.wikia.nocookie.net/megaman/images/1/13/MMGB5-Jupiter-Art.jpg/revision/latest?cb=20260624193329",
   "wikiFile": "MMGB5-Jupiter-Art.jpg"
  },
  {
-  "file": "mmv-saturn.jpg",
+  "file": "mmv-saturn.png",
   "game": "mmv",
   "name": "Saturn",
   "source": "https://static.wikia.nocookie.net/megaman/images/c/ca/MMGB5-Saturn-Art.jpg/revision/latest?cb=20260624193214",
   "wikiFile": "MMGB5-Saturn-Art.jpg"
  },
  {
-  "file": "mmv-uranus.jpg",
+  "file": "mmv-uranus.png",
   "game": "mmv",
   "name": "Uranus",
   "source": "https://static.wikia.nocookie.net/megaman/images/9/9c/MMGB5-Uranus-Art.jpg/revision/latest?cb=20260624193051",
   "wikiFile": "MMGB5-Uranus-Art.jpg"
  },
  {
-  "file": "mmv-pluto.jpg",
+  "file": "mmv-pluto.png",
   "game": "mmv",
   "name": "Pluto",
   "source": "https://static.wikia.nocookie.net/megaman/images/c/c6/MMGB5-Pluto-Art.jpg/revision/latest?cb=20260624192934",
