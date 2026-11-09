@@ -16,7 +16,7 @@
 - i- = tiny intro (half point only)
 - o = outro (short unique ending section)
 - a-e = distinct inner section
-- `x` = possible half point for unique extensions
+- `+` = possible half point for unique extensions
 
 ### rules
 - Each unique letter is worth a point
@@ -25,7 +25,7 @@
 
 ### mm1
 - bomb: i a b c (4)
-- ice: i(b) a b (3)
+- ice: i a b (3)
 - fire: a b (2)
 - guts: i a (2)
 - elec: i a b (3)
@@ -111,6 +111,6 @@
 
 
 ### mmpu
-
-
+ - ice: i a b (3)
+ 
 ### mm&b

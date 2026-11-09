@@ -12,12 +12,44 @@ test.describe("home page", () => {
     await expect(page.locator("#hmCount")).toHaveText(`${TOTAL} robot masters across ${GAMES.length} games`);
   });
 
+  // Metal Man rather than Gyro Man, who the profile shows by default
   test("links each robot master to its profile", async ({ page }) => {
     await page.goto("/");
-    const gyro = page.locator('#game-mm5 .rm-tile', { hasText: "Gyro Man" });
-    await expect(gyro).toHaveAttribute("href", "robot-master.html?track=mm5.3");
-    await gyro.click();
+    const metal = page.locator("#game-mm2 .rm-tile", { hasText: "Metal Man" });
+    await expect(metal).toHaveAttribute("href", "robot-master.html#mm2.0");
+    await metal.click();
+    await expect(page.locator(".rm-hero h1")).toHaveText("Metal Man");
+  });
+
+  test("the profile links survive a server redirect that drops the query string", async ({ page }) => {
+    // Like hosts that tidy URLs: the first request for the page is redirected, and any query string is lost.
+    // (The browser carries the hash across the redirect.)
+    await page.route(/\/robot-master\.html(\?.*)?$/, r => {
+      const to = new URL(r.request().url());
+      to.search = "";
+      return r.fulfill({ status: 301, headers: { Location: to.href } });
+    }, { times: 1 });
+    await page.goto("/");
+    await page.locator("#game-mm2 .rm-tile", { hasText: "Metal Man" }).click();
+    await expect(page).toHaveURL(/\/robot-master\.html#mm2\.0$/);
+    await expect(page.locator(".rm-hero h1")).toHaveText("Metal Man");
+  });
+
+  test("the profile's picker, tiles and Back button move between robot masters", async ({ page }) => {
+    await page.goto("/robot-master.html#mm2.0");
+    await expect(page.locator(".rm-hero h1")).toHaveText("Metal Man");
+    await page.getByTestId("rm-pick").selectOption("mm5.3");
     await expect(page.locator(".rm-hero h1")).toHaveText("Gyro Man");
+    await page.locator(".rm-tile", { hasText: "Wave Man" }).first().click();
+    await expect(page.locator(".rm-hero h1")).toHaveText("Wave Man");
+    await page.goBack();
+    await expect(page.locator(".rm-hero h1")).toHaveText("Gyro Man");
+    await expect(page.getByTestId("rm-pick")).toHaveValue("mm5.3");
+  });
+
+  test("the profile still opens older ?track= links", async ({ page }) => {
+    await page.goto("/robot-master.html?track=mm2.0");
+    await expect(page.locator(".rm-hero h1")).toHaveText("Metal Man");
   });
 
   test("links to the color deep dive", async ({ page }) => {

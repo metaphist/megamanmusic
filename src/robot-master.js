@@ -1,5 +1,5 @@
 // The robot master profile page: one track's color, tier grade, song structure, color neighbors and the rest of its
-// game, all worked out from the data. Pick the track with ?track=<game>.<index> (like mm5.3); Gyro Man is the default.
+// game, all worked out from the data. Pick the track with #<game>.<index> (like #mm5.3); Gyro Man is the default.
 import { GAMES, AXES, trackKey, trackOf } from "./model.js";
 import { inkOn, fmt, channel } from "./colors.js";
 import { GRADES, METRICS, RATINGS, gradeOf, totalOf } from "./grades.js";
@@ -149,7 +149,7 @@ function structureSection(t) {
 
 function tile(o, current) {
   const gr = o.ratings && gradeOf(o.ratings);
-  return `<a class="rm-tile${o === current ? " me" : ""}" href="?track=${trackKey(o)}" style="--c:${o.color || "var(--grid)"}" ${o === current ? 'aria-current="page"' : ""}>
+  return `<a class="rm-tile${o === current ? " me" : ""}" href="#${trackKey(o)}" style="--c:${o.color || "var(--grid)"}" ${o === current ? 'aria-current="page"' : ""}>
     <span class="rm-tile-art">${portrait(o)}</span>
     <span class="rm-tile-name">${esc(o.name)}</span>
     <span class="rm-tile-meta">${o.cname ? esc(o.cname) : "Unscored"}${gr ? ` · <b class="rm-mini tl-${gr.letter}">${gr.letter}</b>` : ""}</span>
@@ -226,8 +226,10 @@ function setPlaying(on) {
   b.querySelector("span").textContent = on ? "Stop" : "Play theme";
 }
 
+// The track is in the hash, like #mm5.3. Servers that tidy URLs (dropping ".html") can lose a query string when they
+// redirect, but the browser keeps the hash. Older ?track=mm5.3 links still work.
 function current() {
-  const key = new URLSearchParams(location.search).get("track");
+  const key = decodeURIComponent(location.hash.slice(1)) || new URLSearchParams(location.search).get("track");
   const t = key && trackOf(key);
   return t || ALL.find(o => keyOf(o) === DEFAULT);
 }
@@ -235,23 +237,14 @@ function current() {
 function setupPicker() {
   $("rmPick").innerHTML = GAMES.map(g => `<optgroup label="${esc(g.title)}">${g.tracks.map(t =>
     `<option value="${trackKey(t)}">${esc(t.name)}</option>`).join("")}</optgroup>`).join("");
-  $("rmPick").addEventListener("change", e => {
-    history.pushState(null, "", "?track=" + e.target.value);
-    render(trackOf(e.target.value));
-    scrollTo({ top: 0 });
-  });
+  $("rmPick").addEventListener("change", e => { location.hash = e.target.value; });
 }
 
-// Tiles move between profiles without reloading, and the back button follows
-document.addEventListener("click", e => {
-  const a = e.target.closest("a.rm-tile");
-  if (!a || e.metaKey || e.ctrlKey || e.shiftKey) return;
-  e.preventDefault();
-  history.pushState(null, "", a.getAttribute("href"));
+// Picking a track, clicking a tile, and Back and Forward all change the hash, which redraws the profile
+addEventListener("hashchange", () => {
   render(current());
   scrollTo({ top: 0, behavior: "smooth" });
 });
-addEventListener("popstate", () => render(current()));
 
 setupTheme();
 setupPicker();

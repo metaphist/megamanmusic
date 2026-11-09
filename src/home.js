@@ -1,4 +1,4 @@
-// The home page: every robot master, grouped by game, each linking to its profile (robot-master.html?track=mm5.3).
+// The home page: every robot master, grouped by game, each linking to its profile (robot-master.html#mm5.3).
 import { GAMES, trackKey, shortTitle } from "./model.js";
 import { gradeOf } from "./grades.js";
 import { portrait } from "./art.js";
@@ -7,7 +7,7 @@ import { $, esc, plural, setupTheme } from "./util.js";
 function tile(t) {
   const gr = t.ratings && gradeOf(t.ratings);
   const label = [t.name, t.cname, gr && `grade ${gr.letter}`].filter(Boolean).join(", ");
-  return `<a class="rm-tile" href="robot-master.html?track=${trackKey(t)}" style="--c:${t.color || "var(--grid)"}"
+  return `<a class="rm-tile" href="robot-master.html#${trackKey(t)}" style="--c:${t.color || "var(--grid)"}"
       data-name="${esc(t.name.toLowerCase())}" aria-label="${esc(label)}">
     <span class="rm-tile-art">${portrait(t, "", true)}</span>
     <span class="rm-tile-name">${esc(t.name)}</span>
@@ -26,8 +26,12 @@ function section(g) {
   </section>`;
 }
 
+// The jump bar's labels: short game names, with the longer ones abbreviated
+const JUMP_ABBR = { "Powered Up": "PU", "& Bass": "&B", "Dual Override": "DU" };
+const jumpLabel = g => JUMP_ABBR[shortTitle(g)] || shortTitle(g);
+
 function render() {
-  $("hmJump").innerHTML = GAMES.map(g => `<a href="#game-${g.id}">${esc(shortTitle(g))}</a>`).join("");
+  $("hmJump").innerHTML = GAMES.map(g => `<a href="#game-${g.id}" title="${esc(g.title)}">${esc(jumpLabel(g))}</a>`).join("");
   $("roster").innerHTML = GAMES.map(section).join("");
   count();
 }
