@@ -59,7 +59,7 @@ function hero(t) {
   return `<section class="rm-hero${t.color ? "" : " rm-plain"}" style="${style}">
     <div class="rm-hero-art">${portrait(t)}</div>
     <div class="rm-hero-text">
-      <p class="eyebrow">${esc(g.title)}${g.year ? " · " + g.year : ""}${t.dln ? " · " + esc(t.dln) : ""}</p>
+      <span class="eyebrow">${esc(g.title)}${g.year ? " · " + g.year : ""}${t.dln ? " · " + esc(t.dln) : ""}</span>
       <h1>${esc(t.name)}</h1>
       ${g.composer ? `<p class="rm-composer">Music by ${esc(g.composer)}</p>` : ""}
       ${t.audio ? `<button type="button" class="rm-play" id="rmPlay" data-testid="rm-play" aria-pressed="false">

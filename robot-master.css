@@ -2,6 +2,9 @@
 
 .rm { display: flex; flex-direction: column; gap: 24px }
 .rm-pick select { min-width: 220px }
+/* The picker and the button group beside it both sit at the bottom of the title bar (the picker's label above it), and the picker matches the buttons' height, so it lines up with the theme toggle */
+.titlebar > .rm-pick, .titlebar:has(> .rm-pick) > .tbtns { align-self: flex-end }
+.titlebar > .rm-pick select { height: 34px; padding-block: 0 }
 
 /* ---- Hero: the track's color, with the artwork at the right, layered under the text ---- */
 /* Art and text share one grid cell: the art sits at the bottom right, the text on top of it from the left, so on
@@ -211,3 +214,10 @@
 .rm-hero-art .rm-boxed { max-height: 320px; margin-bottom: 28px; border-radius: 12px; border: 6px solid #fff; filter: none; box-shadow: 0 10px 24px rgba(0, 0, 0, .3) }
 .rm-tile-art:has(.rm-boxed) { padding: 0 }
 .rm-tile-art .rm-boxed { width: 100%; height: 100%; max-height: none; object-fit: cover; object-position: top }
+
+/* On phones the title bar wraps: the heading takes the first row, and the picker fills the second beside the toggle */
+@media (max-width: 480px) {
+  .titlebar:has(> .rm-pick) > h1 { flex-basis: 100% }
+  .titlebar > .rm-pick { flex: 1 1 0; min-width: 0 }
+  .titlebar > .rm-pick select { width: 100%; min-width: 0; max-width: none }
+}
