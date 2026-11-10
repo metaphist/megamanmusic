@@ -1,6 +1,7 @@
 // The robot master profile page: one track's color, tier grade, song structure, color neighbors and the rest of its
 // game, all worked out from the data. Pick the track with #<game>.<index> (like #mm5.3); Gyro Man is the default.
-import { GAMES, AXES, trackKey, trackOf } from "./model.js";
+import { GAMES, AXES, trackKey, trackOf, shortTitle } from "./model.js";
+import { spriteOf, sprImg } from "./draw.js";
 import { inkOn, fmt, channel } from "./colors.js";
 import { GRADES, METRICS, RATINGS, gradeOf, totalOf, gem } from "./grades.js";
 import { portrait, artKey as keyOf } from "./art.js";
@@ -180,7 +181,8 @@ function gameSection(t) {
 
 function render(t) {
   document.title = `${t.name} · Robot Master Profile`;
-  $("rmPick").value = trackKey(t);
+  picked = t;
+  $("rmPick").value = t.name;
   $("profile").innerHTML = hero(t)
     + `<div class="rm-grid">${colorSection(t)}${tierSection(t)}${structureSection(t)}${neighborsSection(t)}${gameSection(t)}</div>`;
   // A perfect ranking (S+) turns the page's color surfaces into gems
@@ -236,10 +238,87 @@ function current() {
   return t || ALL.find(o => keyOf(o) === DEFAULT);
 }
 
+// The quick switch: a typeahead over every track. Focusing it lists them all by game, scrolled to the current one;
+// typing narrows the list by name, game or serial. Enter or a click opens the pick, and Escape or leaving the box puts
+// the current track's name back.
+let picked = null;
 function setupPicker() {
-  $("rmPick").innerHTML = GAMES.map(g => `<optgroup label="${esc(g.title)}">${g.tracks.map(t =>
-    `<option value="${trackKey(t)}">${esc(t.name)}</option>`).join("")}</optgroup>`).join("");
-  $("rmPick").addEventListener("change", e => { location.hash = e.target.value; });
+  const input = $("rmPick"), list = $("rmPickList");
+  const norm = x => x.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+  const pool = GAMES.flatMap((g, gi) => g.tracks.map(t => ({
+    t, gi, name: norm(t.name), hay: norm(`${t.name} ${g.title} ${shortTitle(g)} ${g.id} ${t.dln || ""}`),
+  })));
+  let hits = [], sel = -1;
+
+  const close = () => {
+    list.hidden = true;
+    input.setAttribute("aria-expanded", "false");
+    input.removeAttribute("aria-activedescendant");
+    sel = -1;
+  };
+  const revert = () => { close(); if (picked) input.value = picked.name; };
+  const mark = (i, block = "nearest") => {
+    sel = i;
+    list.querySelectorAll("li[role=option]").forEach((li, k) => li.setAttribute("aria-selected", k === i ? "true" : "false"));
+    const li = list.querySelector(`#rmp${i}`);
+    if (li) { input.setAttribute("aria-activedescendant", li.id); li.scrollIntoView({ block }); }
+    else input.removeAttribute("aria-activedescendant");
+  };
+  // Until something's typed (the box still shows the current name), every track under its game's heading. With a
+  // query, names starting with it rank first, then names with a word starting with its first word, then game order.
+  const show = (all = false) => {
+    const q = all ? "" : norm(input.value), words = q.split(" ");
+    hits = !q ? pool : pool.filter(p => words.every(w => p.hay.includes(w)))
+      .map(p => ({ ...p, rank: p.name.startsWith(q) ? 0 : p.name.split(" ").some(w => w.startsWith(words[0])) ? 1 : 2 }))
+      .sort((a, b) => a.rank - b.rank || a.gi - b.gi);
+    let game = null;
+    list.innerHTML = hits.length ? hits.map((p, i) => {
+      const head = !q && p.t.game !== game ? `<li class="grp" role="presentation">${esc((game = p.t.game).title)}</li>` : "";
+      return head + pickHit(p.t, i);
+    }).join("") : `<li class="none" role="presentation">No robot master matches “${esc(input.value.trim())}”</li>`;
+    list.hidden = false;
+    input.setAttribute("aria-expanded", "true");
+    if (q) mark(hits.length ? 0 : -1);
+    else mark(hits.findIndex(p => p.t === picked), "center");
+  };
+  const pick = i => {
+    const h = hits[i];
+    if (!h) return;
+    close();
+    input.blur();
+    if (h.t === picked) input.value = picked.name;
+    else location.hash = trackKey(h.t);
+  };
+
+  // Focus selects the name, so typing replaces it, and lists everything
+  const untouched = () => input.value === picked?.name;
+  input.addEventListener("focus", () => { input.select(); show(true); });
+  input.addEventListener("click", () => { if (list.hidden) show(untouched()); });
+  input.addEventListener("input", () => show());
+  input.addEventListener("keydown", e => {
+    if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+      e.preventDefault();
+      if (list.hidden) return show(untouched());
+      if (hits.length) mark(sel < 0 ? (e.key === "ArrowDown" ? 0 : hits.length - 1)
+        : (sel + (e.key === "ArrowDown" ? 1 : hits.length - 1)) % hits.length);
+    } else if (e.key === "Enter") { e.preventDefault(); if (!list.hidden) pick(sel < 0 ? 0 : sel); }
+    else if (e.key === "Escape") { e.preventDefault(); revert(); input.select(); }
+  });
+  // pointerdown keeps focus in the box until the pick lands
+  list.addEventListener("pointerdown", e => {
+    e.preventDefault();
+    const li = e.target.closest("li[data-i]");
+    if (li) pick(+li.dataset.i);
+  });
+  input.addEventListener("blur", () => setTimeout(() => { if (document.activeElement !== input) revert(); }, 120));
+}
+
+function pickHit(t, i) {
+  const s = spriteOf(t);
+  return `<li role="option" id="rmp${i}" aria-selected="false" data-i="${i}"${t === picked ? ' class="me"' : ""}>` +
+    `<span class="sprbox">${s ? sprImg(s, 32, "", 1) : ""}</span>` +
+    `<span><b>${esc(t.name)}</b><small>${esc(t.game.title)}${t.dln ? " · " + esc(t.dln) : ""}</small></span>` +
+    `<i class="${t.vals ? "" : "empty"}" style="${t.vals ? `background:${t.color}` : ""}"></i></li>`;
 }
 
 // Picking a track, clicking a tile, and Back and Forward all change the hash, which redraws the profile

@@ -38,13 +38,36 @@ test.describe("home page", () => {
   test("the profile's picker, tiles and Back button move between robot masters", async ({ page }) => {
     await page.goto("/robot-master.html#mm2.0");
     await expect(page.locator(".rm-hero h1")).toHaveText("Metal Man");
-    await page.getByTestId("rm-pick").selectOption("mm5.3");
+    await page.getByTestId("rm-pick").fill("gyro");
+    await page.getByTestId("rm-pick").press("Enter");
     await expect(page.locator(".rm-hero h1")).toHaveText("Gyro Man");
     await page.locator(".rm-tile", { hasText: "Wave Man" }).first().click();
     await expect(page.locator(".rm-hero h1")).toHaveText("Wave Man");
     await page.goBack();
     await expect(page.locator(".rm-hero h1")).toHaveText("Gyro Man");
-    await expect(page.getByTestId("rm-pick")).toHaveValue("mm5.3");
+    await expect(page.getByTestId("rm-pick")).toHaveValue("Gyro Man");
+  });
+
+  test("the profile's quick switch filters as you type and puts the name back on Escape", async ({ page }) => {
+    await page.goto("/robot-master.html#mm2.0");
+    const pick = page.getByTestId("rm-pick"), list = page.locator("#rmPickList");
+    await expect(pick).toHaveValue("Metal Man");
+    await pick.click();
+    await expect(list).toBeVisible();
+    await expect(list.locator("li.grp").first()).toBeVisible();
+    await expect(list.locator('li[aria-selected="true"]')).toContainText("Metal Man");
+    await pick.fill("mega man 5 gyr");
+    await expect(list.locator("li[role=option]")).toHaveCount(1);
+    await expect(list.locator("li[role=option]")).toContainText("Gyro Man");
+    await pick.fill("zzzz");
+    await expect(list).toContainText("No robot master matches");
+    await pick.press("Escape");
+    await expect(list).toBeHidden();
+    await expect(pick).toHaveValue("Metal Man");
+    await pick.fill("wave");
+    await list.locator("li[role=option]", { hasText: "Wave Man" }).click();
+    await expect(page.locator(".rm-hero h1")).toHaveText("Wave Man");
+    await expect(pick).toHaveValue("Wave Man");
   });
 
   test("the profile still opens older ?track= links", async ({ page }) => {

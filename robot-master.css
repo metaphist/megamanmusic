@@ -1,10 +1,19 @@
 /* The robot master profile page (robot-master.html). Colors come from styles.css; --c is the track's own color. */
 
 .rm { display: flex; flex-direction: column; gap: 24px }
-.rm-pick select { min-width: 220px }
+/* The quick switch: a text box with the selects' caret, over a list styled like the report's robot master search
+   (styles.css shares .rp-find's list rules with .rm-find) */
+.rm-find { position: relative }
+.rm-pick input { box-sizing: border-box; width: 320px; padding-right: 32px; background: var(--surface) var(--caret) no-repeat right 10px center / 12px; text-overflow: ellipsis }
+.rm-pick input:hover { border-color: var(--muted) }
+.rm-pick input:focus-visible { outline: 2px solid var(--b); outline-offset: 2px }
+.rm-find ul { z-index: 10; width: 100%; box-sizing: border-box }
+/* Game headings stick to the top of the list while their tracks scroll under them */
+.rm-find .grp { position: sticky; top: -4px; z-index: 1; display: block; padding: 8px 10px 4px; background: var(--surface); font: 12px var(--display); letter-spacing: .04em; text-transform: uppercase; color: var(--muted); cursor: default }
+.rm-find li.me b::after { content: " · now"; font-weight: 500; color: var(--muted) }
 /* The picker and the button group beside it both sit at the bottom of the title bar (the picker's label above it), and the picker matches the buttons' height, so it lines up with the theme toggle */
 .titlebar > .rm-pick, .titlebar:has(> .rm-pick) > .tbtns { align-self: flex-end }
-.titlebar > .rm-pick select { height: 34px; padding-block: 0 }
+.titlebar > .rm-pick input { height: 34px; padding-block: 0 }
 
 /* ---- Hero: the track's color, with the artwork at the right, layered under the text ---- */
 /* Art and text share one grid cell: the art sits at the bottom right, the text on top of it from the left, so on
@@ -198,7 +207,7 @@
   .rm-grid { grid-template-columns: minmax(0, 1fr) }
   .rm-hero { padding: 28px 24px 0 }
   .rm-badges { left: 24px }
-  .rm-pick select { min-width: 0; max-width: 52vw }
+  .rm-pick input { max-width: 52vw }
 }
 
 /* At the narrowest sizes the art drops below the text instead of sitting under it, and the badges go above */
@@ -219,7 +228,7 @@
 @media (max-width: 480px) {
   .titlebar:has(> .rm-pick) > h1 { flex-basis: 100% }
   .titlebar > .rm-pick { flex: 1 1 0; min-width: 0 }
-  .titlebar > .rm-pick select { width: 100%; min-width: 0; max-width: none }
+  .titlebar > .rm-pick input { width: 100%; max-width: none }
 }
 
 /* ---- Gem: a perfect ranking (S+), whatever the color ----

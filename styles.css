@@ -2094,7 +2094,8 @@ svg text {
   outline-offset: 1px
 }
 
-.rp-find ul {
+.rp-find ul,
+.rm-find ul {
   position: absolute;
   right: 0;
   top: calc(100% + 6px);
@@ -2109,7 +2110,8 @@ svg text {
   box-shadow: 0 6px 18px rgba(0, 0, 0, .16)
 }
 
-.rp-find li {
+.rp-find li,
+.rm-find li {
   display: grid;
   grid-template-columns: 32px minmax(0, 1fr) 16px;
   gap: 10px;
@@ -2118,17 +2120,20 @@ svg text {
   cursor: pointer
 }
 
-.rp-find li[aria-selected="true"] {
+.rp-find li[aria-selected="true"],
+.rm-find li[aria-selected="true"] {
   background: var(--grid);
   box-shadow: inset 3px 0 0 var(--ink)
 }
 
-.rp-find li .sprbox {
+.rp-find li .sprbox,
+.rm-find li .sprbox {
   width: 32px;
   height: 32px
 }
 
-.rp-find li b {
+.rp-find li b,
+.rm-find li b {
   display: block;
   font-weight: 600;
   font-size: 14px;
@@ -2138,24 +2143,28 @@ svg text {
   white-space: nowrap
 }
 
-.rp-find li small {
+.rp-find li small,
+.rm-find li small {
   display: block;
   font-family: var(--mono);
   font-size: 11px;
   color: var(--muted)
 }
 
-.rp-find li i {
+.rp-find li i,
+.rm-find li i {
   width: 16px;
   height: 16px;
   border: 1px solid var(--halo)
 }
 
-.rp-find li i.empty {
+.rp-find li i.empty,
+.rm-find li i.empty {
   background: repeating-linear-gradient(135deg, var(--grid) 0 4px, transparent 4px 8px)
 }
 
-.rp-find .none {
+.rp-find .none,
+.rm-find .none {
   display: block;
   padding: 10px 12px;
   font-size: 13px;
