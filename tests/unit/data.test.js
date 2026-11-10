@@ -2,7 +2,7 @@
 import { test, describe } from "node:test";
 import assert from "node:assert/strict";
 import { readFile, access } from "node:fs/promises";
-import { ROOT, readScores, readRatings } from "./helpers.js";
+import { ROOT, readScores, readRatings, readStructures } from "./helpers.js";
 import { GAMES } from "../../data/games.js";
 import { SPRITES } from "../../data/sprites.js";
 import { COLOR_NAMES } from "../../data/color-names.js";
@@ -51,7 +51,7 @@ describe("games", () => {
 describe("scores.csv", () => {
   test("has the expected header", async () => {
     const text = await readFile(new URL("data/scores.csv", ROOT), "utf8");
-    assert.equal(text.split(/\r?\n/)[0], "game,name,energy,density,gravity,expression,synergy,range");
+    assert.equal(text.split(/\r?\n/)[0], "game,name,energy,density,gravity,expression,synergy,range,structure");
   });
   test("every row names a real track, once", async () => {
     const rows = await readScores(), seen = new Set();
@@ -71,6 +71,12 @@ describe("scores.csv", () => {
   test("every row's tier list ratings are either all 1–5 or left blank", async () => {
     for (const [game, name, ...vals] of await readRatings()) {
       assert.match(vals.join(","), /^([1-5],[1-5],[1-5]|,,)$/, `${game} ${name}`);
+    }
+  });
+  test("structures are blank or sections from ranking.md's legend: i, i(r), i-, o, and a-e with an optional +", async () => {
+    const section = String.raw`(i|i\(r\)|i-|o|[a-e]\+?)`;
+    for (const [game, name, structure] of await readStructures()) {
+      assert.match(structure, new RegExp(`^(${section}( ${section})*)?$`), `${game} ${name}`);
     }
   });
 });

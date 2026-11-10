@@ -30,7 +30,9 @@ async function readRows() {
 // Its color scores, as rows of [game, name, energy, density, gravity]
 export const readScores = async () => (await readRows()).map(r => r.slice(0, 5));
 // Its tier list ratings, as rows of [game, name, expression, synergy, range]
-export const readRatings = async () => (await readRows()).map(r => [...r.slice(0, 2), ...r.slice(5)]);
+export const readRatings = async () => (await readRows()).map(r => [...r.slice(0, 2), ...r.slice(5, 8)]);
+// Its song structures, as rows of [game, name, structure]
+export const readStructures = async () => (await readRows()).map(r => [...r.slice(0, 2), r[8] ?? ""]);
 
 // A minimal stand-in for the SVG DOM: enough of createElementNS, attributes and querySelectorAll(tag) for draw.js
 export class FakeElement {

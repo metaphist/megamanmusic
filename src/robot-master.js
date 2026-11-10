@@ -1,6 +1,6 @@
 // The robot master profile page: one track's color, tier grade, song structure, color neighbors and the rest of its
 // game, all worked out from the data. Pick the track with #<game>.<index> (like #mm5.3); Gyro Man is the default.
-import { GAMES, AXES, trackKey, trackOf, shortTitle } from "./model.js";
+import { GAMES, AXES, trackKey, trackOf, shortTitle, rangeOf } from "./model.js";
 import { spriteOf, sprImg } from "./draw.js";
 import { inkOn, fmt, channel } from "./colors.js";
 import { GRADES, METRICS, RATINGS, gradeOf, totalOf, gem } from "./grades.js";
@@ -11,32 +11,6 @@ const DEFAULT = "mm5|Gyro Man";
 const ALL = GAMES.flatMap(g => g.tracks);
 const GRADED = ALL.filter(t => t.ratings);
 const player = $("player");
-
-// ---- Data the model doesn't load ----
-
-// Song structures from ranking.md's range notes, like "i a b o", keyed like the sprites. Each note names its track by
-// the start of its name ("gyro"), and a few by a nickname.
-const NICKNAMES = { flower: "plant", skill: "skull", phar: "pharaoh", grav: "gravity" };
-async function loadStructures() {
-  const out = new Map();
-  try {
-    const r = await fetch("ranking.md", { cache: "no-cache" });
-    if (!r.ok) throw new Error(r.status);
-    let game = null;
-    for (const line of (await r.text()).split(/\r?\n/)) {
-      const h = line.match(/^#{2,3}\s+(mm\S*)\s*$/);
-      if (h) { game = GAMES.find(g => g.id === h[1].replace("&", "")); continue; }
-      const m = line.match(/^-\s*(\w+):\s*(.+?)\s*\((\d+(?:\.\d+)?)\)\s*$/);
-      if (!m || !game) continue;
-      const start = NICKNAMES[m[1]] || m[1];
-      const hits = game.tracks.filter(t => t.name.toLowerCase().startsWith(start));
-      if (hits.length === 1) out.set(game.id + "|" + hits[0].name, { notes: m[2].split(/\s+/), score: +m[3] });
-    }
-  } catch (e) { }
-  return out;
-}
-
-const STRUCTURES = await loadStructures();
 
 // ---- Pieces ----
 
@@ -127,10 +101,10 @@ function tierSection(t) {
   </section>`;
 }
 
-// The range notes as a strip of sections: intros and outros muted, each unique inner section its own shade
+// The structure column as a strip of sections: intros and outros muted, each unique inner section its own shade
 function structureSection(t) {
-  const s = STRUCTURES.get(keyOf(t));
-  if (!s) return "";
+  if (!t.structure) return "";
+  const s = { notes: t.structure, score: rangeOf(t.structure) };
   const letters = [...new Set(s.notes.map(n => n[0]).filter(l => /[a-e]/.test(l)))];
   const label = n => n.startsWith("i(") ? "intro, repeated in the loop" : n.startsWith("i-") ? "tiny intro" : n[0] === "i" ? "intro"
     : n[0] === "o" ? "outro" : "section " + n[0].toUpperCase() + (n.endsWith("+") ? ", extended" : "");

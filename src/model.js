@@ -36,9 +36,10 @@ export const tableTitle = g => TABLE_ABBR[shortTitle(g)] || shortTitle(g);
 
 // ---- Loading ----
 
-// Scores live in data/scores.csv (game,name,energy,density,gravity,expression,synergy,range; blank = not scored
-// yet), matched to tracks by game id and name. Each scored track gets a code of its three color scores, like "352", and
-// each rated track gets its three tier list ratings, like [5, 1, 3]; the rest get null.
+// Scores live in data/scores.csv (game,name,energy,density,gravity,expression,synergy,range,structure; blank = not
+// scored yet), matched to tracks by game id and name. Each scored track gets a code of its three color scores, like
+// "352", each rated track its three tier list ratings, like [5, 1, 3], and each one with a structure its song's
+// sections, like ["i", "a", "b", "o"]; the rest get null.
 async function loadScores() {
   let rows = new Map();
   try {
@@ -52,6 +53,7 @@ async function loadScores() {
     const row = rows.get(g.id + "|" + t.name);
     t.code = row?.code || null;
     t.ratings = row?.ratings || null;
+    t.structure = row?.structure || null;
   }));
 }
 
@@ -82,9 +84,19 @@ function parseScores(csv) {
     const cells = line.match(/("([^"]|"")*"|[^,]*)(,|$)/g)
       .map(c => c.replace(/,$/, "").replace(/^"|"$/g, "").replace(/""/g, '"').trim());
     const [game, name, ...vals] = cells;
-    rows.set(game + "|" + name, { code: oneToFive(vals.slice(0, 3))?.join(""), ratings: oneToFive(vals.slice(3, 6)) });
+    const notes = (vals[6] || "").split(/\s+/).filter(Boolean);
+    rows.set(game + "|" + name, {
+      code: oneToFive(vals.slice(0, 3))?.join(""), ratings: oneToFive(vals.slice(3, 6)), structure: notes.length ? notes : null,
+    });
   }
   return rows;
+}
+
+// A structure's range total (see ranking.md): each unique section is a point, a tiny intro ("i-") half a point, and an
+// extension ("b+") half a point, or a point and a half for a section heard only extended (a "c+" with no "c")
+export function rangeOf(notes) {
+  return [...new Set(notes)].reduce((sum, n) =>
+    sum + (n === "i-" ? .5 : n.endsWith("+") ? (notes.includes(n.slice(0, -1)) ? .5 : 1.5) : 1), 0);
 }
 
 // ---- Distinction badges ----

@@ -70,6 +70,15 @@ test.describe("home page", () => {
     await expect(pick).toHaveValue("Wave Man");
   });
 
+  test("the profile draws the song structure from scores.csv and works out its range", async ({ page }) => {
+    await page.goto("/robot-master.html#mm2.0");
+    await page.getByTestId("rm-pick").fill("turbo");
+    await page.getByTestId("rm-pick").press("Enter");
+    const card = page.locator("section", { has: page.locator("#rmStructHead") });
+    await expect(card.locator(".rm-sec b")).toHaveText(["i-", "a", "b", "c+"]);
+    await expect(card).toContainText("4 parts, 4 unique: a range of 4");
+  });
+
   test("the profile still opens older ?track= links", async ({ page }) => {
     await page.goto("/robot-master.html?track=mm2.0");
     await expect(page.locator(".rm-hero h1")).toHaveText("Metal Man");

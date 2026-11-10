@@ -18,10 +18,12 @@ const CSV = [
   "nope,Cut Man,1,1,1",                  // no such game
   'mm2,"Air Man",3,"4",5',
   "mm2,Bubble Man,1.5,2,3",              // not a whole number: not scored
+  "mm2,Wood Man,1,1,1,3,3,3, i  a b o ",  // a song structure after the ratings
+  "mm2,Heat Man,,,,,,,a b",              // a structure without scores
 ].join("\r\n");
 
 stubFetch({ "data/scores.csv": CSV });
-const { GAMES } = await import("../../src/model.js");
+const { GAMES, rangeOf } = await import("../../src/model.js");
 const code = (gameId, name) => GAMES.find(g => g.id === gameId).tracks.find(t => t.name === name).code;
 
 describe("reading scores.csv", () => {
@@ -46,7 +48,7 @@ describe("reading scores.csv", () => {
   });
   test("ignores rows for tracks that don't exist", () => {
     const scored = GAMES.flatMap(g => g.tracks).filter(t => t.code).map(t => `${t.game.id} ${t.name}`);
-    assert.deepEqual(scored.sort(), ["mm1 Cut Man", "mm1 Fire Man", "mm1 Guts Man", "mm2 Air Man", "mm2 Flash Man"]);
+    assert.deepEqual(scored.sort(), ["mm1 Cut Man", "mm1 Fire Man", "mm1 Guts Man", "mm2 Air Man", "mm2 Flash Man", "mm2 Wood Man"]);
   });
   test("reads tier list ratings separately from color scores", () => {
     const track = (gameId, name) => GAMES.find(g => g.id === gameId).tracks.find(t => t.name === name);
@@ -61,6 +63,19 @@ describe("reading scores.csv", () => {
     assert.equal(ratings("mm1", "Guts Man"), null);   // its extra column isn't a rating
     assert.equal(ratings("mm2", "Air Man"), null);
     assert.equal(ratings("mm2", "Metal Man"), null);  // never read: it's the header line
+  });
+  test("reads song structures as a list of sections, or null when there's none", () => {
+    const structure = (gameId, name) => GAMES.find(g => g.id === gameId).tracks.find(t => t.name === name).structure;
+    assert.deepEqual(structure("mm2", "Wood Man"), ["i", "a", "b", "o"]);
+    assert.deepEqual(structure("mm2", "Heat Man"), ["a", "b"]);
+    assert.equal(structure("mm1", "Cut Man"), null);
+    assert.equal(structure("mm1", "Guts Man"), null);
+  });
+  test("works out a structure's range from its unique sections", () => {
+    assert.equal(rangeOf(["i", "a", "b", "o"]), 4);
+    assert.equal(rangeOf(["a", "b", "a", "c", "d"]), 4);                // repeats count once
+    assert.equal(rangeOf(["i(r)", "a", "a", "b", "b+", "o"]), 4.5);     // an extension is half a point
+    assert.equal(rangeOf(["i-", "a", "b", "c+"]), 4);                   // a tiny intro is half; c+ alone is c and its extension
   });
   test("works out averages from what was read", () => {
     const mm1 = GAMES.find(g => g.id === "mm1");
