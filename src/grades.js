@@ -29,3 +29,6 @@ export const gradeOf = ratings => {
   const total = totalOf(ratings);
   return GRADES.find(g => total >= g.min && total <= g.max);
 };
+
+// A gem: a perfect ranking (S+, all three ratings at 5), whatever the track's color
+export const gem = t => !!t.ratings && gradeOf(t.ratings) === GRADES[0];

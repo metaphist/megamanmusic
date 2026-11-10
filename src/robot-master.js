@@ -2,7 +2,7 @@
 // game, all worked out from the data. Pick the track with #<game>.<index> (like #mm5.3); Gyro Man is the default.
 import { GAMES, AXES, trackKey, trackOf } from "./model.js";
 import { inkOn, fmt, channel } from "./colors.js";
-import { GRADES, METRICS, RATINGS, gradeOf, totalOf } from "./grades.js";
+import { GRADES, METRICS, RATINGS, gradeOf, totalOf, gem } from "./grades.js";
 import { portrait, artKey as keyOf } from "./art.js";
 import { $, esc, setupTheme } from "./util.js";
 
@@ -25,7 +25,7 @@ async function loadStructures() {
     for (const line of (await r.text()).split(/\r?\n/)) {
       const h = line.match(/^#{2,3}\s+(mm\S*)\s*$/);
       if (h) { game = GAMES.find(g => g.id === h[1].replace("&", "")); continue; }
-      const m = line.match(/^-\s*(\w+):\s*(.+?)\s*\((\d)\)\s*$/);
+      const m = line.match(/^-\s*(\w+):\s*(.+?)\s*\((\d+(?:\.\d+)?)\)\s*$/);
       if (!m || !game) continue;
       const start = NICKNAMES[m[1]] || m[1];
       const hits = game.tracks.filter(t => t.name.toLowerCase().startsWith(start));
@@ -149,7 +149,7 @@ function structureSection(t) {
 
 function tile(o, current) {
   const gr = o.ratings && gradeOf(o.ratings);
-  return `<a class="rm-tile${o === current ? " me" : ""}" href="#${trackKey(o)}" style="--c:${o.color || "var(--grid)"}" ${o === current ? 'aria-current="page"' : ""}>
+  return `<a class="rm-tile${o === current ? " me" : ""}${gem(o) ? " is-gem" : ""}" href="#${trackKey(o)}" style="--c:${o.color || "var(--grid)"}" ${o === current ? 'aria-current="page"' : ""}>
     <span class="rm-tile-art">${portrait(o)}</span>
     <span class="rm-tile-name">${esc(o.name)}</span>
     <span class="rm-tile-meta">${o.cname ? esc(o.cname) : "Unscored"}${gr ? ` · <b class="rm-mini tl-${gr.letter}">${gr.letter}</b>` : ""}</span>
@@ -183,6 +183,8 @@ function render(t) {
   $("rmPick").value = trackKey(t);
   $("profile").innerHTML = hero(t)
     + `<div class="rm-grid">${colorSection(t)}${tierSection(t)}${structureSection(t)}${neighborsSection(t)}${gameSection(t)}</div>`;
+  // A perfect ranking (S+) turns the page's color surfaces into gems
+  $("profile").classList.toggle("is-gem", gem(t));
   frameOpaqueArt();
   stop();
   $("rmPlay")?.addEventListener("click", () => player.paused || player.dataset.key !== trackKey(t) ? play(t) : stop());

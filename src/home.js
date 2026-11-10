@@ -1,13 +1,13 @@
 // The home page: every robot master, grouped by game, each linking to its profile (robot-master.html#mm5.3).
 import { GAMES, trackKey, shortTitle } from "./model.js";
-import { gradeOf } from "./grades.js";
+import { gradeOf, gem } from "./grades.js";
 import { portrait } from "./art.js";
 import { $, esc, plural, setupTheme } from "./util.js";
 
 function tile(t) {
   const gr = t.ratings && gradeOf(t.ratings);
   const label = [t.name, t.cname, gr && `grade ${gr.letter}`].filter(Boolean).join(", ");
-  return `<a class="rm-tile" href="robot-master.html#${trackKey(t)}" style="--c:${t.color || "var(--grid)"}"
+  return `<a class="rm-tile${gem(t) ? " is-gem" : ""}" href="robot-master.html#${trackKey(t)}" style="--c:${t.color || "var(--grid)"}"
       data-name="${esc(t.name.toLowerCase())}" aria-label="${esc(label)}">
     <span class="rm-tile-art">${portrait(t, "", true)}</span>
     <span class="rm-tile-name">${esc(t.name)}</span>

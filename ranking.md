@@ -16,7 +16,7 @@
 - i- = tiny intro (half point only)
 - o = outro (short unique ending section)
 - a-e = distinct inner section
-- `+` = possible half point for unique extensions
+- `+` = half point for unique extension
 
 ### rules
 - Each unique letter is worth a point
@@ -43,7 +43,7 @@
 
 ### mm3
 - snake: i a b c (4)
-- gemini: a b c o (4)
+- gemini: i(r) a a b b+ o (4.5)
 - hard: a b c (3)
 - top: i a b c (4)
 - shadow: i a b c (4)
@@ -99,6 +99,11 @@
 - galaxy: a b c d (4)
 
 ### mm10
+- chill: i a b c d e c (6)
+- blade: i a b c (4)
+- sheep: i a a+ b b+ (4)
+- strike: i a a+ b o (4.5)
+- nitro: a a b c c+ d d+ (5) 
 
 
 ### mm11
