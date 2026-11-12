@@ -416,12 +416,13 @@ h1 {
   align-items: flex-end
 }
 
-/* The game's badges: small squares pinned to the banner's top-right corner, so they add no height.
+/* The game's badges: small squares pinned to the banner's top-left corner, so they add no height.
    Each square is a solid chip so its icon stays legible on any banner color; hover shows what it means. */
 .rbadges {
   position: absolute;
   top: 8px;
-  right: 8px;
+  left: 8px;
+  right: auto;
   display: flex;
   gap: 4px
 }
@@ -538,7 +539,7 @@ h1 {
 
 /* Keep a long title from running under the squares */
 .rbanner.has-badges h2 {
-  padding-right: calc(var(--nb) * 26px)
+  padding-left: calc(var(--nb) * 26px)
 }
 
 .readout h2 {

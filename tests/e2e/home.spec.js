@@ -98,7 +98,7 @@ test.describe("home page", () => {
     await page.goto("/");
     await page.getByTestId("colors-link").click();
     await expect(page).toHaveURL(/colors\.html$/);
-    await expect(page.locator("h1")).toHaveText("Color Profile Deep Dive");
+    await expect(page.locator("h1")).toHaveText("Song Color Visualizer");
     await page.getByTestId("home-link").click();
     await expect(page.locator("#roster .rm-tile").first()).toBeVisible();
   });

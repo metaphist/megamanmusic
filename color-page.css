@@ -1,0 +1,69 @@
+/* colors.html: the color page, on top of styles.css. It takes the home page's look (home.css): rounded
+   surface cards with a hairline border, rounded swatches and controls, and roomier spacing. */
+
+/* ---- Cards ---- */
+.cb-card {
+  padding: 22px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--surface);
+}
+.cb-card > .sh, .cb-card > .shead { margin-top: 0 }
+/* A card whose content runs to its edges (the comparison rows) */
+.cb-flush { padding: 4px 0; overflow: hidden }
+.cb-flush .compare { border-top: 0 }
+.cb-flush .crow { padding-inline: 18px }
+.cb-flush .crow:last-child { border-bottom: 0 }
+
+/* Info notes open from the heading row's left edge, not beside the icon, so they stay on screen on phones */
+.shead { position: relative; overflow: visible }
+.shead .cinfo.inline { position: static }
+.shead .cinfo-tip { top: calc(100% + 6px) }
+
+/* ---- Intro: foreword and the Intensity to Color key ---- */
+.cb-intro { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; align-items: stretch }
+.cb-intro .foreword p { font-size: 14px }
+.cb-intro .vnote { background: var(--bg); border-radius: 10px; border-left-width: 1px }
+.cb-intro .steps i { border-radius: 6px }
+
+/* ---- Visualizer: color bar, pickers, hexagon and track list ---- */
+.cb-viz { display: flex; flex-direction: column; gap: 22px; scroll-margin-top: 16px }
+.cb-viz > .shead { margin: 0; overflow: visible }
+.cb-bar { display: flex; flex-direction: column; gap: 8px }
+.cb-bar .hint { margin: 0; font-size: 13px; color: var(--muted) }
+.cb-viz .rp-colorbar { height: 40px; border-radius: 10px; overflow: hidden }
+/* The selected track's color stands out in the bar */
+.cb-viz .rp-colorbar button.on { outline: 2px solid var(--ink); outline-offset: -2px; position: relative; z-index: 1 }
+.cb-viz .chart { background: var(--bg); border: 0; border-radius: 12px }
+.cb-viz .rbanner { border-radius: 12px; overflow: hidden }
+.cb-viz .legend { border-top: 0 }
+.cb-viz .legend button { border-radius: 8px }
+
+/* ---- Controls, rounded like the home page's search box and jump buttons ---- */
+.pick select, .cbtn, .cpanel, .cpanel input, .sform input { border-radius: 8px }
+.tab { border-radius: 8px }
+.mtabs { display: flex; flex-wrap: wrap; gap: 6px }
+.themetoggle { border-radius: 8px }
+
+/* ---- Distribution, comparison and buddies ---- */
+.intensity { border-radius: 14px; padding: 20px 18px 12px }
+.idot { border-radius: 3px }
+.crow .big { border-radius: 8px }
+.crow .strip { border-radius: 6px; overflow: hidden }
+.crow[aria-pressed="true"] { box-shadow: inset 3px 0 0 var(--ink) }
+.bud { border-radius: 14px; overflow: hidden }
+.bud li button { border-radius: 6px }
+
+/* ---- Footer: a quiet link to the deprecated classic page ---- */
+.cb-foot { padding-top: 20px; border-top: 1px solid var(--line); font-size: 13px; color: var(--muted) }
+.cb-foot a { color: var(--ink); text-underline-offset: 3px }
+
+@media (max-width: 900px) {
+  .cb-intro { grid-template-columns: minmax(0, 1fr) }
+}
+
+@media (max-width: 560px) {
+  .cb-card { padding: 16px }
+  .cb-flush { padding: 2px 0 }
+  .cb-flush .crow { padding-inline: 12px }
+}

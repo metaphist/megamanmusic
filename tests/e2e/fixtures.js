@@ -19,7 +19,7 @@ export { expect };
 
 // Opens the page (with an optional query or hash) and waits until it has rendered
 export async function open(page, link = "") {
-  await page.goto("/colors.html" + link);
+  await page.goto("/colors-classic.html" + link);
   await expect(page.locator("#rpBody .rp-row").first()).toBeAttached();
   await expect(page.locator("#legend li").first()).toBeAttached();
 }

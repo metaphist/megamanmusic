@@ -92,7 +92,7 @@ test.describe("saved lists", () => {
     expect(lists).toHaveLength(1);
     expect(lists[0]).toMatchObject({ name: "Favorite bosses", tracks: ["mm2.0", "mm3.1"] });
 
-    await page.goto("/colors.html?game=mm1");
+    await page.goto("/colors-classic.html?game=mm1");
     await page.locator("#savedSel").selectOption({ label: "Favorite bosses (2)" });
     expect(await currentView(page)).toBe("custom");
     expect(await listKeys(page)).toEqual(["mm2.0", "mm3.1"]);
@@ -102,7 +102,7 @@ test.describe("saved lists", () => {
   test("saving under an existing name replaces that list", async ({ page }) => {
     await open(page, "?list=mm2.0");
     await save(page, "Mix");
-    await page.goto("/colors.html?list=mm3.1,mm1.0");
+    await page.goto("/colors-classic.html?list=mm3.1,mm1.0");
     await save(page, "mix");
     const lists = await stored(page, "rmcp-saved-lists");
     expect(lists).toHaveLength(1);
@@ -151,7 +151,7 @@ test.describe("saved lists", () => {
   });
 
   test("a saved track that no longer exists is skipped", async ({ page }) => {
-    await page.goto("/colors.html");
+    await page.goto("/colors-classic.html");
     await page.evaluate(() => localStorage.setItem("rmcp-saved-lists", JSON.stringify([{ id: "x", name: "Old", tracks: ["mm2.0", "gone.4", "mm2.99"] }])));
     await open(page, "?game=mm1");
     await page.locator("#savedSel").selectOption({ label: "Old (3)" });
@@ -159,7 +159,7 @@ test.describe("saved lists", () => {
   });
 
   test("bad saved data doesn't break the page", async ({ page }) => {
-    await page.goto("/colors.html");
+    await page.goto("/colors-classic.html");
     await page.evaluate(() => { localStorage.setItem("rmcp-saved-lists", "{oops"); localStorage.setItem("rmcp-favorites", "nope"); });
     await open(page, "?game=mm1");
     await expect(page.locator("#savedSel option")).toHaveText(["No saved lists yet"]);
