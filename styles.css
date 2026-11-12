@@ -2982,6 +2982,43 @@ button.tl-tile[aria-pressed="true"] .tl-pi {
   border-color: var(--ink)
 }
 
+/* An "i" in the opposite corner from the play icon, linking to the robot master's profile. It's the tile's sibling
+   (a link can't go inside the play button), placed over the tile from the list item. */
+.tl-tiles > li {
+  position: relative
+}
+
+.tl-info {
+  position: absolute;
+  top: 12px;
+  left: 6px;
+  z-index: 1;
+  width: 20px;
+  height: 20px;
+  box-sizing: border-box;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--muted)
+}
+
+.tl-info svg {
+  width: 10px;
+  height: 10px;
+  display: block
+}
+
+.tl-info:hover {
+  color: var(--ink);
+  border-color: var(--muted)
+}
+
+.tl-info:focus-visible {
+  outline: 2px solid var(--b);
+  outline-offset: 1px
+}
+
 /* The track's color from the color project */
 .tl-swatch {
   align-self: stretch;

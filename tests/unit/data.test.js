@@ -7,7 +7,7 @@ import { GAMES } from "../../data/games.js";
 import { SPRITES } from "../../data/sprites.js";
 import { COLOR_NAMES } from "../../data/color-names.js";
 import { AXES } from "../../data/axes.js";
-import { BADGE_ICONS, ICON_STAR, ICON_PLAY, ICON_PAUSE } from "../../data/icons.js";
+import { BADGE_ICONS, ICON_STAR, ICON_PLAY, ICON_PAUSE, ICON_INFO } from "../../data/icons.js";
 
 const exists = path => access(new URL(path, ROOT)).then(() => true, () => false);
 const trackNamed = (gameId, name) => GAMES.find(g => g.id === gameId)?.tracks.find(t => t.name === name);
@@ -147,6 +147,30 @@ describe("icons", () => {
     }
   });
   test("are SVGs hidden from screen readers", () => {
-    for (const icon of [ICON_STAR, ICON_PLAY, ICON_PAUSE]) assert.match(icon, /^<svg [^>]*aria-hidden="true"/);
+    for (const icon of [ICON_STAR, ICON_PLAY, ICON_PAUSE, ICON_INFO]) assert.match(icon, /^<svg [^>]*aria-hidden="true"/);
+  });
+});
+
+describe("artwork thumbnails", () => {
+  test("each picture in art/sources.json has one in art/thumbs, at most 200px tall and 400px wide (npm run thumbs)", async () => {
+    const sources = JSON.parse(await readFile(new URL("art/sources.json", ROOT), "utf8"));
+    for (const { file } of sources) {
+      const thumb = "art/thumbs/" + file.replace(/\.\w+$/, ".webp");
+      assert.ok(await exists(thumb), `no thumbnail for ${file}: run npm run thumbs`);
+      const { w, h } = imageSize(await readFile(new URL(thumb, ROOT)));
+      assert.ok(h <= 200 && w <= 400 && h > 0 && w > 0, `${thumb} is ${w}x${h}`);
+    }
+  });
+});
+
+describe("artwork", () => {
+  // Mega Man II reuses its robot masters' Mega Man 2 and 3 artwork, so its copies are gray (npm run grayscale)
+  test("Mega Man II's pictures are marked grayscale, and none is the same file as another game's", async () => {
+    const sources = JSON.parse(await readFile(new URL("art/sources.json", ROOT), "utf8"));
+    const bytes = new Map(await Promise.all(sources.map(async a => [a.file, await readFile(new URL("art/" + a.file, ROOT))])));
+    for (const a of sources.filter(a => a.game === "mmii")) {
+      assert.equal(a.grayscale, true, a.file);
+      for (const b of sources.filter(b => b.game !== "mmii")) assert.ok(!bytes.get(a.file).equals(bytes.get(b.file)), `${a.file} is ${b.file}`);
+    }
   });
 });

@@ -3,7 +3,7 @@
 import { RELEASE_ORDER, tableTitle, trackKey, trackOf } from "./model.js";
 import { GRADES, METRICS, RATINGS, gradeOf, rangeOf, totalOf } from "./grades.js";
 import { spriteOf, sprImg } from "./draw.js";
-import { ICON_PLAY, ICON_STOP } from "../data/icons.js";
+import { ICON_PLAY, ICON_STOP, ICON_INFO } from "../data/icons.js";
 import { inkOn } from "./colors.js";
 import { liveAudio } from "./live.js";
 import { $, esc, plural, setupTheme, track } from "./util.js";
@@ -27,10 +27,12 @@ function tile({ t, g, ratings, total }) {
     <span class="tl-name">${esc(t.name)}</span>
     <span class="tl-game" title="${esc(g.title)}">MM ${esc(tableTitle(g))}</span>
     ${scores}`;
+  // The profile link sits beside the tile rather than in it, since a link can't go inside the play button
+  const info = `<a class="tl-info" href="robot-master.html#${trackKey(t)}" aria-label="${esc(t.name)} profile" title="Profile">${ICON_INFO}</a>`;
   return t.audio
     ? `<li data-game="${g.id}"><button type="button" class="tl-tile" data-play="${trackKey(t)}" aria-pressed="false" aria-label="Play ${esc(label)}"${t.vals ? ` style="--track-ink:${inkOn(t.vals)}"` : ""}>
-        <span class="tl-pi"><span class="i-play">${ICON_PLAY}</span><span class="i-stop">${ICON_STOP}</span></span>${body}</button></li>`
-    : `<li data-game="${g.id}"><div class="tl-tile" role="group" aria-label="${esc(label)}">${body}</div></li>`;
+        <span class="tl-pi"><span class="i-play">${ICON_PLAY}</span><span class="i-stop">${ICON_STOP}</span></span>${body}</button>${info}</li>`
+    : `<li data-game="${g.id}"><div class="tl-tile" role="group" aria-label="${esc(label)}">${body}</div>${info}</li>`;
 }
 
 // ---- The player ----

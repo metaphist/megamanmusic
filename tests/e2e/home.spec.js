@@ -12,6 +12,16 @@ test.describe("home page", () => {
     await expect(page.locator("#hmCount")).toHaveText(`${TOTAL} robot masters across ${GAMES.length} games`);
   });
 
+  test("loads the small artwork for its tiles, and the profile the full size", async ({ page }) => {
+    await page.goto("/");
+    const img = page.locator("#game-mm5 .rm-tile", { hasText: "Gyro Man" }).locator("img");
+    await expect(img).toHaveAttribute("src", "art/thumbs/mm5-gyroman.webp");
+    await img.scrollIntoViewIfNeeded();
+    await expect.poll(() => img.evaluate(i => i.complete && i.naturalHeight)).toBe(200);
+    await page.goto("/robot-master.html#mm5.3");
+    await expect(page.locator(".rm-hero-art img")).toHaveAttribute("src", "art/mm5-gyroman.png");
+  });
+
   // Metal Man rather than Gyro Man, who the profile shows by default
   test("links each robot master to its profile", async ({ page }) => {
     await page.goto("/");

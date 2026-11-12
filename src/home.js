@@ -9,7 +9,7 @@ function tile(t) {
   const label = [t.name, t.cname, gr && `grade ${gr.letter}`].filter(Boolean).join(", ");
   return `<a class="rm-tile${gem(t) ? " is-gem" : ""}" href="robot-master.html#${trackKey(t)}" style="--c:${t.color || "var(--grid)"}"
       data-name="${esc(t.name.toLowerCase())}" aria-label="${esc(label)}">
-    <span class="rm-tile-art">${portrait(t, "", true)}</span>
+    <span class="rm-tile-art">${portrait(t, "", true, true)}</span>
     <span class="rm-tile-name">${esc(t.name)}</span>
     <span class="rm-tile-meta">${t.cname ? esc(t.cname) : "Unscored"}${gr ? ` · <b class="rm-mini tl-${gr.letter}">${gr.letter}</b>` : ""}</span>
   </a>`;

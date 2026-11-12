@@ -15,11 +15,15 @@ async function loadArt() {
 
 export const ART = await loadArt();
 
-// The picture as an <img> with class rm-art (plus rm-sprite for a sprite), or "" when there's neither
-export function portrait(t, cls = "", lazy = false) {
+// The small version of a picture, made by scripts/make-thumbs.mjs: art/thumbs/mm5-gyroman.webp for art/mm5-gyroman.png
+export const thumbOf = src => src.replace(/^art\/(.+)\.\w+$/, "art/thumbs/$1.webp");
+
+// The picture as an <img> with class rm-art (plus rm-sprite for a sprite), or "" when there's neither. thumb uses the
+// artwork's small version, for the home page's tiles (at most 100px tall).
+export function portrait(t, cls = "", lazy = false, thumb = false) {
   const load = lazy ? ' loading="lazy" decoding="async"' : "";
   const art = ART.get(artKey(t));
-  if (art) return `<img class="rm-art ${cls}" src="${art}" alt=""${load}>`;
+  if (art) return `<img class="rm-art ${cls}" src="${thumb ? thumbOf(art) : art}" alt=""${load}>`;
   const s = SPRITES[artKey(t)];
   return s ? `<img class="rm-art rm-sprite ${cls}" src="${s.src}" width="${s.w}" height="${s.h}" alt=""${load}>` : "";
 }

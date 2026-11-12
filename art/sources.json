@@ -669,56 +669,64 @@
   "game": "mmii",
   "name": "Metal Man",
   "source": "https://static.wikia.nocookie.net/megaman/images/0/03/Metal_Man.png/revision/latest?cb=20231220172945",
-  "wikiFile": "Metal_Man.png"
+  "wikiFile": "Metal_Man.png",
+  "grayscale": true
  },
  {
   "file": "mmii-airman.png",
   "game": "mmii",
   "name": "Air Man",
   "source": "https://static.wikia.nocookie.net/megaman/images/5/5b/AirMan-MM2.png/revision/latest?cb=20230908074759",
-  "wikiFile": "AirMan-MM2.png"
+  "wikiFile": "AirMan-MM2.png",
+  "grayscale": true
  },
  {
   "file": "mmii-crashman.png",
   "game": "mmii",
   "name": "Crash Man",
   "source": "https://static.wikia.nocookie.net/megaman/images/5/58/Crashman.png/revision/latest?cb=20230912223623",
-  "wikiFile": "Crashman.png"
+  "wikiFile": "Crashman.png",
+  "grayscale": true
  },
  {
   "file": "mmii-woodman.png",
   "game": "mmii",
   "name": "Wood Man",
   "source": "https://static.wikia.nocookie.net/megaman/images/2/20/CW-Woodman.png/revision/latest?cb=20231221220627",
-  "wikiFile": "CW-Woodman.png"
+  "wikiFile": "CW-Woodman.png",
+  "grayscale": true
  },
  {
   "file": "mmii-needleman.png",
   "game": "mmii",
   "name": "Needle Man",
   "source": "https://static.wikia.nocookie.net/megaman/images/c/cf/Needleman.png/revision/latest?cb=20260825051159",
-  "wikiFile": "Needleman.png"
+  "wikiFile": "Needleman.png",
+  "grayscale": true
  },
  {
   "file": "mmii-magnetman.png",
   "game": "mmii",
   "name": "Magnet Man",
   "source": "https://static.wikia.nocookie.net/megaman/images/7/7e/Magnetman.png/revision/latest?cb=20260825024947",
-  "wikiFile": "Magnetman.png"
+  "wikiFile": "Magnetman.png",
+  "grayscale": true
  },
  {
   "file": "mmii-hardman.png",
   "game": "mmii",
   "name": "Hard Man",
   "source": "https://static.wikia.nocookie.net/megaman/images/5/5e/Hardman.png/revision/latest?cb=20260825022208",
-  "wikiFile": "Hardman.png"
+  "wikiFile": "Hardman.png",
+  "grayscale": true
  },
  {
   "file": "mmii-topman.png",
   "game": "mmii",
   "name": "Top Man",
   "source": "https://static.wikia.nocookie.net/megaman/images/d/d3/Topman.png/revision/latest?cb=20230607190801",
-  "wikiFile": "Topman.png"
+  "wikiFile": "Topman.png",
+  "grayscale": true
  },
  {
   "file": "mmv-mercury.png",

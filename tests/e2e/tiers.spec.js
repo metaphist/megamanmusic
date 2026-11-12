@@ -164,6 +164,19 @@ test.describe("tier list", () => {
     await expect(page.locator('[data-tier="none"] button.tl-tile').filter({ hasText: "Twinkle Girl" })).toHaveCount(0);
   });
 
+  test("each tile's i links to its robot master's profile, without playing its track", async ({ page }) => {
+    await openTiers(page);
+    const tiles = page.locator(".tl-tiles > li");
+    await expect(tiles.locator(".tl-info")).toHaveCount(await tiles.count());
+    const twinkle = page.locator('[data-tier="none"] li').filter({ hasText: "Twinkle Girl" }).locator(".tl-info");
+    await expect(twinkle).toHaveAttribute("href", /^robot-master\.html#mmdo\.\d+$/);
+    const metal = page.locator('[data-tier="S+"] li').filter({ hasText: "Metal Man" }).locator(".tl-info");
+    await expect(metal).toHaveAccessibleName("Metal Man profile");
+    await metal.click();
+    await expect(page).toHaveURL(/\/robot-master\.html#mm2\.0$/);
+    await expect(page.locator(".rm-hero h1")).toHaveText("Metal Man");
+  });
+
   test("gives S+ a white block, with its total on its own", async ({ page }) => {
     await openTiers(page);
     const letter = page.locator('[data-tier="S+"] .tl-letter');
