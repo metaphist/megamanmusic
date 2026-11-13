@@ -1,11 +1,12 @@
 // The robot master profile page: one track's color, tier grade, song structure, color neighbors and the rest of its
 // game, all worked out from the data. Pick the track with #<game>.<index> (like #mm5.3); Gyro Man is the default.
-import { GAMES, AXES, trackKey, trackOf, shortTitle, rangeOf } from "./model.js";
+import { GAMES, AXES, trackKey, trackOf, shortTitle, rangeOf, selectable } from "./model.js";
 import { spriteOf, sprImg } from "./draw.js";
 import { inkOn, fmt, channel } from "./colors.js";
 import { GRADES, METRICS, RATINGS, gradeOf, totalOf, gem } from "./grades.js";
 import { portrait, artKey as keyOf } from "./art.js";
-import { $, esc, setupTheme } from "./util.js";
+import { $, esc, setupTheme, track, readStored, writeStored } from "./util.js";
+import { ICON_INFO_TIP, ICON_STAR } from "../data/icons.js";
 
 const DEFAULT = "mm5|Gyro Man";
 const ALL = GAMES.flatMap(g => g.tracks);
@@ -41,6 +42,7 @@ function hero(t) {
         <svg viewBox="0 0 24 24" aria-hidden="true"><path class="i-play" fill="currentColor" d="M8 5h2v2h2v2h2v2h2v2h-2v2h-2v2h-2v2H8V5Z"/><path class="i-stop" fill="currentColor" d="M6 6h12v12H6z"/></svg>
         <span>Play theme</span></button>` : ""}
     </div>
+    ${selectable(t) ? `<button type="button" class="rm-fav" id="rmFav" data-testid="rm-fav" aria-pressed="false" aria-label="Favorite ${esc(t.name)}, ${esc(g.title)}">${ICON_STAR}</button>` : ""}
     <div class="rm-badges">
       ${t.color ? `<div class="rm-badge"><span class="rm-sw" style="background:${t.color}"></span><b>${esc(t.cname)}</b><code>${t.color}</code></div>` : ""}
       ${t.ratings ? (() => { const gr = gradeOf(t.ratings); return `<div class="rm-badge tl-${gr.letter}"><span class="rm-grade">${gr.letter}</span><b>${gr.word}</b><code>${totalOf(t.ratings)} / 15</code></div>`; })() : ""}
@@ -64,8 +66,10 @@ function colorSection(t) {
     </div>`;
   }).join("");
   return `<section class="rm-card" aria-labelledby="rmColorHead">
-    <h2 class="sh" id="rmColorHead">Color</h2>
-    <p class="hint">Each score from 1 to 5 sets one channel: Energy is red, Density green and Gravity blue.</p>
+    <div class="shead">
+      <h2 class="sh" id="rmColorHead">Color</h2>
+      <a class="cinfo-btn rm-headlink" href="colors.html?game=${t.game.id}${selectable(t) ? `&track=${t.game.tracks.indexOf(t)}` : ""}" aria-label="See ${esc(t.name)} on the colors page" title="Colors page">${ICON_INFO_TIP}</a>
+    </div>
     <div class="rm-colorhead">
       <span class="rm-swatch" style="background:${t.color}"></span>
       <div><b>${esc(t.cname)}</b><code>${t.color} · ${t.code.split("").join("-")}</code>
@@ -87,7 +91,10 @@ function tierSection(t) {
       <span class="rm-q">${m.question}</span>
     </div>`).join("");
   return `<section class="rm-card tl-${gr.letter}" aria-labelledby="rmTierHead">
-    <h2 class="sh" id="rmTierHead">Tier</h2>
+    <div class="shead">
+      <h2 class="sh" id="rmTierHead">Tier</h2>
+      <a class="cinfo-btn rm-headlink" href="tiers.html?game=${t.game.id}" aria-label="See the ${esc(t.game.title)} tier list" title="Tier list">${ICON_INFO_TIP}</a>
+    </div>
     <div class="rm-colorhead">
       <span class="rm-swatch rm-grade">${gr.letter}</span>
       <div><b>${gr.word}</b><code>${total} / 15</code>
@@ -164,7 +171,35 @@ function render(t) {
   frameOpaqueArt();
   stop();
   $("rmPlay")?.addEventListener("click", () => player.paused || player.dataset.key !== trackKey(t) ? play(t) : stop());
+  $("rmFav")?.addEventListener("click", () => toggleFavorite(t));
+  markFav(t);
 }
+
+// ---- Favorites ----
+
+// The same favorites the home and colors pages keep (their "★ Favorites" playlist). Read fresh each time, so a
+// star added on another page in the meantime isn't lost.
+const FAVORITES_KEY = "rmcp-favorites";
+const favorites = () => readStored(FAVORITES_KEY, []);
+
+function markFav(t) {
+  const b = $("rmFav");
+  if (!b) return;
+  const on = favorites().includes(trackKey(t));
+  b.classList.toggle("on", on);
+  b.setAttribute("aria-pressed", on);
+  b.title = on ? "Remove from favorites" : "Add to favorites";
+}
+
+function toggleFavorite(t) {
+  const key = trackKey(t), favs = favorites(), on = !favs.includes(key);
+  writeStored(FAVORITES_KEY, on ? [...favs, key] : favs.filter(k => k !== key));
+  markFav(t);
+  track(on ? "favorite_add" : "favorite_remove", { track_name: t.name, game_id: t.game.id });
+}
+
+// Another tab changing the favorites updates the star here
+addEventListener("storage", e => { if (e.key === FAVORITES_KEY && picked) markFav(picked); });
 
 // Some artwork (most of Mega Man 7, 8, & Bass and V) has a solid white background instead of transparency.
 // Those go in a framed box rather than straight onto the track's color.

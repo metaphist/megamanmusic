@@ -53,6 +53,29 @@
 .rm-hero h1 { font-size: clamp(36px, 7vw, 64px) }
 .rm-composer { margin: 0; opacity: .85 }
 .rm-badges { z-index: 2; position: absolute; top: 20px; left: 32px; display: flex; gap: 10px; flex-wrap: nowrap; justify-content: flex-start }
+/* The favorite star, top right: a round chip like the badges, gold when on */
+.rm-fav {
+  all: unset;
+  box-sizing: border-box;
+  z-index: 2;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  cursor: pointer;
+  background: var(--surface);
+  color: var(--muted);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, .18);
+  transition: transform .12s, color .12s;
+}
+.rm-fav svg { width: 20px; height: 20px; display: block }
+.rm-fav:hover { color: var(--ink); transform: scale(1.06) }
+.rm-fav.on { color: #f2b705 }
+.rm-fav:focus-visible { outline: 2px solid var(--b); outline-offset: 2px }
 .rm-badge {
   display: grid;
   grid-template-columns: auto auto;
@@ -112,6 +135,9 @@
 }
 .rm-wide { grid-column: 1 / -1 }
 .rm-card .sh { margin: 0 }
+/* The info icon beside a card heading links to the full colors or tier list page */
+.rm-card .shead { margin: 0 }
+.rm-headlink { width: 22px; height: 22px; cursor: pointer }
 .rm-card .hint { margin: 0 }
 .rm-colorhead { display: flex; gap: 14px; align-items: center }
 .rm-colorhead b { display: block; font-size: 20px; line-height: 1.2 }
@@ -217,7 +243,8 @@
   .rm-hero-art { order: 2; justify-self: center; margin-right: 0 }
   .rm-hero-art .rm-art { max-height: 240px; max-width: 100% }
   .rm-hero-text { padding: 0 0 8px }
-  .rm-badges { position: static; order: -1; justify-content: flex-start; flex-wrap: wrap }
+  .rm-badges { position: static; order: -1; justify-content: flex-start; flex-wrap: wrap; margin-right: 52px }
+  .rm-fav { top: 20px; right: 16px }
 }
 /* Artwork with a solid white background, framed instead of cut out */
 .rm-hero-art .rm-boxed { max-height: 320px; margin-bottom: 28px; border-radius: 12px; border: 6px solid #fff; filter: none; box-shadow: 0 10px 24px rgba(0, 0, 0, .3) }

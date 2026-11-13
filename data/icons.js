@@ -20,3 +20,5 @@ export const ICON_PLAY = `<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M
 export const ICON_STOP = `<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2 2h8v8H2z" fill="currentColor"/></svg>`;
 export const ICON_PAUSE =`<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 1.5h2.5v9H2.5zM7 1.5h2.5v9H7z" fill="currentColor"/></svg>`;
 export const ICON_INFO = `<svg viewBox="0 0 12 12" aria-hidden="true" shape-rendering="crispEdges"><path d="M5 1h2v2H5zM4 4h3v6h1v1H4v-1h1V5H4z" fill="currentColor"/></svg>`;
+// The "i" used on the colors page's .cinfo-btn tooltip buttons
+export const ICON_INFO_TIP = `<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M11 6h2v2h-2zM10 10h3v7h1.5v2h-5v-2H11v-5h-1z"/></svg>`;
