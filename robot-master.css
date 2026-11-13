@@ -12,7 +12,7 @@
 .rm-find .grp { position: sticky; top: -4px; z-index: 1; display: block; padding: 8px 10px 4px; background: var(--surface); font: 12px var(--display); letter-spacing: .04em; text-transform: uppercase; color: var(--muted); cursor: default }
 .rm-find li.me b::after { content: " · now"; font-weight: 500; color: var(--muted) }
 /* The picker and the button group beside it both sit at the bottom of the title bar (the picker's label above it), and the picker matches the buttons' height, so it lines up with the theme toggle */
-.titlebar > .rm-pick, .titlebar:has(> .rm-pick) > .tbtns { align-self: flex-end }
+.titlebar > .rm-pick { align-self: flex-end }
 .titlebar > .rm-pick input { height: 34px; padding-block: 0 }
 
 /* ---- Hero: the track's color, with the artwork at the right, layered under the text ---- */
@@ -123,7 +123,7 @@
 .rm-play[aria-pressed="true"] .i-stop { display: inline }
 
 /* ---- Cards ---- */
-.rm-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px; align-items: start }
+.rm-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px; align-items: stretch }
 .rm-card {
   display: flex;
   flex-direction: column;
@@ -162,12 +162,15 @@
 }
 .rm-avg { position: absolute; top: -4px; translate: -50% 0 }
 .rm-avgkey { height: 12px; vertical-align: -1px; margin-right: 4px }
-.rm-ends { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted) }
+/* Captions under a color axis or a tier metric share one size so the two cards line up row for row */
+.rm-ends, .rm-q { font-size: 12px; line-height: 16px; color: var(--muted) }
+.rm-ends { display: flex; justify-content: space-between }
 .rm-pips { display: flex; gap: 4px }
 .rm-pips i { flex: 1; height: 12px; border-radius: 3px; background: var(--grid) }
 .rm-pips.tier i.on { background: var(--tier); box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .15) }
-.rm-q { font-size: 13px; color: var(--muted) }
 .rm-stand { display: flex; gap: 12px; margin: 0 }
+/* Side-by-side cards stretch to the same height; the last line (average key or standings) sits at the bottom */
+.rm-grid > .rm-card:not(.rm-wide) > :last-child:not(:nth-child(-n+2)) { margin-top: auto }
 .rm-stand div { flex: 1; padding: 10px 12px; border-radius: 10px; background: var(--grid) }
 .rm-stand dt { font-size: 12px; color: var(--muted) }
 .rm-stand dd { margin: 0 }
@@ -251,86 +254,8 @@
 .rm-tile-art:has(.rm-boxed) { padding: 0 }
 .rm-tile-art .rm-boxed { width: 100%; height: 100%; max-height: none; object-fit: cover; object-position: top }
 
-/* On phones the title bar wraps: the heading takes the first row, and the picker fills the second beside the toggle */
+/* On phones the title bar wraps: the heading shares the first row with the toggle, and the picker fills the second */
 @media (max-width: 480px) {
-  .titlebar:has(> .rm-pick) > h1 { flex-basis: 100% }
-  .titlebar > .rm-pick { flex: 1 1 0; min-width: 0 }
+  .titlebar > .rm-pick { order: 1; flex: 1 1 100%; min-width: 0 }
   .titlebar > .rm-pick input { width: 100%; max-width: none }
-}
-
-/* ---- Gem: a perfect ranking (S+), whatever the color ----
-   .is-gem goes on the profile (#profile) for an S+ track, and on any S+ track's tile. Each surface keeps its own color;
-   a ::before overlay on top of it adds an iridescent tint that turns, a glow that swells and a band of light sweeping
-   across. The overlay sits at z-index -1 inside an isolated stacking context: above the element's own background,
-   below its content (text, art, badges). Still for reduced motion. */
-@property --gem-turn {
-  syntax: "<angle>";
-  inherits: true;
-  initial-value: 0deg;
-}
-@property --sheen-x {
-  syntax: "<percentage>";
-  inherits: true;
-  initial-value: 150%;
-}
-@property --gem-glow {
-  syntax: "<number>";
-  inherits: true;
-  initial-value: .6;
-}
-.is-gem {
-  --gem-sheen-rgb: 255, 255, 255;
-  --gem-glow-rgb: 255, 255, 255;
-  /* Translucent, so the color underneath shows through */
-  --gem-colors: rgba(255, 120, 200, .2), rgba(160, 130, 255, .2), rgba(110, 200, 255, .2), rgba(120, 255, 190, .2),
-    rgba(255, 240, 130, .2), rgba(255, 140, 150, .2), rgba(255, 120, 200, .2);
-}
-.is-gem .rm-hero,
-.is-gem .rm-hero .rm-sw,
-.is-gem .rm-colorhead .rm-swatch,
-.is-gem .rm-grade,
-.is-gem .rm-pips.tier i.on,
-.is-gem .rm-sec.inner,
-.rm-tile.is-gem .rm-tile-art,
-.rm-tile.is-gem .rm-mini {
-  position: relative;
-  isolation: isolate;
-}
-.is-gem .rm-hero::before,
-.is-gem .rm-hero .rm-sw::before,
-.is-gem .rm-colorhead .rm-swatch::before,
-.is-gem .rm-grade::before,
-.is-gem .rm-pips.tier i.on::before,
-.is-gem .rm-sec.inner::before,
-.rm-tile.is-gem .rm-tile-art::before,
-.rm-tile.is-gem .rm-mini::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  border-radius: inherit;
-  pointer-events: none;
-  /* The gradients are built here, on the animated element: a custom property resolves its var()s where it's declared,
-     so building them on .is-gem would freeze the turn/sheen/glow at their initial values */
-  background:
-    linear-gradient(135deg, transparent 30%, rgba(var(--gem-sheen-rgb), .3) 50%, rgba(var(--gem-sheen-rgb), 0) 70%) var(--sheen-x) 0 / 260% 100% no-repeat,
-    radial-gradient(120% 90% at 20% 100%, rgba(var(--gem-glow-rgb), calc(var(--gem-glow) * .05)), transparent 60%),
-    conic-gradient(from var(--gem-turn) at -15% 115%, var(--gem-colors));
-  /* A pulse: each beat swells the glow and flashes the sheen across, then rests; the tint turns underneath */
-  animation: /* gem-turn 15s linear infinite, */ gem-pulse 5s ease-in-out infinite;
-}
-@keyframes gem-turn { to { --gem-turn: 360deg } }
-@keyframes gem-pulse {
-  0% { --sheen-x: 150%; --gem-glow: 1 }
-  18% { --gem-glow: 1 }
-  5% { --sheen-x: -50% }
-  100% { --sheen-x: -50%; --gem-glow: 1 }
-}
-@media (prefers-reduced-motion: reduce) {
-  .is-gem .rm-hero::before, .is-gem .rm-hero .rm-sw::before, .is-gem .rm-colorhead .rm-swatch::before,
-  .is-gem .rm-grade::before, .is-gem .rm-pips.tier i.on::before, .is-gem .rm-sec.inner::before,
-  .rm-tile.is-gem .rm-tile-art::before, .rm-tile.is-gem .rm-mini::before {
-    animation: none;
-    --sheen-x: 45%;
-  }
 }

@@ -1893,6 +1893,7 @@ svg text {
   font-family: var(--display);
   font-size: 12px;
   letter-spacing: .04em;
+  border-radius: 8px;
   margin-top: 4px
 }
 
@@ -3212,15 +3213,16 @@ button.tl-tile[aria-pressed="true"] .tl-pi {
 }
 
 
-/* The title bar on phones: tighter buttons, which drop below the title when they still do not fit beside it */
+/* The title bar on phones: tighter buttons, kept in the top-right corner beside the title block */
 @media (max-width:480px) {
   .titlebar {
     flex-wrap: wrap;
     gap: 8px
   }
 
-  .titlebar h1 {
-    flex: 1 1 min-content
+  .titlebar > :first-child {
+    flex: 1 1 0;
+    min-width: 0
   }
 
   .tbtns {
@@ -3240,6 +3242,102 @@ button.tl-tile[aria-pressed="true"] .tl-pi {
 @media (max-width:560px) {
   .tl-S\+ .tl-letter b {
     font-size: 22px
+  }
+}
+
+/* ---- Gem: every S+ badge, on every page ----
+   The tier list's letter block and grade key chip, the profile's grade badges (.rm-grade inside a .tl-S+ badge or
+   card) and the tiles' grade letter (.rm-mini). Swatches, art and panels stay plain. A ::before overlay adds an
+   iridescent tint, a glow and a band of light sweeping across. It sits at z-index -1 inside an isolated stacking
+   context: above the badge's white background, below its letter. Still for reduced motion. */
+@property --gem-turn {
+  syntax: "<angle>";
+  inherits: true;
+  initial-value: 0deg;
+}
+
+@property --sheen-x {
+  syntax: "<percentage>";
+  inherits: true;
+  initial-value: 150%;
+}
+
+@property --gem-glow {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: .6;
+}
+
+.tl-S\+>.tl-letter,
+.tl-S\+ .tl-chip,
+.tl-S\+ .rm-grade,
+.rm-mini.tl-S\+ {
+  --gem-sheen-rgb: 255, 255, 255;
+  --gem-glow-rgb: 255, 255, 255;
+  /* Translucent, so the white underneath shows through */
+  --gem-colors: rgba(255, 90, 190, .38), rgba(140, 110, 255, .38), rgba(80, 190, 255, .38), rgba(90, 245, 170, .38),
+    rgba(255, 230, 90, .38), rgba(255, 110, 130, .38), rgba(255, 90, 190, .38);
+  position: relative;
+  isolation: isolate
+}
+
+.tl-S\+>.tl-letter::before,
+.tl-S\+ .tl-chip::before,
+.tl-S\+ .rm-grade::before,
+.rm-mini.tl-S\+::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  pointer-events: none;
+  /* The gradients are built here, on the animated element: a custom property resolves its var()s where it's declared,
+     so building them on the badge would freeze the turn/sheen/glow at their initial values */
+  background:
+    linear-gradient(135deg, transparent 40%, rgba(var(--gem-sheen-rgb), .45) 47%, rgba(var(--gem-sheen-rgb), .95) 50%, rgba(var(--gem-sheen-rgb), .45) 53%, rgba(var(--gem-sheen-rgb), 0) 60%) var(--sheen-x) 0 / 260% 100% no-repeat,
+    radial-gradient(120% 90% at 20% 100%, rgba(var(--gem-glow-rgb), calc(var(--gem-glow) * .05)), transparent 60%),
+    conic-gradient(from var(--gem-turn) at -15% 115%, var(--gem-colors));
+  /* A pulse: each beat swells the glow and flashes the sheen across, then rests; the tint turns underneath */
+  animation: /* gem-turn 15s linear infinite, */ gem-pulse 5s ease-in-out infinite
+  /* The sweep sits in the first 18% of the cycle (~.9s), so at 0 it fires while the page is still painting and goes unseen,
+     leaving a 5s wait for the next one. Start partway into the rest so the first sweep lands ~.5s after load. */
+  /* animation-delay: -4s; */
+}
+
+@keyframes gem-turn {
+  to {
+    --gem-turn: 360deg
+  }
+}
+
+@keyframes gem-pulse {
+
+  /* Builds slowly, then whips off the far edge at speed instead of drifting to a stop */
+  0% {
+    --sheen-x: 150%;
+    --gem-glow: 1;
+    animation-timing-function: cubic-bezier(.6, 0, .95, .35)
+  }
+
+  18% {
+    --sheen-x: -50%;
+    --gem-glow: 1
+  }
+
+  100% {
+    --sheen-x: -50%;
+    --gem-glow: 1
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  .tl-S\+>.tl-letter::before,
+  .tl-S\+ .tl-chip::before,
+  .tl-S\+ .rm-grade::before,
+  .rm-mini.tl-S\+::before {
+    animation: none;
+    --sheen-x: 45%
   }
 }
 
@@ -3700,6 +3798,14 @@ button.tl-tile[aria-pressed="true"] .tl-pi {
   .pf-table td {
     padding-inline: 4px
   }
+}
+
+/* The title block: an eyebrow line (or the back link) over the heading, level with the title bar's buttons */
+.ttl {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0
 }
 
 /* The color deep dive's link back to the home page's list of robot masters */

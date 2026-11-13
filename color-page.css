@@ -43,7 +43,6 @@
 .pick select, .cbtn, .cpanel, .cpanel input, .sform input { border-radius: 8px }
 .tab { border-radius: 8px }
 .mtabs { display: flex; flex-wrap: wrap; gap: 6px }
-.themetoggle { border-radius: 8px }
 
 /* ---- Distribution, comparison and buddies ---- */
 .intensity { border-radius: 14px; padding: 20px 18px 12px }

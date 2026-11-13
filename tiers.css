@@ -20,7 +20,7 @@ button.tl-tile[aria-pressed="true"] .tl-swatch { border-radius: inherit }
 
 /* ---- Filters ---- */
 .pick select, .tfilters input { border-radius: 8px }
-.tab, .themetoggle { border-radius: 8px }
+.tab { border-radius: 8px }
 
 /* ---- How grades work: the two halves as cards ---- */
 .intro { gap: 16px }

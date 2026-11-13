@@ -61,15 +61,15 @@ mm7,Spring Man,4,2,1,3,4,3,a b o
 mm7,Slash Man,4,2,4,4,2,4,i a b c
 mm7,Shade Man,3,2,5,5,5,3,i a b
 mm7,Turbo Man,5,5,2,5,5,4,i- a b c+
-mm8,Tengu Man (PS),3,2,1,3,3,,
-mm8,Tengu Man (SS),5,4,4,4,1,,
-mm8,Astro Man,3,2,1,4,4,,
-mm8,Sword Man,2,1,5,4,1,,
-mm8,Clown Man,2,2,1,4,4,,
-mm8,Search Man,3,3,1,4,1,,
-mm8,Frost Man,3,3,3,3,3,,
-mm8,Grenade Man,3,2,4,4,1,,
-mm8,Aqua Man,1,1,1,5,5,,
+mm8,Tengu Man (PS),3,2,1,3,3,3,a b c
+mm8,Tengu Man (SS),5,4,4,4,1,4,i a b c
+mm8,Astro Man,3,2,1,4,4,3,i(r) a b a b
+mm8,Sword Man,2,1,5,4,1,2,a b
+mm8,Clown Man,2,2,1,4,4,2,a b
+mm8,Search Man,3,3,1,4,2,4,a b c d
+mm8,Frost Man,3,3,3,3,4,3,i a b
+mm8,Grenade Man,3,2,4,4,1,3,a b c
+mm8,Aqua Man,1,1,1,5,5,4,i a b c
 mm9,Concrete Man,4,5,4,3,2,,
 mm9,Tornado Man,5,5,5,5,5,5,i(r) a b c d
 mm9,Splash Woman,1,2,5,5,5,,
@@ -111,12 +111,12 @@ mmv,Saturn,4,3,5,4,1,3,i- a b o
 mmv,Uranus,3,3,4,4,1,3,i(r) a b
 mmv,Pluto,3,3,5,4,1,3,i a b
 mmb,Tengu Man,3,2,1,5,1,2,i- a b
-mmb,Astro Man,1,1,4,3,4,,
-mmb,Cold Man,4,4,4,4,1,,
-mmb,Ground Man,3,3,2,3,1,,
-mmb,Pirate Man,2,2,1,3,3,,
-mmb,Burner Man,3,2,1,3,1,,
-mmb,Magic Man,2,1,1,4,4,,
-mmb,Dynamo Man,3,2,3,4,4,,
+mmb,Astro Man,1,1,4,3,4,2,a b a b+
+mmb,Cold Man,4,4,3,4,2,3,i- a b o
+mmb,Ground Man,3,3,2,3,1,3,i(r) a b a 
+mmb,Pirate Man,2,2,1,4,2,3,i(r) a b
+mmb,Burner Man,3,2,1,3,1,3,i(r) a b
+mmb,Magic Man,2,1,1,4,4,2,a a b a+
+mmb,Dynamo Man,3,2,3,4,4,3,i a b a b a+
 mmdo,Twinkle Girl,,,,,,,
 mmdo,Jet Man,,,,,,,

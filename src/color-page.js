@@ -278,9 +278,6 @@ function markFavs() {
     b.classList.toggle("on", on);
     b.setAttribute("aria-pressed", on);
   });
-  const btn = $("favBtn");
-  btn.disabled = !favs.length;
-  btn.title = favs.length ? `Favorites (${favs.length})` : "Star tracks in the visualizer to add favorites";
 }
 
 function renderSavedLists() {
@@ -331,13 +328,6 @@ function toggleFavorite(key) {
   if (chosen === FAV && G.custom) applyCustom(fromKeys(favs)); else renderSavedLists();
 }
 
-function openFavorites() {
-  if (!favs.length) return;
-  chosen = FAV;
-  nav(() => applyCustom(fromKeys(favs)));
-  scrollToViz();
-}
-
 function setupSavedLists() {
   savedSel.addEventListener("change", () => {
     const list = listsWithFavs().find(l => l.id === savedSel.value);
@@ -357,7 +347,6 @@ function setupSavedLists() {
   saveForm.addEventListener("submit", saveList);
   delBtn.addEventListener("click", deleteList);
   document.addEventListener("click", e => { const b = e.target.closest("[data-fav]"); if (b) toggleFavorite(b.dataset.fav); });
-  $("favBtn").addEventListener("click", openFavorites);
   markFavs();
   renderSavedLists();
 }
