@@ -3247,8 +3247,8 @@ button.tl-tile[aria-pressed="true"] .tl-pi {
 
 /* ---- Gem: every S+ badge, on every page ----
    The tier list's letter block and grade key chip, the profile's grade badges (.rm-grade inside a .tl-S+ badge or
-   card) and the tiles' grade letter (.rm-mini). Swatches, art and panels stay plain. A ::before overlay adds an
-   iridescent tint, a glow and a band of light sweeping across. It sits at z-index -1 inside an isolated stacking
+   card), the filled bars in its tier card (.rm-pips) and the tiles' grade letter (.rm-mini). Swatches, art and panels
+   stay plain. A ::before overlay adds an iridescent tint, a glow and a band of light sweeping across. It sits at z-index -1 inside an isolated stacking
    context: above the badge's white background, below its letter. Still for reduced motion. */
 @property --gem-turn {
   syntax: "<angle>";
@@ -3259,7 +3259,7 @@ button.tl-tile[aria-pressed="true"] .tl-pi {
 @property --sheen-x {
   syntax: "<percentage>";
   inherits: true;
-  initial-value: 150%;
+  initial-value: 170%;
 }
 
 @property --gem-glow {
@@ -3271,6 +3271,7 @@ button.tl-tile[aria-pressed="true"] .tl-pi {
 .tl-S\+>.tl-letter,
 .tl-S\+ .tl-chip,
 .tl-S\+ .rm-grade,
+.tl-S\+ .rm-pips.tier i.on,
 .rm-mini.tl-S\+ {
   --gem-sheen-rgb: 255, 255, 255;
   --gem-glow-rgb: 255, 255, 255;
@@ -3284,6 +3285,7 @@ button.tl-tile[aria-pressed="true"] .tl-pi {
 .tl-S\+>.tl-letter::before,
 .tl-S\+ .tl-chip::before,
 .tl-S\+ .rm-grade::before,
+.tl-S\+ .rm-pips.tier i.on::before,
 .rm-mini.tl-S\+::before {
   content: "";
   position: absolute;
@@ -3314,18 +3316,18 @@ button.tl-tile[aria-pressed="true"] .tl-pi {
 
   /* Builds slowly, then whips off the far edge at speed instead of drifting to a stop */
   0% {
-    --sheen-x: 150%;
+    --sheen-x: 170%;
     --gem-glow: 1;
     animation-timing-function: cubic-bezier(.6, 0, .95, .35)
   }
 
   18% {
-    --sheen-x: -50%;
+    --sheen-x: -70%;
     --gem-glow: 1
   }
 
   100% {
-    --sheen-x: -50%;
+    --sheen-x: -70%;
     --gem-glow: 1
   }
 }
@@ -3335,6 +3337,7 @@ button.tl-tile[aria-pressed="true"] .tl-pi {
   .tl-S\+>.tl-letter::before,
   .tl-S\+ .tl-chip::before,
   .tl-S\+ .rm-grade::before,
+  .tl-S\+ .rm-pips.tier i.on::before,
   .rm-mini.tl-S\+::before {
     animation: none;
     --sheen-x: 45%
