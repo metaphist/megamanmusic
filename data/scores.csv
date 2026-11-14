@@ -2,17 +2,17 @@ game,name,energy,density,gravity,expression,synergy,range,structure
 mm1,Cut Man,4,4,3,5,1,3,i a b
 mm1,Guts Man,2,1,5,3,1,2,i a
 mm1,Ice Man,2,1,2,5,4,3,i a b
-mm1,Bomb Man,3,3,2,5,1,4,i a b c
+mm1,Bomb Man,3,3,2,5,1,3,i a c
 mm1,Fire Man,3,3,4,3,3,2,a b
 mm1,Elec Man,2,2,1,3,1,3,i a b
-mmpu,Cut Man,3,2,1,4,1,,
-mmpu,Guts Man,3,3,1,4,1,,
-mmpu,Ice Man,2,2,1,4,5,,i a b
-mmpu,Bomb Man,1,1,1,3,1,,
-mmpu,Fire Man,3,3,1,4,1,,
-mmpu,Elec Man,3,3,1,4,1,,
-mmpu,Time Man,2,3,1,5,2,,
-mmpu,Oil Man,1,3,1,4,2,,
+mmpu,Cut Man,3,3,1,4,2,3,i a b
+mmpu,Guts Man,3,3,1,4,2,4,i(r) a b o
+mmpu,Ice Man,2,2,1,4,5,3,i a b
+mmpu,Bomb Man,1,1,1,3,2,4,i(r) a b o
+mmpu,Fire Man,3,3,1,4,2,3,i(r) a b
+mmpu,Elec Man,3,3,1,4,3,3,i a b
+mmpu,Time Man,2,3,1,5,2,3,i(r) a b
+mmpu,Oil Man,1,3,1,4,3,4,i(r) a b c
 mm2,Metal Man,4,4,5,4,3,3,a b c
 mm2,Air Man,3,3,4,5,2,3,a b c
 mm2,Bubble Man,4,3,3,5,3,4,i a b c
@@ -37,11 +37,11 @@ mm4,Ring Man,3,2,3,4,1,3,a b c
 mm4,Dust Man,3,4,5,4,2,4,i a b c
 mm4,Dive Man,3,2,3,3,3,3,a b c
 mm4,Skull Man,2,2,3,2,1,4,a b c o
-mm5,Gravity Man,3,2,4,5,2,4,i a b c
+mm5,Gravity Man,3,2,4,5,3,4,i a b c
 mm5,Wave Man,3,3,1,5,5,4,a b a c d
 mm5,Stone Man,4,3,4,4,1,4,i a b o
 mm5,Gyro Man,4,3,1,5,5,4,i a b o
-mm5,Star Man,3,2,3,5,5,3,a b c
+mm5,Star Man,3,2,3,5,5,4,i(r) a b c
 mm5,Charge Man,4,2,1,5,5,4,i a b c
 mm5,Napalm Man,3,3,5,5,3,3,i a b
 mm5,Crystal Man,2,1,5,5,3,3,a b c
@@ -70,34 +70,34 @@ mm8,Search Man,3,3,1,4,2,4,a b c d
 mm8,Frost Man,3,3,3,3,4,3,i a b
 mm8,Grenade Man,3,2,4,4,1,3,a b c
 mm8,Aqua Man,1,1,1,5,5,4,i a b c
-mm9,Concrete Man,4,5,4,3,2,,
+mm9,Concrete Man,4,5,4,3,2,4,i a a b c
 mm9,Tornado Man,5,5,5,5,5,5,i(r) a b c d
-mm9,Splash Woman,1,2,5,5,5,,
-mm9,Plug Man,3,3,3,3,4,,
-mm9,Jewel Man,3,3,3,5,4,,
-mm9,Hornet Man,3,3,3,4,5,,
-mm9,Magma Man,3,3,4,4,3,,
+mm9,Splash Woman,1,2,5,5,5,3,a b c
+mm9,Plug Man,3,3,3,4,4,4,i- a a b c
+mm9,Jewel Man,3,3,3,5,4,3,a b c c+
+mm9,Hornet Man,3,3,3,4,5,4,i(r) a b c
+mm9,Magma Man,3,3,4,4,3,4,i(r) a b c
 mm9,Galaxy Man,5,4,3,5,5,4,a b c d
 mm10,Blade Man,3,3,5,5,4,4,i a b c
-mm10,Pump Man,1,1,5,5,4,,
-mm10,Commando Man,3,3,4,3,3,,
+mm10,Pump Man,1,1,5,5,4,4,a b c d
+mm10,Commando Man,3,3,4,3,3,3,a b a+ c
 mm10,Chill Man,2,1,5,5,5,5,i a b c d e c
 mm10,Sheep Man,3,3,3,5,5,4,i a a+ b b+
 mm10,Strike Man,5,3,3,5,5,4,i a a+ b o
 mm10,Nitro Man,4,2,5,5,5,5,a a b c c+ d d+
-mm10,Solar Man,4,3,4,5,3,,
-mm11,Block Man,3,3,3,4,3,,
-mm11,Fuse Man,4,3,4,5,3,,
-mm11,Blast Man,3,3,4,4,3,,
-mm11,Acid Man,2,2,4,5,5,,
-mm11,Tundra Man,3,2,3,4,5,,
-mm11,Torch Man,3,3,4,4,2,,
-mm11,Impact Man,4,3,3,5,5,,
-mm11,Bounce Man,2,2,1,5,5,,
+mm10,Solar Man,4,3,4,5,3,5,i a b c d o
+mm11,Block Man,3,3,3,4,3,5,i a b c o
+mm11,Fuse Man,4,3,4,5,3,3,a b c
+mm11,Blast Man,3,3,4,4,3,4,i a b c
+mm11,Acid Man,2,2,4,4,5,5,i(r) a b c o 
+mm11,Tundra Man,3,2,3,4,5,4,i(r) a b c
+mm11,Torch Man,3,3,4,4,2,3,a a b b+ o
+mm11,Impact Man,4,3,3,5,5,5,i(r) a b c d e
+mm11,Bounce Man,2,2,1,5,5,4,a b c d
 mmii,Metal Man,3,4,5,3,1,2,a b
-mmii,Air Man,3,3,4,3,1,2,a b
+mmii,Air Man,3,3,4,3,1,3,a b b c
 mmii,Crash Man,3,3,3,4,2,3,a b c
-mmii,Wood Man,3,3,3,3,1,2,a b
+mmii,Wood Man,3,3,4,3,1,2,a b
 mmii,Needle Man,3,3,3,4,1,2,a b
 mmii,Magnet Man,3,2,3,3,1,3,i(r) a b
 mmii,Hard Man,3,2,4,5,1,3,i(r) a b
