@@ -62,7 +62,9 @@ function nav(fn) {
   syncLink();
 }
 
-const scrollToViz = () => $("viz").scrollIntoView({ behavior: "smooth", block: "start" });
+// Lands on the banner with the game or list's title, so on a phone (where the chart stacks above it) the playlist
+// below it is in view
+const scrollToViz = () => $("rSw").scrollIntoView({ behavior: "smooth", block: "start" });
 
 // ---- Tracks across the page ----
 

@@ -35,7 +35,7 @@
 /* The selected track's color stands out in the bar */
 .cb-viz .rp-colorbar button.on { outline: 2px solid var(--ink); outline-offset: -2px; position: relative; z-index: 1 }
 .cb-viz .chart { background: var(--bg); border: 0; border-radius: 12px }
-.cb-viz .rbanner { border-radius: 12px; overflow: hidden }
+.cb-viz .rbanner { border-radius: 12px; overflow: hidden; scroll-margin-top: 16px }
 .cb-viz .legend { border-top: 0 }
 .cb-viz .legend button { border-radius: 8px }
 
