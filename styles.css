@@ -3275,9 +3275,9 @@ button.tl-tile[aria-pressed="true"] .tl-pi {
 .rm-mini.tl-S\+ {
   --gem-sheen-rgb: 255, 255, 255;
   --gem-glow-rgb: 255, 255, 255;
-  /* Translucent, so the white underneath shows through */
-  --gem-colors: rgba(255, 90, 190, .38), rgba(140, 110, 255, .38), rgba(80, 190, 255, .38), rgba(90, 245, 170, .38),
-    rgba(255, 230, 90, .38), rgba(255, 110, 130, .38), rgba(255, 90, 190, .38);
+  /* Nacre, like the inside of a shell: a photo of one under a white wash, so it reads as a faint tint. Raise or lower
+     the wash's alpha to show more or less of the shell. */
+  --gem-wash: rgba(255, 255, 255, .7);
   position: relative;
   isolation: isolate
 }
@@ -3295,15 +3295,18 @@ button.tl-tile[aria-pressed="true"] .tl-pi {
   pointer-events: none;
   /* The gradients are built here, on the animated element: a custom property resolves its var()s where it's declared,
      so building them on the badge would freeze the turn/sheen/glow at their initial values */
-  background:
-    linear-gradient(135deg, transparent 40%, rgba(var(--gem-sheen-rgb), .45) 47%, rgba(var(--gem-sheen-rgb), .95) 50%, rgba(var(--gem-sheen-rgb), .45) 53%, rgba(var(--gem-sheen-rgb), 0) 60%) var(--sheen-x) 0 / 260% 100% no-repeat,
+  background-color:
+    /* linear-gradient(135deg, transparent 40%, rgba(var(--gem-sheen-rgb), .45) 47%, rgba(var(--gem-sheen-rgb), .95) 50%, rgba(var(--gem-sheen-rgb), .45) 53%, rgba(var(--gem-sheen-rgb), 0) 60%) var(--sheen-x) 0 / 260% 100% no-repeat,
     radial-gradient(120% 90% at 20% 100%, rgba(var(--gem-glow-rgb), calc(var(--gem-glow) * .05)), transparent 60%),
-    conic-gradient(from var(--gem-turn) at -15% 115%, var(--gem-colors));
+    linear-gradient(var(--gem-wash), var(--gem-wash)), */
+    rgba(255,255,255,.5); /*  url("shell.jpg") center / cover; */
   /* A pulse: each beat swells the glow and flashes the sheen across, then rests; the tint turns underneath */
-  animation: /* gem-turn 15s linear infinite, */ gem-pulse 5s ease-in-out infinite
+  /*animation:  gem-turn 15s linear infinite, gem-pulse 5s ease-in-out infinite */
   /* The sweep sits in the first 18% of the cycle (~.9s), so at 0 it fires while the page is still painting and goes unseen,
      leaving a 5s wait for the next one. Start partway into the rest so the first sweep lands ~.5s after load. */
   /* animation-delay: -4s; */
+  background-image: url("shell.jpg") center / cover;
+  background-blend-mode: darken;
 }
 
 @keyframes gem-turn {
