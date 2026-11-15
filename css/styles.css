@@ -3248,24 +3248,14 @@ button.tl-tile[aria-pressed="true"] .tl-pi {
 /* ---- Gem: every S+ badge, on every page ----
    The tier list's letter block and grade key chip, the profile's grade badges (.rm-grade inside a .tl-S+ badge or
    card), the filled bars in its tier card (.rm-pips) and the tiles' grade letter (.rm-mini). Swatches, art and panels
-   stay plain. A ::before overlay adds an iridescent tint, a glow and a band of light sweeping across. It sits at z-index -1 inside an isolated stacking
-   context: above the badge's white background, below its letter. Still for reduced motion. */
+   stay plain. A ::before overlay draws a kaleidoscope: two sets of mirrored wedges turning in opposite directions, so
+   the pattern keeps folding into new shapes, cut into shards by rings, with a bright core like the eyepiece. It sits
+   at z-index -1 inside an isolated stacking context: above the badge's white background, below its letter. The
+   colors are pastel and the core is near white, so the dark letter stays readable. Still for reduced motion. */
 @property --gem-turn {
   syntax: "<angle>";
   inherits: true;
   initial-value: 0deg;
-}
-
-@property --sheen-x {
-  syntax: "<percentage>";
-  inherits: true;
-  initial-value: 170%;
-}
-
-@property --gem-glow {
-  syntax: "<number>";
-  inherits: true;
-  initial-value: .6;
 }
 
 .tl-S\+>.tl-letter,
@@ -3273,13 +3263,21 @@ button.tl-tile[aria-pressed="true"] .tl-pi {
 .tl-S\+ .rm-grade,
 .tl-S\+ .rm-pips.tier i.on,
 .rm-mini.tl-S\+ {
-  --gem-sheen-rgb: 255, 255, 255;
-  --gem-glow-rgb: 255, 255, 255;
-  /* Nacre, like the inside of a shell: a photo of one under a white wash, so it reads as a faint tint. Raise or lower
-     the wash's alpha to show more or less of the shell. */
-  --gem-wash: rgba(255, 255, 255, .7);
+  /* Where the mirrors meet */
+  --kal-at: 50% 50%;
+  /* Shard colors, translucent so the white underneath softens them */
+  --kal-a: rgba(255, 120, 200, .55);
+  --kal-b: rgba(160, 130, 255, .55);
+  --kal-c: rgba(110, 200, 255, .55);
+  --kal-d: rgba(120, 240, 180, .55);
+  --kal-e: rgba(255, 225, 110, .55);
   position: relative;
   isolation: isolate
+}
+
+/* The letter block runs the full height of the tier row; center the kaleidoscope on its (sticky) letter instead */
+.tl-S\+>.tl-letter {
+  --kal-at: 50% 44px
 }
 
 .tl-S\+>.tl-letter::before,
@@ -3294,44 +3292,30 @@ button.tl-tile[aria-pressed="true"] .tl-pi {
   border-radius: inherit;
   pointer-events: none;
   /* The gradients are built here, on the animated element: a custom property resolves its var()s where it's declared,
-     so building them on the badge would freeze the turn/sheen/glow at their initial values */
-  background-color:
-    /* linear-gradient(135deg, transparent 40%, rgba(var(--gem-sheen-rgb), .45) 47%, rgba(var(--gem-sheen-rgb), .95) 50%, rgba(var(--gem-sheen-rgb), .45) 53%, rgba(var(--gem-sheen-rgb), 0) 60%) var(--sheen-x) 0 / 260% 100% no-repeat,
-    radial-gradient(120% 90% at 20% 100%, rgba(var(--gem-glow-rgb), calc(var(--gem-glow) * .05)), transparent 60%),
-    linear-gradient(var(--gem-wash), var(--gem-wash)), */
-    rgba(255,255,255,.5); /*  url("../shell.jpg") center / cover; */
-  /* A pulse: each beat swells the glow and flashes the sheen across, then rests; the tint turns underneath */
-  /*animation:  gem-turn 15s linear infinite, gem-pulse 5s ease-in-out infinite */
-  /* The sweep sits in the first 18% of the cycle (~.9s), so at 0 it fires while the page is still painting and goes unseen,
-     leaving a 5s wait for the next one. Start partway into the rest so the first sweep lands ~.5s after load. */
-  /* animation-delay: -4s; */
-  background-image: url("../shell.jpg") center / cover;
-  background-blend-mode: darken;
+     so building them on the badge would freeze the turn at its initial value.
+     Top to bottom: the bright core; a white wash that keeps the letter readable; rings that cut the wedges into
+     shards; a 4-fold set of facets turning backwards, multiplied over a 3-fold set turning forwards. Each color holds
+     briefly, then fades over ~12deg into the next, so the bands have soft edges. Each wedge is a
+     palindrome (mirrored about its middle), which is what makes it read as a kaleidoscope rather than a color wheel,
+     and the two symmetries never line up, so the overlaps keep folding into new shapes as they turn. */
+  background:
+    radial-gradient(circle at var(--kal-at), rgba(255, 255, 255, .95), rgba(255, 255, 255, .4) 10px, transparent 22px),
+    linear-gradient(rgba(255, 255, 255, .55), rgba(255, 255, 255, .55)),
+    repeating-radial-gradient(circle at var(--kal-at), transparent 0, rgba(255, 255, 255, .12) 9px,
+      rgba(255, 255, 255, .4) 18px, rgba(255, 255, 255, .12) 27px, transparent 36px),
+    repeating-conic-gradient(from calc(var(--gem-turn) * -1.5) at var(--kal-at),
+      #fff 0deg 4deg, var(--kal-c) 14deg 22deg, #fff 34deg 56deg, var(--kal-c) 68deg 76deg, #fff 86deg 90deg),
+    repeating-conic-gradient(from var(--gem-turn) at var(--kal-at),
+      var(--kal-a) 0deg 12deg, var(--kal-e) 24deg 30deg, var(--kal-b) 42deg 44deg, var(--kal-d) 56deg 64deg,
+      var(--kal-b) 76deg 78deg, var(--kal-e) 90deg 96deg, var(--kal-a) 108deg 120deg),
+    #fff;
+  background-blend-mode: normal, normal, normal, multiply, normal, normal;
+  animation: gem-turn 90s linear infinite
 }
 
 @keyframes gem-turn {
   to {
     --gem-turn: 360deg
-  }
-}
-
-@keyframes gem-pulse {
-
-  /* Builds slowly, then whips off the far edge at speed instead of drifting to a stop */
-  0% {
-    --sheen-x: 170%;
-    --gem-glow: 1;
-    animation-timing-function: cubic-bezier(.6, 0, .95, .35)
-  }
-
-  18% {
-    --sheen-x: -70%;
-    --gem-glow: 1
-  }
-
-  100% {
-    --sheen-x: -70%;
-    --gem-glow: 1
   }
 }
 
@@ -3343,7 +3327,7 @@ button.tl-tile[aria-pressed="true"] .tl-pi {
   .tl-S\+ .rm-pips.tier i.on::before,
   .rm-mini.tl-S\+::before {
     animation: none;
-    --sheen-x: 45%
+    --gem-turn: 15deg
   }
 }
 
