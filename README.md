@@ -4,7 +4,13 @@ A music player, visualizer, and playlist creator, featuring music from the class
 
 ## Tier list
 
-`tiers.html` grades every track from the `expression`, `synergy` and `arrangement` columns of `data/scores.csv`, each rated 1–5. The three ratings count equally and add up to a total from 3 to 15, which sets the grade (ranges in `src/grades.js`):
+`tiers.html` grades every track on expression, synergy and range, each rated 1–5. Expression and synergy come from their columns of `data/scores.csv`; range is worked out from the `structure` column (the `range` column is only used when a track has no structure). [notes/structure.md](notes/structure.md) is the legend for its symbols, with worked examples. In short:
+
+- 1 point for each unique section letter other than the intro and outro
+- ½ point for each intro (`i`, `i(r)` or `i-`), each `o` and each `+`
+- ½ point off for each `-` (so a tiny intro, `i-`, comes to nothing)
+
+Ratings may have decimals. Each one shows and counts as a whole number: a half rounds down (3.5 is 3) and anything above it rounds up (3.6 is 4). Range is also kept within 1–5. The three ratings count equally and add up to a total from 3 to 15, which sets the grade (ranges in `src/grades.js`):
 
 | Grade | S+ | S | A | B | C | D | F |
 | --- | --- | --- | --- | --- | --- | --- | --- |

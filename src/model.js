@@ -4,6 +4,7 @@
 import { GAMES } from "../data/games.js";
 import { AXES } from "../data/axes.js";
 import { hex, colorName, intensity } from "./colors.js";
+import { wholeRating } from "./grades.js";
 
 export { GAMES, AXES };
 
@@ -38,8 +39,8 @@ export const tableTitle = g => TABLE_ABBR[shortTitle(g)] || shortTitle(g);
 
 // Scores live in data/scores.csv (game,name,energy,density,gravity,expression,synergy,range,structure; blank = not
 // scored yet), matched to tracks by game id and name. Each scored track gets a code of its three color scores, like
-// "352", each rated track its three tier list ratings, like [5, 1, 3], and each one with a structure its song's
-// sections, like ["i", "a", "b", "o"]; the rest get null.
+// "352", each rated track its three tier list ratings as whole numbers, like [5, 1, 3] (range worked out from the
+// structure), and each one with a structure its song's sections, like ["i", "a", "b", "o"]; the rest get null.
 async function loadScores() {
   let rows = new Map();
   try {
@@ -76,6 +77,16 @@ function deriveColors() {
 // Three whole numbers from 1 to 5, or null
 const oneToFive = cells => cells.length === 3 && cells.every(v => /^[1-5]$/.test(v)) ? cells.map(Number) : null;
 
+// A tier rating cell from 1 to 5, decimals allowed, or null
+const ratingCell = v => /^\d+(\.\d+)?$/.test(v) && +v >= 1 && +v <= 5 ? +v : null;
+
+// The three tier list ratings as whole numbers (see wholeRating), or null unless all three are there. Range comes from
+// the song's structure when it has one, kept within 1 to 5, and from the range column when it doesn't.
+function tierRatings([expression, synergy, range], notes) {
+  const r = [ratingCell(expression), ratingCell(synergy), notes.length ? rangeRating(notes) : ratingCell(range)];
+  return r.every(v => v != null) ? r.map(wholeRating) : null;
+}
+
 function parseScores(csv) {
   const rows = new Map();
   for (const line of csv.split(/\r?\n/).slice(1)) {
@@ -86,18 +97,31 @@ function parseScores(csv) {
     const [game, name, ...vals] = cells;
     const notes = (vals[6] || "").split(/\s+/).filter(Boolean);
     rows.set(game + "|" + name, {
-      code: oneToFive(vals.slice(0, 3))?.join(""), ratings: oneToFive(vals.slice(3, 6)), structure: notes.length ? notes : null,
+      code: oneToFive(vals.slice(0, 3))?.join(""), ratings: tierRatings(vals.slice(3, 6), notes), structure: notes.length ? notes : null,
     });
   }
   return rows;
 }
 
-// A structure's range total (see ranking.md): each unique section is a point, a tiny intro ("i-") half a point, and an
-// extension ("b+") half a point, or a point and a half for a section heard only extended (a "c+" with no "c")
-export function rangeOf(notes) {
-  return [...new Set(notes)].reduce((sum, n) =>
-    sum + (n === "i-" ? .5 : n.endsWith("+") ? (notes.includes(n.slice(0, -1)) ? .5 : 1.5) : 1), 0);
+// A structure's range score (legend in notes/structure.md), before it's rounded into a rating: a point for each unique section letter but the intro
+// and outro, half a point for each intro ("i", "i(r)" or "i-"), outro ("o") and extension ("+"), and half a point off
+// for each shortening ("-", so a tiny intro "i-" comes to nothing)
+export function rangeParts(notes) {
+  const letters = new Set(notes.map(n => n[0]).filter(l => l !== "i" && l !== "o")).size;
+  const count = test => notes.filter(test).length;
+  return {
+    letters, intros: count(n => n[0] === "i"), outros: count(n => n === "o"),
+    extended: count(n => n.endsWith("+")), shortened: count(n => n.endsWith("-")),
+  };
 }
+
+export function rangeOf(notes) {
+  const p = rangeParts(notes);
+  return p.letters + (p.intros + p.outros + p.extended - p.shortened) / 2;
+}
+
+// The range rating a structure earns: its score kept within 1 to 5, as a whole number
+export const rangeRating = notes => wholeRating(Math.min(5, Math.max(1, rangeOf(notes))));
 
 // ---- Distinction badges ----
 

@@ -18,12 +18,16 @@ const CSV = [
   "nope,Cut Man,1,1,1",                  // no such game
   'mm2,"Air Man",3,"4",5',
   "mm2,Bubble Man,1.5,2,3",              // not a whole number: not scored
-  "mm2,Wood Man,1,1,1,3,3,3, i  a b o ",  // a song structure after the ratings
+  "mm2,Wood Man,1,1,1,3,3,1, i  a b o ",  // a song structure after the ratings: range comes from it, not the column
   "mm2,Heat Man,,,,,,,a b",              // a structure without scores
+  "mm3,Needle Man,,,,4.5,3.6,2.5",       // decimal ratings, no structure: range from its column
+  "mm3,Magnet Man,,,,5,5,,i a b c d e",  // a structure past 5, and no range column
+  "mm3,Gemini Man,,,,5.5,4,4,a b",       // a decimal out of range: not rated
+  "mm3,Hard Man,,,,4,4,,",               // no range and no structure: not rated
 ].join("\r\n");
 
 stubFetch({ "data/scores.csv": CSV });
-const { GAMES, rangeOf } = await import("../../src/model.js");
+const { GAMES, rangeOf, rangeRating } = await import("../../src/model.js");
 const code = (gameId, name) => GAMES.find(g => g.id === gameId).tracks.find(t => t.name === name).code;
 
 describe("reading scores.csv", () => {
@@ -72,10 +76,29 @@ describe("reading scores.csv", () => {
     assert.equal(structure("mm1", "Guts Man"), null);
   });
   test("works out a structure's range from its unique sections", () => {
-    assert.equal(rangeOf(["i", "a", "b", "o"]), 4);
+    assert.equal(rangeOf(["a", "b"]), 2);
     assert.equal(rangeOf(["a", "b", "a", "c", "d"]), 4);                // repeats count once
-    assert.equal(rangeOf(["i(r)", "a", "a", "b", "b+", "o"]), 4.5);     // an extension is half a point
-    assert.equal(rangeOf(["i-", "a", "b", "c+"]), 4);                   // a tiny intro is half; c+ alone is c and its extension
+    assert.equal(rangeOf(["i", "a", "b"]), 2.5);                        // an intro is half a point
+    assert.equal(rangeOf(["i(r)", "a", "b"]), 2.5);                     // ...repeated in the loop or not
+    assert.equal(rangeOf(["i", "a", "b", "o"]), 3);                     // an outro is half a point
+    assert.equal(rangeOf(["a", "b", "o", "a", "o"]), 3);                // ...each time
+    assert.equal(rangeOf(["i(r)", "a", "a", "b", "b+", "o"]), 3.5);     // an extension is half a point
+    assert.equal(rangeOf(["a", "b+", "b+"]), 3);                        // ...each time
+    assert.equal(rangeOf(["i-", "a", "b", "c+"]), 3.5);                 // a tiny intro is an intro less half: nothing
+  });
+  test("rounds a structure's range into a rating from 1 to 5, a half rounding down", () => {
+    assert.equal(rangeRating(["i", "a", "b", "o"]), 3);
+    assert.equal(rangeRating(["i", "a", "b", "c", "d", "e"]), 5);
+    assert.equal(rangeRating(["i-"]), 1);
+  });
+  test("rates range from the structure, and decimal ratings as whole numbers", () => {
+    const ratings = (gameId, name) => GAMES.find(g => g.id === gameId).tracks.find(t => t.name === name).ratings;
+    assert.deepEqual(ratings("mm2", "Wood Man"), [3, 3, 3]);           // i a b o: 3, not its column's 1
+    assert.deepEqual(ratings("mm3", "Needle Man"), [4, 4, 2]);         // 4.5 down, 3.6 up, 2.5 down
+    assert.deepEqual(ratings("mm3", "Magnet Man"), [5, 5, 5]);         // 5.5, kept to 5
+    assert.equal(ratings("mm3", "Gemini Man"), null);
+    assert.equal(ratings("mm3", "Hard Man"), null);
+    assert.equal(ratings("mm2", "Heat Man"), null);                    // a structure alone isn't a rating
   });
   test("works out averages from what was read", () => {
     const mm1 = GAMES.find(g => g.id === "mm1");

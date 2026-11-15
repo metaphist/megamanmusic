@@ -1,6 +1,6 @@
 // The robot master profile page: one track's color, tier grade, song structure, color neighbors and the rest of its
 // game, all worked out from the data. Pick the track with #<game>.<index> (like #mm5.3); Gyro Man is the default.
-import { GAMES, AXES, trackKey, trackOf, shortTitle, rangeOf, selectable } from "./model.js";
+import { GAMES, AXES, trackKey, trackOf, shortTitle, rangeOf, rangeParts, rangeRating, selectable } from "./model.js";
 import { spriteOf, sprImg } from "./draw.js";
 import { inkOn, fmt, channel } from "./colors.js";
 import { GRADES, METRICS, RATINGS, gradeOf, totalOf, gem } from "./grades.js";
@@ -108,10 +108,26 @@ function tierSection(t) {
   </section>`;
 }
 
+// A count of half points as text: 3.5 is "3½", .5 is "½"
+const halves = n => (Math.floor(n) || (n % 1 ? "" : "0")) + (n % 1 ? "½" : "");
+const plural = (n, word) => `${n} ${word}${n === 1 ? "" : "s"}`;
+
+// How a structure's range adds up, like "2 unique sections, 1 intro (+½), 1 outro (+½): a range of 3"
+function rangeWorking(notes) {
+  const p = rangeParts(notes), score = rangeOf(notes), rating = rangeRating(notes);
+  const parts = [plural(p.letters, "unique section"),
+    p.intros && `${plural(p.intros, "intro")} (+${halves(p.intros / 2)})`,
+    p.outros && `${plural(p.outros, "outro")} (+${halves(p.outros / 2)})`,
+    p.extended && `${plural(p.extended, "extension")} (+${halves(p.extended / 2)})`,
+    p.shortened && `${plural(p.shortened, "tiny intro")} (−${halves(p.shortened / 2)})`].filter(Boolean);
+  const how = score > 5 ? "capped at" : score < 1 ? "raised to" : score !== rating ? "rounded down to" : "";
+  return `${parts.join(", ")}: ${how ? `${halves(score)}, ${how} a range of` : "a range of"} <b>${rating}</b>.`;
+}
+
 // The structure column as a strip of sections: intros and outros muted, each unique inner section its own shade
 function structureSection(t) {
   if (!t.structure) return "";
-  const s = { notes: t.structure, score: rangeOf(t.structure) };
+  const s = { notes: t.structure };
   const letters = [...new Set(s.notes.map(n => n[0]).filter(l => /[a-e]/.test(l)))];
   const label = n => n.startsWith("i(") ? "intro, repeated in the loop" : n.startsWith("i-") ? "tiny intro" : n[0] === "i" ? "intro"
     : n[0] === "o" ? "outro" : "section " + n[0].toUpperCase() + (n.endsWith("+") ? ", extended" : "");
@@ -123,9 +139,10 @@ function structureSection(t) {
   }).join("");
   return `<section class="rm-card rm-wide" aria-labelledby="rmStructHead" style="--c:${t.color || "var(--muted)"}">
     <h2 class="sh" id="rmStructHead">Structure</h2>
-    <p class="hint">Range counts the unique sections, one point each. Repeats count once.</p>
+    <p class="hint">Range counts each unique section a point (repeats count once), each intro, outro and extension half
+      a point, and takes half a point off for a tiny intro. A half rounds down.</p>
     <ol class="rm-secs">${blocks}</ol>
-    <p class="hint">${s.notes.length} parts, ${s.score} unique: a range of <b>${s.score}</b>.</p>
+    <p class="hint">${rangeWorking(s.notes)}</p>
   </section>`;
 }
 

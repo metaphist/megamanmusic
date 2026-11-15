@@ -1,7 +1,7 @@
 // The tier list's grading: how three ratings become a letter grade
 import { test, describe } from "node:test";
 import assert from "node:assert/strict";
-import { GRADES, METRICS, RATINGS, gradeOf, rangeOf, totalOf } from "../../src/grades.js";
+import { GRADES, METRICS, RATINGS, gradeOf, rangeOf, totalOf, wholeRating } from "../../src/grades.js";
 
 const letter = (...ratings) => gradeOf(ratings).letter;
 
@@ -36,6 +36,9 @@ describe("grades", () => {
   test("show a single total on its own, and a range with a dash", () => {
     assert.equal(rangeOf(GRADES[0]), "15");
     assert.equal(rangeOf(GRADES.find(g => g.letter === "A")), "12–13");
+  });
+  test("show and count a rating as a whole number, a half rounding down", () => {
+    assert.deepEqual([3, 3.4, 3.5, 3.6, 4.5, 5].map(wholeRating), [3, 3, 3, 4, 4, 5]);
   });
   test("there are three metrics", () => {
     assert.deepEqual(METRICS.map(m => m.label), ["Expression", "Synergy", "Range"]);

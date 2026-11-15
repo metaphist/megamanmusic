@@ -68,12 +68,13 @@ describe("scores.csv", () => {
       assert.ok(blank || scored, `${game} ${name}: ${vals.join(",")}`);
     }
   });
-  test("every row's tier list ratings are either all 1–5 or left blank", async () => {
+  test("every row's tier list ratings are either all 1–5 (decimals allowed) or left blank", async () => {
+    const rating = v => /^\d+(\.\d+)?$/.test(v) && +v >= 1 && +v <= 5;
     for (const [game, name, ...vals] of await readRatings()) {
-      assert.match(vals.join(","), /^([1-5],[1-5],[1-5]|,,)$/, `${game} ${name}`);
+      assert.ok(vals.every(rating) || vals.every(v => v === ""), `${game} ${name}: ${vals.join(",")}`);
     }
   });
-  test("structures are blank or sections from ranking.md's legend: i, i(r), i-, o, and a-e with an optional +", async () => {
+  test("structures are blank or sections from notes/structure.md's legend: i, i(r), i-, o, and a-e with an optional +", async () => {
     const section = String.raw`(i|i\(r\)|i-|o|[a-e]\+?)`;
     for (const [game, name, structure] of await readStructures()) {
       assert.match(structure, new RegExp(`^(${section}( ${section})*)?$`), `${game} ${name}`);

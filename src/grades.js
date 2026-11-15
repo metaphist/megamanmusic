@@ -21,6 +21,9 @@ export const GRADES = [
   { letter: "F", min: 3, max: 5, word: "Lacking" },
 ];
 
+// A rating as the whole number it shows and counts as: a half rounds down (3.5 is 3) and anything above it up (3.6 is 4)
+export const wholeRating = n => Math.ceil(n - .5);
+
 // A grade's totals as text, like "12–13", or just "15" for a single total
 export const rangeOf = g => g.min === g.max ? `${g.min}` : `${g.min}–${g.max}`;
 

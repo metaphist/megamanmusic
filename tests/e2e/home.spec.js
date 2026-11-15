@@ -86,7 +86,7 @@ test.describe("home page", () => {
     await page.getByTestId("rm-pick").press("Enter");
     const card = page.locator("section", { has: page.locator("#rmStructHead") });
     await expect(card.locator(".rm-sec b")).toHaveText(["i-", "a", "b", "c+"]);
-    await expect(card).toContainText("4 parts, 4 unique: a range of 4");
+    await expect(card).toContainText("3 unique sections, 1 intro (+½), 1 extension (+½), 1 tiny intro (−½): 3½, rounded down to a range of 3.");
   });
 
   test("the profile still opens older ?track= links", async ({ page }) => {
