@@ -3245,17 +3245,83 @@ button.tl-tile[aria-pressed="true"] .tl-pi {
   }
 }
 
-/* ---- Special: a soft kaleidoscope behind an element's content ----
-   Add class="special" to any element. The S+ grade uses it everywhere it shows (the JS adds it via specialOf in grades.js).
-   A ::before overlay draws two sets of mirrored wedges turning in opposite directions, so the pattern keeps folding
-   into new shapes, under soft rings and a bright core. It sits at z-index -1 inside an isolated stacking context:
-   above the element's own background, below its content. Mostly white, so dark text on it stays readable. Still
-   for reduced motion.
-   Set --special-at on the element to move the center (default: the middle), and --special-a to --special-e to recolor it. */
+/* ---- Surface effects: .special, .foil, .polychrome, .holographic ----
+   Add one of these classes to any element to put an effect behind its content. Each draws a ::before overlay at
+   z-index -1 inside an isolated stacking context: above the element's own background, below its content. Each one
+   is still for reduced motion.
+   Set --fx-opacity on the element to show more or less of the effect (0 to 1), letting its own background show
+   through. .foil, .polychrome and .holographic are translucent by default, and keep the element's text color.
+   .special is opaque by default (1), covering the background with a near-white surface, so it defaults to dark text.
+   The gradients are built on the ::before, the element that animates: a custom property resolves its var()s where
+   it's declared, so building them on the element itself would freeze the animation at its initial value. */
+.special,
+.foil,
+.polychrome,
+.holographic {
+  position: relative;
+  isolation: isolate
+}
+
+/* :where() keeps this at zero specificity, so any color the element sets for itself still wins */
+:where(.special) {
+  color: #1e272d
+}
+
+/* How much of each effect shows over the element's own background */
+.special {
+  --fx-opacity: 1
+}
+
+.foil {
+  --fx-opacity: .3
+}
+
+.polychrome {
+  --fx-opacity: .3
+}
+
+.holographic {
+  --fx-opacity: .3
+}
+
+.special::before,
+.foil::before,
+.polychrome::before,
+.holographic::before {
+  opacity: var(--fx-opacity)
+}
+
+.special::before,
+.foil::before,
+.polychrome::before,
+.holographic::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  pointer-events: none
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  .special::before,
+  .foil::before,
+  .polychrome::before,
+  .holographic::before {
+    animation: none
+  }
+}
+
+/* ---- Special: a soft kaleidoscope ----
+   The S+ grade uses it everywhere it shows (the JS adds it via specialOf in grades.js). Two sets of mirrored wedges
+   turn in opposite directions, so the pattern keeps folding into new shapes, under soft rings and a bright core.
+   Set --special-at on the element to move the center (default: the middle), and --special-a to --special-e to
+   recolor it. */
 @property --special-turn {
   syntax: "<angle>";
   inherits: true;
-  initial-value: 0deg;
+  initial-value: 15deg;
 }
 
 .special {
@@ -3265,27 +3331,11 @@ button.tl-tile[aria-pressed="true"] .tl-pi {
   --special-b: rgba(160, 130, 255, .55);
   --special-c: rgba(110, 200, 255, .55);
   --special-d: rgba(120, 240, 180, .55);
-  --special-e: rgba(255, 225, 110, .55);
-  position: relative;
-  isolation: isolate
-}
-
-/* The special is near white in both themes, so default to dark text. :where() keeps this at zero specificity, so any
-   color the element sets for itself still wins. */
-:where(.special) {
-  color: #1e272d
+  --special-e: rgba(255, 225, 110, .55)
 }
 
 .special::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  border-radius: inherit;
-  pointer-events: none;
-  /* The gradients are built here, on the animated element: a custom property resolves its var()s where it's declared,
-     so building them on .special would freeze the turn at its initial value.
-     Top to bottom: the bright core; a white wash; soft rings; a 4-fold set of bands turning backwards, multiplied
+  /* Top to bottom: the bright core; a white wash; soft rings; a 4-fold set of bands turning backwards, multiplied
      over a 3-fold set turning forwards. Each color holds briefly, then fades over ~12deg into the next. Each wedge is
      a palindrome (mirrored about its middle), which is what makes it read as a kaleidoscope rather than a color
      wheel, and the two symmetries never line up, so the overlaps keep changing shape as they turn. */
@@ -3300,26 +3350,163 @@ button.tl-tile[aria-pressed="true"] .tl-pi {
       var(--special-a) 0deg 12deg, var(--special-e) 24deg 30deg, var(--special-b) 42deg 44deg, var(--special-d) 56deg 64deg,
       var(--special-b) 76deg 78deg, var(--special-e) 90deg 96deg, var(--special-a) 108deg 120deg),
     #fff;
-  background-blend-mode: normal, normal, normal, multiply, normal, normal;
+  /* background-blend-mode: normal, normal, normal, multiply, normal, normal; */
   animation: special-turn 90s linear infinite
 }
 
 @keyframes special-turn {
+  from {
+    --special-turn: 0deg
+  }
+
   to {
     --special-turn: 360deg
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .special::before {
-    animation: none;
-    --special-turn: 15deg
   }
 }
 
 /* The tier list's letter block runs the full height of its row; center the special on its (sticky) letter instead */
 .tl-letter.special {
   --special-at: 50% 44px
+}
+
+/* ---- Foil: a trading card's foil stamp ----
+   Brushed silver with a faint rainbow running through it, and a bright glare that slides back and forth across, as
+   if the card were being tilted in the light. Set --foil-angle to change the direction of the bands and glare, and
+   --foil-glare (0 to 1) for the glare's strength.
+   The glare is drawn on ::after, separately from the rest, so --fx-opacity doesn't dim it: the foil can stay faint
+   while the glare still flashes at full strength. (So a .foil element can't use ::after for anything else.) */
+@property --foil-shift {
+  syntax: "<percentage>";
+  inherits: true;
+  initial-value: 35%;
+}
+
+.foil {
+  --foil-angle: 115deg;
+  --foil-glare: .95
+}
+
+.foil::before {
+  /* Top to bottom: fine brushed lines; the rainbow, multiplied into the silver so it reads as a tint on metal rather
+     than paint; the silver itself, with soft light and dark bands. The rainbow moves against the glare as the card
+     tilts, so the colors seem to change with the angle. */
+  background:
+    repeating-linear-gradient(var(--foil-angle), rgba(255, 255, 255, .35) 0 1px, transparent 1px 3px),
+    linear-gradient(var(--foil-angle), #ffd1dc, #fff1c4, #d2f7dc, #cfe9ff, #e4d4ff, #ffd1dc, #fff1c4, #d2f7dc, #cfe9ff,
+      #e4d4ff) calc(100% - var(--foil-shift)) 0 / 200% 100%,
+    linear-gradient(var(--foil-angle), #dfe3e8, #fbfcfd 30%, #d5dae0 55%, #f4f6f8 80%, #e3e7eb);
+  background-blend-mode: normal, multiply, normal;
+  animation: foil-tilt 6s ease-in-out infinite alternate
+}
+
+/* The glare: a wide band with a hot white core. It runs on the same animation as ::before, so the two stay in step. */
+.foil::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  pointer-events: none;
+  background:
+    linear-gradient(var(--foil-angle), transparent 32%, rgba(255, 255, 255, calc(var(--foil-glare) * .25)) 40%,
+      rgba(255, 255, 255, calc(var(--foil-glare) * .7)) 46%, rgba(255, 255, 255, var(--foil-glare)) 50%,
+      rgba(255, 255, 255, calc(var(--foil-glare) * .7)) 54%, rgba(255, 255, 255, calc(var(--foil-glare) * .25)) 60%,
+      transparent 68%) var(--foil-shift) 0 / 300% 100% no-repeat;
+  animation: foil-tilt 6s ease-in-out infinite alternate
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .foil::after {
+    animation: none
+  }
+}
+
+@keyframes foil-tilt {
+  from {
+    --foil-shift: 0%
+  }
+
+  to {
+    --foil-shift: 100%
+  }
+}
+
+/* ---- Polychrome: every color at once, always shifting ----
+   Saturated pools of color drift over a rainbow wash while the whole surface cycles through the hues. The most
+   colorful of the three overlays, so it has the lowest default opacity. */
+@property --poly-drift {
+  syntax: "<percentage>";
+  inherits: true;
+  initial-value: 0%;
+}
+
+@property --poly-hue {
+  syntax: "<angle>";
+  inherits: true;
+  initial-value: 0deg;
+}
+
+.polychrome::before {
+  /* Top to bottom: four pools of color that drift in a slow loop; a diagonal rainbow. Every color is
+     oklch, offset by --poly-hue, so they all turn around the wheel together. oklch holds the perceived lightness
+     steady as the hue turns, so no color dulls or darkens on the way round (a hue-rotate filter turns yellow olive). */
+  background:
+    radial-gradient(circle at calc(15% + var(--poly-drift)) 25%, oklch(80% .15 calc(350deg + var(--poly-hue))), transparent 50%),
+    radial-gradient(circle at 85% calc(20% + var(--poly-drift)), oklch(80% .15 calc(220deg + var(--poly-hue))), transparent 50%),
+    radial-gradient(circle at calc(80% - var(--poly-drift)) 85%, oklch(80% .15 calc(95deg + var(--poly-hue))), transparent 50%),
+    radial-gradient(circle at 15% calc(85% - var(--poly-drift)), oklch(80% .15 calc(155deg + var(--poly-hue))), transparent 50%),
+    linear-gradient(135deg, oklch(85% .1 calc(300deg + var(--poly-hue))), oklch(85% .1 calc(240deg + var(--poly-hue))),
+      oklch(85% .1 calc(0deg + var(--poly-hue))), oklch(85% .1 calc(80deg + var(--poly-hue))));
+  animation: poly-hue 8s linear infinite, poly-drift 11s ease-in-out infinite alternate
+}
+
+@keyframes poly-hue {
+  from {
+    --poly-hue: 0deg
+  }
+
+  to {
+    --poly-hue: 360deg
+  }
+}
+
+@keyframes poly-drift {
+  to {
+    --poly-drift: 30%
+  }
+}
+
+/* ---- Holographic: a holo sticker ----
+   Diagonal bands of the full spectrum under a fine diffraction grating and a scatter of glitter, with a band of
+   light sweeping through. Brighter and more striped than foil, and without its metal. */
+@property --holo-shift {
+  syntax: "<percentage>";
+  inherits: true;
+  initial-value: 30%;
+}
+
+.holographic::before {
+  /* Top to bottom: two offset grids of glitter; the sweeping light; a diffraction grating (fine lines across the
+     bands); the spectrum, which slides against the light, so the colors seem to change with the angle. */
+  background:
+    radial-gradient(circle, rgba(255, 255, 255, .95) 0 .6px, transparent 1.2px) 0 0 / 9px 9px,
+    radial-gradient(circle, rgba(255, 255, 255, .7) 0 .5px, transparent 1px) 4px 5px / 13px 11px,
+    linear-gradient(-60deg, transparent 30%, rgba(255, 255, 255, .75) 50%, transparent 70%) var(--holo-shift) 0 / 250% 100% no-repeat,
+    repeating-linear-gradient(30deg, rgba(255, 255, 255, .3) 0 1px, transparent 1px 4px),
+    linear-gradient(-60deg, hsl(0 100% 84%), hsl(45 100% 80%), hsl(110 80% 80%), hsl(180 85% 78%), hsl(230 100% 85%),
+      hsl(290 100% 86%), hsl(0 100% 84%), hsl(45 100% 80%), hsl(110 80% 80%), hsl(180 85% 78%), hsl(230 100% 85%),
+      hsl(290 100% 86%)) calc(100% - var(--holo-shift)) 0 / 300% 100%;
+  animation: holo-sweep 7s ease-in-out infinite alternate
+}
+
+@keyframes holo-sweep {
+  from {
+    --holo-shift: 0%
+  }
+
+  to {
+    --holo-shift: 100%
+  }
 }
 
 /* Robot master profile page */
