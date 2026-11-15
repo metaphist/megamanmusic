@@ -1,7 +1,7 @@
 game,name,energy,density,gravity,expression,synergy,range,structure
 mm1,Cut Man,4,4,3,5,1,3,i a b
-mm1,Guts Man,2,1,5,3,1,2,i a
-mm1,Ice Man,2,1,2,5,4,3,i a b
+mm1,Guts Man,2,1,5,3,1,2,i a a+
+mm1,Ice Man,2,1,2,5,4,3,i a o
 mm1,Bomb Man,3,3,2,5,1,3,i a c
 mm1,Fire Man,3,3,4,3,3,2,a b
 mm1,Elec Man,2,2,1,3,1,3,i a b
@@ -19,30 +19,30 @@ mm2,Bubble Man,4,3,3,5,3,4,i a b c
 mm2,Quick Man,3,4,4,4,2,3,a b c
 mm2,Crash Man,3,1,1,4,1,4,a b c b d
 mm2,Flash Man,4,3,4,4,3,3,i a b
-mm2,Heat Man,4,3,5,3,3,2,a b
-mm2,Wood Man,4,2,5,4,1,3,i a o
+mm2,Heat Man,4,3,5,3,3,2,i a
+mm2,Wood Man,4,2,5,4,1,3,i a b
 mm3,Needle Man,4,3,3,5,1,4,i a b c
-mm3,Magnet Man,3,3,2,3,1,4,i a b o
+mm3,Magnet Man,3,3,2,4,1,4,i a b o
 mm3,Gemini Man,3,3,5,5,4,4,i(r) a a b b+ o
 mm3,Hard Man,4,3,5,5,2,3,a b c
 mm3,Top Man,4,2,3,3,2,4,i a b c
 mm3,Snake Man,5,3,4,5,2,4,i a b c
 mm3,Spark Man,5,3,5,5,3,3,i a b
 mm3,Shadow Man,2,1,4,5,3,4,i a b c
-mm4,Bright Man,3,4,3,3,1,3,i a b
+mm4,Bright Man,3,4,3,3,1,3,i a b o
 mm4,Toad Man,3,1,4,5,1,4,i a b o
 mm4,Drill Man,3,4,4,4,1,5,a b c d o
 mm4,Pharaoh Man,5,5,4,5,1,5,i a b c d
 mm4,Ring Man,3,2,3,4,1,3,a b c
 mm4,Dust Man,3,4,5,4,2,4,i a b c
 mm4,Dive Man,3,2,3,3,3,3,a b c
-mm4,Skull Man,2,2,3,2,1,4,a b c o
+mm4,Skull Man,2,2,3,2,1,4,a b c
 mm5,Gravity Man,3,2,4,5,3,4,i a b c
-mm5,Wave Man,3,3,1,5,5,4,a b a c d
+mm5,Wave Man,3,3,1,5,5,4,i a b c d
 mm5,Stone Man,4,3,4,4,1,4,i a b o
 mm5,Gyro Man,4,3,1,5,5,4,i a b o
-mm5,Star Man,3,2,3,5,5,4,i(r) a b c
-mm5,Charge Man,4,2,1,5,5,4,i a b c
+mm5,Star Man,3,2,3,5,5,4,i(r) a b c o
+mm5,Charge Man,4,2,1,5,5,4,i a b a b c
 mm5,Napalm Man,3,3,5,5,3,3,i a b
 mm5,Crystal Man,2,1,5,5,3,3,a b c
 mm6,Blizzard Man,3,2,4,4,3,4,a b c d
@@ -78,8 +78,8 @@ mm9,Jewel Man,3,3,3,5,4,3,a b c c+
 mm9,Hornet Man,3,3,3,4,5,4,i(r) a b c
 mm9,Magma Man,3,3,4,4,3,4,i(r) a b c
 mm9,Galaxy Man,5,4,3,5,5,4,a b c d
-mm10,Blade Man,3,3,5,5,4,4,i a b c
-mm10,Pump Man,1,1,5,5,4,4,a b c d
+mm10,Blade Man,3,3,5,5,4,4,i(r) a a+ b b+
+mm10,Pump Man,1,1,5,5,4,4,i(r) a b c
 mm10,Commando Man,3,3,4,3,3,3,a b a+ c
 mm10,Chill Man,2,1,5,5,5,5,i a b c d e c
 mm10,Sheep Man,3,3,3,5,5,4,i a a+ b b+
@@ -113,7 +113,7 @@ mmv,Pluto,3,3,5,4,1,3,i a b
 mmb,Tengu Man,3,2,1,5,1,2,i- a b
 mmb,Astro Man,1,1,4,3,4,2,a b a b+
 mmb,Cold Man,4,4,3,4,2,3,i- a b o
-mmb,Ground Man,3,3,2,3,1,3,i(r) a b a 
+mmb,Ground Man,3,3,2,3,1,3,i(r) a b a+
 mmb,Pirate Man,2,2,1,4,2,3,i(r) a b
 mmb,Burner Man,3,2,1,3,1,3,i(r) a b
 mmb,Magic Man,2,1,1,4,4,2,a a b a+
