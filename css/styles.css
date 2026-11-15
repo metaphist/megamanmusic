@@ -3303,16 +3303,6 @@ button.tl-tile[aria-pressed="true"] .tl-pi {
   pointer-events: none
 }
 
-@media (prefers-reduced-motion: reduce) {
-
-  .special::before,
-  .foil::before,
-  .polychrome::before,
-  .holographic::before {
-    animation: none
-  }
-}
-
 /* ---- Special: a soft kaleidoscope ----
    The S+ grade uses it everywhere it shows (the JS adds it via specialOf in grades.js). Two sets of mirrored wedges
    turn in opposite directions, so the pattern keeps folding into new shapes, under soft rings and a bright core.
@@ -3361,6 +3351,28 @@ button.tl-tile[aria-pressed="true"] .tl-pi {
 
   to {
     --special-turn: 360deg
+  }
+}
+
+/* Where the browser supports scroll-driven animation, the turn follows scrolling instead of the clock: each element
+   turns half a revolution as it travels up through the screen, from entering at the bottom to leaving at the top,
+   and holds still when the page isn't moving. view() measures each element's own trip, so the turn runs at the same
+   rate on short pages and long ones. Elsewhere it keeps the slow timed turn above. (animation-timeline comes after
+   the animation shorthand, which would otherwise reset it.) */
+@supports (animation-timeline: view()) {
+  .special::before {
+    animation: special-scroll linear both;
+    animation-timeline: view()
+  }
+}
+
+@keyframes special-scroll {
+  from {
+    --special-turn: 0deg
+  }
+
+  to {
+    --special-turn: 180deg
   }
 }
 
@@ -3413,12 +3425,6 @@ button.tl-tile[aria-pressed="true"] .tl-pi {
       rgba(255, 255, 255, calc(var(--foil-glare) * .7)) 54%, rgba(255, 255, 255, calc(var(--foil-glare) * .25)) 60%,
       transparent 68%) var(--foil-shift) 0 / 300% 100% no-repeat;
   animation: foil-tilt 6s ease-in-out infinite alternate
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .foil::after {
-    animation: none
-  }
 }
 
 @keyframes foil-tilt {
@@ -3506,6 +3512,19 @@ button.tl-tile[aria-pressed="true"] .tl-pi {
 
   to {
     --holo-shift: 100%
+  }
+}
+
+/* Reduced motion: every effect holds a still frame. Last, so it overrides each effect's own animation (same
+   specificity, so whichever comes later wins). */
+@media (prefers-reduced-motion: reduce) {
+
+  .special::before,
+  .foil::before,
+  .foil::after,
+  .polychrome::before,
+  .holographic::before {
+    animation: none
   }
 }
 
