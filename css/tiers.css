@@ -48,3 +48,7 @@ button.tl-tile[aria-pressed="true"] .tl-swatch { border-radius: inherit }
   .tl-tiles { padding: 8px; gap: 8px }
   .tl-key { padding: 16px }
 }
+
+/* The link to the range notes, tucked under the metrics list */
+.tl-key .tl-more { margin: -12px 0 20px }
+.tl-more a { color: inherit }

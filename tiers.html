@@ -53,22 +53,13 @@
     </header>
 
     <main class="view">
-      <div>
-        <div class="tfilters" id="tlFilters" role="search" aria-label="Filter the tier list" hidden>
-          <label class="pick"><span class="plabel">Game</span><select id="tlGame">
-              <option value="">All games</option>
-            </select></label>
-          <div class="tf-meta"><span id="tlCount" aria-live="polite"></span></div>
-        </div>
-        <div class="tl-list" id="tiers"></div>
-      </div>
-
       <section aria-labelledby="keyHead">
         <h2 class="sh" id="keyHead">How Grades Work</h2>
         <div class="intro">
           <div class="tl-key">
             <h3>The three metrics</h3>
             <ul class="tl-metrics" id="metrics"></ul>
+            <p class="hint tl-more"><a href="notes/structure">How range is worked out from a song's structure</a></p>
             <h3>The ratings</h3>
             <ol class="tl-ratings" id="ratings"></ol>
           </div>
@@ -89,6 +80,16 @@
           </div>
         </div>
       </section>
+
+      <div>
+        <div class="tfilters" id="tlFilters" role="search" aria-label="Filter the tier list" hidden>
+          <label class="pick"><span class="plabel">Game</span><select id="tlGame">
+              <option value="">All games</option>
+            </select></label>
+          <div class="tf-meta"><span id="tlCount" aria-live="polite"></span></div>
+        </div>
+        <div class="tl-list" id="tiers"></div>
+      </div>
     </main>
   </div>
   <script type="module" src="src/tiers.js"></script>
