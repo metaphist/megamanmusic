@@ -3,7 +3,7 @@
 import { GAMES, AXES, trackKey, trackOf, shortTitle, rangeOf, rangeParts, rangeRating, selectable } from "./model.js";
 import { spriteOf, sprImg } from "./draw.js";
 import { inkOn, fmt, channel } from "./colors.js";
-import { GRADES, METRICS, RATINGS, gradeOf, totalOf, gem } from "./grades.js";
+import { GRADES, METRICS, RATINGS, gradeOf, totalOf, gem, specialOf } from "./grades.js";
 import { portrait, artKey as keyOf } from "./art.js";
 import { $, esc, setupTheme, track, readStored, writeStored } from "./util.js";
 import { ICON_INFO_TIP, ICON_STAR } from "../data/icons.js";
@@ -25,9 +25,9 @@ function standing(t, pool) {
   return { place, tied, of: pool.length, text: (tied.length ? "tied for " : "") + ordinal(place) };
 }
 
-// Five pips with the first n lit
-const pips = (n, cls) => `<span class="rm-pips ${cls}" aria-hidden="true">${[1, 2, 3, 4, 5].map(i =>
-  `<i${i <= n ? ' class="on"' : ""}></i>`).join("")}</span>`;
+// Five pips with the first n lit; extra (like " special") is added to the lit ones
+const pips = (n, cls, extra = "") => `<span class="rm-pips ${cls}" aria-hidden="true">${[1, 2, 3, 4, 5].map(i =>
+  `<i${i <= n ? ` class="on${extra}"` : ""}></i>`).join("")}</span>`;
 
 function hero(t) {
   const g = t.game, ink = t.vals ? inkOn(t.vals) : "var(--ink)";
@@ -45,7 +45,7 @@ function hero(t) {
     ${selectable(t) ? `<button type="button" class="rm-fav" id="rmFav" data-testid="rm-fav" aria-pressed="false" aria-label="Favorite ${esc(t.name)}, ${esc(g.title)}">${ICON_STAR}</button>` : ""}
     <div class="rm-badges">
       ${t.color ? `<div class="rm-badge"><span class="rm-sw" style="background:${t.color}"></span><b>${esc(t.cname)}</b><code>${t.color}</code></div>` : ""}
-      ${t.ratings ? (() => { const gr = gradeOf(t.ratings); return `<div class="rm-badge tl-${gr.letter}"><span class="rm-grade">${gr.letter}</span><b>${gr.word}</b><code>${totalOf(t.ratings)} / 15</code></div>`; })() : ""}
+      ${t.ratings ? (() => { const gr = gradeOf(t.ratings); return `<div class="rm-badge tl-${gr.letter}"><span class="rm-grade${specialOf(gr.letter)}">${gr.letter}</span><b>${gr.word}</b><code>${totalOf(t.ratings)} / 15</code></div>`; })() : ""}
     </div>
   </section>`;
 }
@@ -87,7 +87,7 @@ function tierSection(t) {
   const next = GRADES[GRADES.indexOf(gr) - 1];
   const rows = METRICS.map((m, k) => `<div class="rm-metric">
       <div class="rm-axis-head"><b>${m.label}</b><span class="rm-num">${t.ratings[k]} <small>${RATINGS[t.ratings[k] - 1]}</small></span></div>
-      ${pips(t.ratings[k], "tier")}
+      ${pips(t.ratings[k], "tier", specialOf(gr.letter))}
       <span class="rm-q">${m.question}</span>
     </div>`).join("");
   return `<section class="rm-card tl-${gr.letter}" aria-labelledby="rmTierHead">
@@ -96,7 +96,7 @@ function tierSection(t) {
       <a class="cinfo-btn rm-headlink" href="tiers.html?game=${t.game.id}" aria-label="See the ${esc(t.game.title)} tier list" title="Tier list">${ICON_INFO_TIP}</a>
     </div>
     <div class="rm-colorhead">
-      <span class="rm-swatch rm-grade">${gr.letter}</span>
+      <span class="rm-swatch rm-grade${specialOf(gr.letter)}">${gr.letter}</span>
       <div><b>${gr.word}</b><code>${total} / 15</code>
         <span class="rm-sub">${next ? `${next.min - total} point${next.min - total > 1 ? "s" : ""} short of ${next.letter}` : "The top grade"}</span></div>
     </div>
@@ -151,7 +151,7 @@ function tile(o, current) {
   return `<a class="rm-tile${o === current ? " me" : ""}${gem(o) ? " is-gem" : ""}" href="#${trackKey(o)}" style="--c:${o.color || "var(--grid)"}" ${o === current ? 'aria-current="page"' : ""}>
     <span class="rm-tile-art">${portrait(o)}</span>
     <span class="rm-tile-name">${esc(o.name)}</span>
-    <span class="rm-tile-meta">${o.cname ? esc(o.cname) : "Unscored"}${gr ? ` · <b class="rm-mini tl-${gr.letter}">${gr.letter}</b>` : ""}</span>
+    <span class="rm-tile-meta">${o.cname ? esc(o.cname) : "Unscored"}${gr ? ` · <b class="rm-mini tl-${gr.letter}${specialOf(gr.letter)}">${gr.letter}</b>` : ""}</span>
   </a>`;
 }
 

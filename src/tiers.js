@@ -1,7 +1,7 @@
 // The tier list page: every track's ratings (loaded by model.js from data/scores.csv; blank = not graded yet), grouped
 // by the letter grade they add up to. See grades.js for the grading.
 import { RELEASE_ORDER, tableTitle, trackKey, trackOf } from "./model.js";
-import { GRADES, METRICS, RATINGS, gradeOf, rangeOf, totalOf } from "./grades.js";
+import { GRADES, METRICS, RATINGS, gradeOf, rangeOf, totalOf, specialOf } from "./grades.js";
 import { spriteOf, sprImg } from "./draw.js";
 import { ICON_PLAY, ICON_STOP, ICON_INFO } from "../data/icons.js";
 import { inkOn } from "./colors.js";
@@ -96,7 +96,7 @@ function setupPlayer() {
 // A tier's row: its letter and range of totals, then its tracks (the game filter fills in its label and what shows)
 function tier(id, letter, range, entries) {
   return `<section class="tl-tier tl-${id}" data-tier="${id}" data-name="${id === "none" ? "Not graded" : `Grade ${letter}`}">
-    <div class="tl-letter"><div><b>${letter}</b><span>${range}</span></div></div>
+    <div class="tl-letter${specialOf(letter)}"><div><b>${letter}</b><span>${range}</span></div></div>
     <ol class="tl-tiles">${entries.map(tile).join("")}</ol>
     <p class="tl-empty"></p>
   </section>`;
@@ -156,7 +156,7 @@ function renderKey() {
   $("metrics").innerHTML = METRICS.map(m => `<li><b>${m.label}</b><span>${m.question}</span></li>`).join("");
   $("ratings").innerHTML = RATINGS.map((word, k) => `<li><b>${k + 1}</b><span>${word}</span></li>`).join("");
   $("gradeKey").innerHTML = GRADES.map(g => `<tr class="tl-${g.letter}">
-    <th scope="row"><span class="tl-chip">${g.letter}</span></th>
+    <th scope="row"><span class="tl-chip${specialOf(g.letter)}">${g.letter}</span></th>
     <td class="n">${rangeOf(g)}</td>
     <td>${g.word}</td>
   </tr>`).join("");

@@ -3245,46 +3245,38 @@ button.tl-tile[aria-pressed="true"] .tl-pi {
   }
 }
 
-/* ---- Gem: every S+ badge, on every page ----
-   The tier list's letter block and grade key chip, the profile's grade badges (.rm-grade inside a .tl-S+ badge or
-   card), the filled bars in its tier card (.rm-pips) and the tiles' grade letter (.rm-mini). Swatches, art and panels
-   stay plain. A ::before overlay draws a kaleidoscope: two sets of mirrored wedges turning in opposite directions, so
-   the pattern keeps folding into new shapes, cut into shards by rings, with a bright core like the eyepiece. It sits
-   at z-index -1 inside an isolated stacking context: above the badge's white background, below its letter. The
-   colors are pastel and the core is near white, so the dark letter stays readable. Still for reduced motion. */
-@property --gem-turn {
+/* ---- Special: a soft kaleidoscope behind an element's content ----
+   Add class="special" to any element. The S+ grade uses it everywhere it shows (the JS adds it via specialOf in grades.js).
+   A ::before overlay draws two sets of mirrored wedges turning in opposite directions, so the pattern keeps folding
+   into new shapes, under soft rings and a bright core. It sits at z-index -1 inside an isolated stacking context:
+   above the element's own background, below its content. Mostly white, so dark text on it stays readable. Still
+   for reduced motion.
+   Set --special-at on the element to move the center (default: the middle), and --special-a to --special-e to recolor it. */
+@property --special-turn {
   syntax: "<angle>";
   inherits: true;
   initial-value: 0deg;
 }
 
-.tl-S\+>.tl-letter,
-.tl-S\+ .tl-chip,
-.tl-S\+ .rm-grade,
-.tl-S\+ .rm-pips.tier i.on,
-.rm-mini.tl-S\+ {
-  /* Where the mirrors meet */
-  --kal-at: 50% 50%;
-  /* Shard colors, translucent so the white underneath softens them */
-  --kal-a: rgba(255, 120, 200, .55);
-  --kal-b: rgba(160, 130, 255, .55);
-  --kal-c: rgba(110, 200, 255, .55);
-  --kal-d: rgba(120, 240, 180, .55);
-  --kal-e: rgba(255, 225, 110, .55);
+.special {
+  --special-at: 50% 50%;
+  /* Band colors, translucent so the white underneath softens them */
+  --special-a: rgba(255, 120, 200, .55);
+  --special-b: rgba(160, 130, 255, .55);
+  --special-c: rgba(110, 200, 255, .55);
+  --special-d: rgba(120, 240, 180, .55);
+  --special-e: rgba(255, 225, 110, .55);
   position: relative;
   isolation: isolate
 }
 
-/* The letter block runs the full height of the tier row; center the kaleidoscope on its (sticky) letter instead */
-.tl-S\+>.tl-letter {
-  --kal-at: 50% 44px
+/* The special is near white in both themes, so default to dark text. :where() keeps this at zero specificity, so any
+   color the element sets for itself still wins. */
+:where(.special) {
+  color: #1e272d
 }
 
-.tl-S\+>.tl-letter::before,
-.tl-S\+ .tl-chip::before,
-.tl-S\+ .rm-grade::before,
-.tl-S\+ .rm-pips.tier i.on::before,
-.rm-mini.tl-S\+::before {
+.special::before {
   content: "";
   position: absolute;
   inset: 0;
@@ -3292,43 +3284,42 @@ button.tl-tile[aria-pressed="true"] .tl-pi {
   border-radius: inherit;
   pointer-events: none;
   /* The gradients are built here, on the animated element: a custom property resolves its var()s where it's declared,
-     so building them on the badge would freeze the turn at its initial value.
-     Top to bottom: the bright core; a white wash that keeps the letter readable; rings that cut the wedges into
-     shards; a 4-fold set of facets turning backwards, multiplied over a 3-fold set turning forwards. Each color holds
-     briefly, then fades over ~12deg into the next, so the bands have soft edges. Each wedge is a
-     palindrome (mirrored about its middle), which is what makes it read as a kaleidoscope rather than a color wheel,
-     and the two symmetries never line up, so the overlaps keep folding into new shapes as they turn. */
+     so building them on .special would freeze the turn at its initial value.
+     Top to bottom: the bright core; a white wash; soft rings; a 4-fold set of bands turning backwards, multiplied
+     over a 3-fold set turning forwards. Each color holds briefly, then fades over ~12deg into the next. Each wedge is
+     a palindrome (mirrored about its middle), which is what makes it read as a kaleidoscope rather than a color
+     wheel, and the two symmetries never line up, so the overlaps keep changing shape as they turn. */
   background:
-    radial-gradient(circle at var(--kal-at), rgba(255, 255, 255, .95), rgba(255, 255, 255, .4) 10px, transparent 22px),
+    radial-gradient(circle at var(--special-at), rgba(255, 255, 255, .95), rgba(255, 255, 255, .4) 10px, transparent 22px),
     linear-gradient(rgba(255, 255, 255, .55), rgba(255, 255, 255, .55)),
-    repeating-radial-gradient(circle at var(--kal-at), transparent 0, rgba(255, 255, 255, .12) 9px,
+    repeating-radial-gradient(circle at var(--special-at), transparent 0, rgba(255, 255, 255, .12) 9px,
       rgba(255, 255, 255, .4) 18px, rgba(255, 255, 255, .12) 27px, transparent 36px),
-    repeating-conic-gradient(from calc(var(--gem-turn) * -1.5) at var(--kal-at),
-      #fff 0deg 4deg, var(--kal-c) 14deg 22deg, #fff 34deg 56deg, var(--kal-c) 68deg 76deg, #fff 86deg 90deg),
-    repeating-conic-gradient(from var(--gem-turn) at var(--kal-at),
-      var(--kal-a) 0deg 12deg, var(--kal-e) 24deg 30deg, var(--kal-b) 42deg 44deg, var(--kal-d) 56deg 64deg,
-      var(--kal-b) 76deg 78deg, var(--kal-e) 90deg 96deg, var(--kal-a) 108deg 120deg),
+    repeating-conic-gradient(from calc(var(--special-turn) * -1.5) at var(--special-at),
+      #fff 0deg 4deg, var(--special-c) 14deg 22deg, #fff 34deg 56deg, var(--special-c) 68deg 76deg, #fff 86deg 90deg),
+    repeating-conic-gradient(from var(--special-turn) at var(--special-at),
+      var(--special-a) 0deg 12deg, var(--special-e) 24deg 30deg, var(--special-b) 42deg 44deg, var(--special-d) 56deg 64deg,
+      var(--special-b) 76deg 78deg, var(--special-e) 90deg 96deg, var(--special-a) 108deg 120deg),
     #fff;
   background-blend-mode: normal, normal, normal, multiply, normal, normal;
-  animation: gem-turn 90s linear infinite
+  animation: special-turn 90s linear infinite
 }
 
-@keyframes gem-turn {
+@keyframes special-turn {
   to {
-    --gem-turn: 360deg
+    --special-turn: 360deg
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-
-  .tl-S\+>.tl-letter::before,
-  .tl-S\+ .tl-chip::before,
-  .tl-S\+ .rm-grade::before,
-  .tl-S\+ .rm-pips.tier i.on::before,
-  .rm-mini.tl-S\+::before {
+  .special::before {
     animation: none;
-    --gem-turn: 15deg
+    --special-turn: 15deg
   }
+}
+
+/* The tier list's letter block runs the full height of its row; center the special on its (sticky) letter instead */
+.tl-letter.special {
+  --special-at: 50% 44px
 }
 
 /* Robot master profile page */
