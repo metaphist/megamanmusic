@@ -3332,8 +3332,8 @@ button.tl-tile[aria-pressed="true"] .tl-pi {
   background:
     radial-gradient(circle at var(--special-at), rgba(255, 255, 255, .95), rgba(255, 255, 255, .4) 10px, transparent 22px),
     linear-gradient(rgba(255, 255, 255, .55), rgba(255, 255, 255, .55)),
-    repeating-radial-gradient(circle at var(--special-at), transparent 0, rgba(255, 255, 255, .12) 9px,
-      rgba(255, 255, 255, .4) 18px, rgba(255, 255, 255, .12) 27px, transparent 36px),
+    repeating-radial-gradient(circle at var(--special-at), transparent 0 3px, rgba(255, 255, 255, .35) 3.5px 4.5px,
+      transparent 5px 8px),
     repeating-conic-gradient(from calc(var(--special-turn) * -1.5) at var(--special-at),
       #fff 0deg 4deg, var(--special-c) 14deg 22deg, #fff 34deg 56deg, var(--special-c) 68deg 76deg, #fff 86deg 90deg),
     repeating-conic-gradient(from var(--special-turn) at var(--special-at),

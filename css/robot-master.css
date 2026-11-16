@@ -103,6 +103,12 @@
   font: 700 18px var(--display);
   box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .15);
 }
+/* The hero's grade starts near the top of the page, already most of the way through its own trip up the screen, so
+   the special's usual scroll turn (view(), in styles.css) would barely move it. Turn it with the page's scroll
+   instead, over the first screen's height. Only the timeline changes, so reduced motion still stops it. */
+@supports (animation-timeline: scroll()) {
+  .rm-badge .special::before { animation-timeline: scroll(root); animation-range: 0 100vh }
+}
 .rm-play {
   all: unset;
   cursor: pointer;
