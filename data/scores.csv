@@ -5,7 +5,7 @@ mm2,Air Man,3,3,4,5,2,3,a b c
 mm8,Aqua Man,1,1,1,5,5,4,i a b c
 mmb,Astro Man,1,1,4,3,4,2,a b a b+
 mm8,Astro Man,3,2,1,4,4,3,i(r) a b a b
-mm10,Blade Man,3,3,5,5,4,4,i(r) a a+ b b+
+mm10,Blade Man,3,4,5,5,4,4,i(r) a a+ b b+
 mm11,Blast Man,3,3,4,4,3,4,i a b c
 mm6,Blizzard Man,3,2,4,4,3,4,a b c d
 mm11,Block Man,3,3,3,4,3,5,i a b c o
@@ -88,17 +88,17 @@ mmv,Saturn,3,3,5,4,1,3,i- a b o
 mm8,Search Man,3,3,1,4,2,4,a b c d
 mm7,Shade Man,3,2,5,5,5,3,i a b
 mm3,Shadow Man,2,1,4,5,3,4,i a b c
-mm10,Sheep Man,3,3,3,5,5,4,i a a+ b b+
+mm10,Sheep Man,3,3,3,4,5,4,i a a+ b b+
 mm4,Skull Man,2,2,3,2,2,4,a b c
-mm7,Slash Man,4,2,4,4,2,4,i a b c
+mm7,Slash Man,4,3,4,4,3,4,i a b c
 mm3,Snake Man,5,3,4,5,2,4,i a b c
-mm10,Solar Man,4,3,4,5,3,5,i a b c d o
+mm10,Solar Man,4,3,4,5,4,5,i a b c d o
 mm3,Spark Man,5,3,5,5,3,3,i a b
 mm9,Splash Woman,1,2,5,5,5,3,a b c
 mm7,Spring Man,4,2,1,3,4,3,a b o
 mm5,Star Man,3,2,3,5,5,4,i(r) a b c o
 mm5,Stone Man,4,3,3,5,1,4,i a b o
-mm10,Strike Man,5,3,3,5,5,4,i a a+ b o
+mm10,Strike Man,5,3,3,5,5,4,i a a b c o
 mm8,Sword Man,2,1,5,4,1,2,a b
 mmb,Tengu Man,2,1,1,5,1,2,i- a b
 mm8,Tengu Man (PS),3,2,1,3,3,3,a b c
