@@ -8,12 +8,12 @@ export const METRICS = [
 ];
 
 // What each rating means, from 1 to 5
-export const RATINGS = ["Lacking", "Basic", "Decent", "Excellent", "Exemplary"];
+export const RATINGS = ["Lacking", "Basic", "Decent", "Good", "Excellent"];
 
 // Best first. Together the ranges cover every possible total exactly once.
 export const GRADES = [
-  { letter: "S+", min: 15, max: 15, word: "Masterpiece" },
-  { letter: "S", min: 14, max: 14, word: "Exemplary" },
+  { letter: "S+", min: 15, max: 15, word: "Ideal" },
+  { letter: "S", min: 14, max: 14, word: "Exceptional" },
   { letter: "A", min: 12, max: 13, word: "Excellent" },
   { letter: "B", min: 10, max: 11, word: "Good" },
   { letter: "C", min: 8, max: 9, word: "Decent" },
