@@ -9,7 +9,6 @@ import { inkOn, intensity } from "./colors.js";
 import { sprite, badgeIcon } from "./draw.js";
 import { $, esc, track, readStored, writeStored, setupTheme } from "./util.js";
 import { G, pinned, player, CUSTOM, initViz, setGame, setPinned, togglePinned, viewIndex, isPinned, applyCustom } from "./viz.js";
-
 // ---- Link ----
 
 // The address bar follows what's on screen (?game=mm2 or ?list=mm2.0,mmii.0, plus track=3), so it can be shared.
@@ -271,34 +270,64 @@ const randBands = AXES.map(() => "any");
 // Scored tracks with audio, so every pick plays
 const PLAYABLE = GAMES.flatMap(g => g.tracks.filter(t => t.vals && t.audio));
 
-// With repeat on, a random pick that plays to its end is followed by another from the same bands
-let randRepeat = false, lastPick = null;
-
 const inBand = (v, band) => !BANDS[band] || (v >= BANDS[band][0] && v <= BANDS[band][1]);
 const randPool = () => PLAYABLE.filter(t => t.vals.every((v, k) => inBand(v, randBands[k])));
 
-function renderRandNote(picked) {
+// Fisher–Yates
+function shuffle(list) {
+  const a = [...list];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function renderRandNote(loaded) {
   const n = randPool().length;
   $("randBtn").disabled = !n;
-  $("randNote").innerHTML = picked
-    ? `Now playing <span class="rchip" style="background:${picked.color}"></span><b>${esc(picked.name)}</b> · ${esc(picked.game.title)} · ${esc(picked.cname)} <span class="rhex">${picked.color}</span>`
+  $("randNote").textContent = loaded ? `Shuffled ${n} ${n === 1 ? "track" : "tracks"} into the playlist`
     : n ? `${n} ${n === 1 ? "track matches" : "tracks match"}` : "No tracks match. Try a wider band.";
 }
 
-function playRandom(repeat = false) {
-  const pool = randPool();
-  if (!pool.length) return;
-  // Skip the track that's already selected when there's anything else to pick
-  const others = pool.filter(t => !isPinned(t.gi, t.ti)), from = others.length ? others : pool;
-  const pick = from[Math.floor(Math.random() * from.length)];
-  nav(() => {
-    let k = viewIndex(pick.gi, pick.ti);
-    if (k < 0) { setGame(pick.gi); k = pick.ti; }
-    setPinned(k);
+// Loads every matching track as a shuffled playlist and plays the first
+function playRandom() {
+  const list = shuffle(randPool());
+  if (!list.length) return;
+  // Don't open on the track that's already selected when there's anything else to start with
+  if (list.length > 1 && isPinned(list[0].gi, list[0].ti)) [list[0], list[1]] = [list[1], list[0]];
+  nav(() => { applyCustom(list); setPinned(0); });
+  renderRandNote(true);
+  track("random_playlist", { track_count: list.length, bands: randBands.join(",") });
+}
+
+// ---- Repeat ----
+
+// With repeat on, a track that plays to its end is followed by the next one in the game or playlist, starting over
+// after the last
+let repeat = false;
+
+function nextPlayable(from) {
+  const n = G.tracks.length;
+  for (let s = 1; s <= n; s++) {
+    const k = (from + s) % n;
+    if (G.tracks[k].audio) return k;
+  }
+  return -1;
+}
+
+function setupRepeat() {
+  const btn = $("repeatBtn");
+  btn.addEventListener("click", () => {
+    repeat = !repeat;
+    btn.setAttribute("aria-pressed", repeat);
+    track("repeat_toggle", { on: repeat });
   });
-  lastPick = pick;
-  renderRandNote(pick);
-  track("random_track", { track_name: pick.name, game_id: pick.game.id, bands: randBands.join(","), repeat });
+  player.addEventListener("ended", () => {
+    if (!repeat || pinned == null) return;
+    const k = nextPlayable(pinned);
+    if (k >= 0) nav(() => setPinned(k));
+  });
 }
 
 function setupRandom() {
@@ -315,17 +344,7 @@ function setupRandom() {
     box.querySelectorAll(`[data-ax="${k}"]`).forEach(x => x.setAttribute("aria-pressed", x === b));
     renderRandNote();
   });
-  // A click brings the visualizer into view; a repeat's next pick leaves the page where the visitor has it
   $("randBtn").addEventListener("click", () => { playRandom(); scrollToViz(); });
-  const repeatBtn = $("randRepeat");
-  repeatBtn.addEventListener("click", () => {
-    randRepeat = !randRepeat;
-    repeatBtn.setAttribute("aria-pressed", randRepeat);
-  });
-  // Only continues when the track that ended is still the random pick, so a track chosen elsewhere ends normally
-  player.addEventListener("ended", () => {
-    if (randRepeat && lastPick && isPinned(lastPick.gi, lastPick.ti)) playRandom(true);
-  });
   renderRandNote();
 }
 
@@ -436,6 +455,7 @@ setupBuddies();
 setupDistribution();
 setupSavedLists();
 setupRandom();
+setupRepeat();
 fromLink();
 markIntensity();
 markTable();

@@ -43,7 +43,6 @@
 .rplay:hover { background: var(--ink); opacity: .85 }
 .rplay:disabled { opacity: .4; cursor: default }
 .rplay svg, .rrepeat svg { width: 12px; height: 12px }
-.rrepeat { padding: 10px 14px; gap: 8px }
 .rnote { font-size: 14px; color: var(--muted) }
 .rnote b { color: var(--ink); font-weight: 600 }
 .rchip { display: inline-block; width: 14px; height: 14px; margin: 0 6px 0 4px; vertical-align: -2px; border-radius: 4px; border: 1px solid var(--halo) }
@@ -60,6 +59,9 @@
 .cb-viz .chart { background: var(--bg); border: 0; border-radius: 12px }
 .cb-viz .rbanner { border-radius: 12px; overflow: hidden; scroll-margin-top: 16px }
 .cb-viz .legend { border-top: 0 }
+/* Above the track list: the repeat toggle, tucked close to the list it plays through */
+.lgbar { display: flex; justify-content: flex-end; margin-bottom: -12px }
+.rrepeat { padding: 6px 12px; gap: 8px; font-size: 12px }
 .cb-viz .legend button { border-radius: 8px }
 
 /* ---- Controls, rounded like the home page's search box and jump buttons ---- */

@@ -203,7 +203,7 @@ test.describe("the custom track list", () => {
     expect(await currentView(page)).toBe("custom");
     await expect(page.locator("#customBtnText")).toHaveText("2 tracks selected");
     await expect(page.locator("#customCount")).toHaveText("2 selected");
-    await expect(page.locator("#legend .nm")).toHaveText([/Metal Man\s*Mega Man 2/, /Guts Man\s*Mega Man$/]);
+    await expect(page.locator("#legend .nm")).toHaveText([/Metal Man\s*\(MM 2\)$/, /Guts Man\s*\(MM 1\)$/]);
     await expect(page.locator("#rName")).toHaveText("Custom list (2 tracks)");
     await expect(page.locator("#rSub")).toHaveText("Averages of the 2 scored tracks in your list");
     await expect(page.locator("#gameSel")).toHaveValue("custom");
@@ -241,7 +241,7 @@ test.describe("the custom track list", () => {
 
   test("names each track's game in the legend and the banner", async ({ page }) => {
     await open(page, "?list=mm2.0&track=0");
-    await expect(page.locator("#lg0 small")).toHaveText("Mega Man 2");
+    await expect(page.locator("#lg0 small")).toHaveText("(MM 2)");
     await expect(page.locator("#rSerial")).toHaveText("Mega Man 2 · DWN-009");
   });
 });

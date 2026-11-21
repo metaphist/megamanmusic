@@ -3,7 +3,7 @@
 //
 // app.js sets it up once with initViz, handing over its hooks, then reads what's on screen through the live exports
 // G (the game or custom list) and pinned (the selected track). Only this file changes them.
-import { GAMES, AXES, average, shortTitle } from "./model.js";
+import { GAMES, AXES, average, shortTitle, tableTitle } from "./model.js";
 import { hex, colorName, inkOn, digits, fmt } from "./colors.js";
 import { el, drawFrame, drawTop, triangle, ps, shapePts, SINGLE, STACKED, setGrad, drawSmallHexagon, scoreBars, sprite, spriteOf, sprImg, badgeIcon } from "./draw.js";
 import { ICON_PLAY, ICON_PAUSE } from "../data/icons.js";
@@ -138,7 +138,7 @@ function legendItem(t, i, hasAudio) {
   const attrs = (selectable ? `data-i="${i}" aria-pressed="false"` : "disabled") + (t.audio ? ` aria-description="Plays the theme"` : "");
   const playSlot = !hasAudio ? "" : t.audio ? `<span class="pi" data-pi="${i}"></span>` : `<span></span>`;
   const chip = `<span class="chip ${t.vals ? "" : "empty"}" style="${t.vals ? `background:${t.color}` : ""}"></span>`;
-  const game = current.custom ? `<small>${t.game.title}</small>` : "";
+  const game = current.custom ? `<small title="${t.game.title}">(MM ${tableTitle(t.game)})</small>` : "";
   return `<li><button type="button" id="lg${i}" ${attrs}>${playSlot}
   ${chip}<span class="nm">${sprite(t, "spr-inline")}${t.name}${game}</span>
   <span class="dln">${t.vals ? t.cname : "not scored"}</span><span class="digits">${t.vals ? digits(t.vals) : "–"}</span></button></li>`;

@@ -1371,10 +1371,12 @@ svg text {
   font-size: 12px
 }
 
+/* In a custom list, the track's game, abbreviated in parentheses after the name */
 .legend .nm small {
-  display: block;
+  margin-left: 6px;
   font-family: var(--body);
   font-size: 11px;
+  white-space: nowrap;
   color: var(--muted);
   letter-spacing: 0
 }
