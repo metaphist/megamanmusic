@@ -258,6 +258,73 @@ function setupDistribution() {
   renderDots();
 }
 
+// ---- Random track ----
+
+// Each score can be held to a band, as in the Intensity to Color key: low is 1–2, mid is 3, high is 4–5
+const BANDS = { any: null, lo: [1, 2], mid: [3, 3], hi: [4, 5] };
+const BAND_LABELS = { any: "Any", lo: "Low", mid: "Mid", hi: "High" };
+const randBands = AXES.map(() => "any");
+// Scored tracks with audio, so every pick plays
+const PLAYABLE = GAMES.flatMap(g => g.tracks.filter(t => t.vals && t.audio));
+
+// With repeat on, a random pick that plays to its end is followed by another from the same bands
+let randRepeat = false, lastPick = null;
+
+const inBand = (v, band) => !BANDS[band] || (v >= BANDS[band][0] && v <= BANDS[band][1]);
+const randPool = () => PLAYABLE.filter(t => t.vals.every((v, k) => inBand(v, randBands[k])));
+
+function renderRandNote(picked) {
+  const n = randPool().length;
+  $("randBtn").disabled = !n;
+  $("randNote").innerHTML = picked
+    ? `Now playing <span class="rchip" style="background:${picked.color}"></span><b>${esc(picked.name)}</b> · ${esc(picked.game.title)} · ${esc(picked.cname)} <span class="rhex">${picked.color}</span>`
+    : n ? `${n} ${n === 1 ? "track matches" : "tracks match"}` : "No tracks match. Try a wider band.";
+}
+
+function playRandom(repeat = false) {
+  const pool = randPool();
+  if (!pool.length) return;
+  // Skip the track that's already selected when there's anything else to pick
+  const others = pool.filter(t => !isPinned(t.gi, t.ti)), from = others.length ? others : pool;
+  const pick = from[Math.floor(Math.random() * from.length)];
+  nav(() => {
+    let k = viewIndex(pick.gi, pick.ti);
+    if (k < 0) { setGame(pick.gi); k = pick.ti; }
+    setPinned(k);
+  });
+  lastPick = pick;
+  renderRandNote(pick);
+  track("random_track", { track_name: pick.name, game_id: pick.game.id, bands: randBands.join(","), repeat });
+}
+
+function setupRandom() {
+  const box = $("randFilters");
+  box.innerHTML = AXES.map((ax, k) => `<div class="rfilter" role="group" aria-labelledby="randAx${k}">
+    <span class="plabel" id="randAx${k}"><b class="ch-${"rgb"[k]}">${ax.label}</b> ${ax.lo.toLowerCase()} → ${ax.hi.toLowerCase()}</span>
+    <div class="rseg">${Object.keys(BANDS).map(b => `<button type="button" class="tab" data-ax="${k}" data-band="${b}" aria-pressed="${b === randBands[k]}">${BAND_LABELS[b]}</button>`).join("")}</div>
+  </div>`).join("");
+  box.addEventListener("click", e => {
+    const b = e.target.closest("[data-band]");
+    if (!b) return;
+    const k = +b.dataset.ax;
+    randBands[k] = b.dataset.band;
+    box.querySelectorAll(`[data-ax="${k}"]`).forEach(x => x.setAttribute("aria-pressed", x === b));
+    renderRandNote();
+  });
+  // A click brings the visualizer into view; a repeat's next pick leaves the page where the visitor has it
+  $("randBtn").addEventListener("click", () => { playRandom(); scrollToViz(); });
+  const repeatBtn = $("randRepeat");
+  repeatBtn.addEventListener("click", () => {
+    randRepeat = !randRepeat;
+    repeatBtn.setAttribute("aria-pressed", randRepeat);
+  });
+  // Only continues when the track that ended is still the random pick, so a track chosen elsewhere ends normally
+  player.addEventListener("ended", () => {
+    if (randRepeat && lastPick && isPinned(lastPick.gi, lastPick.ti)) playRandom(true);
+  });
+  renderRandNote();
+}
+
 // ---- Favorites and saved playlists ----
 
 // Same storage as colors-classic.html, so favorites and lists carry over between the two pages
@@ -364,6 +431,7 @@ setupInfoNotes();
 setupBuddies();
 setupDistribution();
 setupSavedLists();
+setupRandom();
 fromLink();
 markIntensity();
 markTable();

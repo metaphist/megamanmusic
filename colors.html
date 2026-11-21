@@ -64,7 +64,7 @@
       </section>
 
       <section class="cb-card" aria-labelledby="vecHead">
-        <h2 class="sh" id="vecHead">Intensity to Color</h2>
+        <h2 class="sh" id="vecHead">Color Metrics</h2>
         <figure class="scales">
           <div class="scale bandrow" aria-label="Bands: low is 1–2, mid is 3, high is 4–5">
             <span aria-hidden="true"></span>
@@ -111,6 +111,22 @@
         </aside> -->
       </section>
     </div>
+
+    <!-- Random track: a band (any, low, mid or high) for each score narrows the pool; the pick plays in the visualizer -->
+    <section class="cb-card cb-rand" aria-labelledby="randHead">
+      <h2 class="sh" id="randHead">Random Track Player</h2>
+      <div class="rfilters" id="randFilters"></div>
+      <div class="rgo">
+        <button type="button" class="tab rplay" id="randBtn">
+          <svg viewBox="0 0 12 12" aria-hidden="true"><path fill="currentColor" d="M3 1h2v1h1v1h1v1h1v1h1v2H8v1H7v1H6v1H5v1H3z" /></svg>
+          Play a random track</button>
+        <button type="button" class="tab rrepeat" id="randRepeat" aria-pressed="false"
+          aria-description="When a random track ends, plays another from the same bands">
+          <svg viewBox="0 0 12 12" aria-hidden="true" shape-rendering="crispEdges"><path fill="currentColor" d="M1 2h9v1H1zM7 0h1v5H7zM8 1h1v3H8zM1 3h1v3H1zM2 9h9v1H2zM4 7h1v5H4zM3 8h1v3H3zM10 6h1v3h-1z" /></svg>
+          Repeat</button>
+        <span class="rnote" id="randNote" aria-live="polite"></span>
+      </div>
+    </section>
 
     <!-- The visualizer: every color in one bar, the pickers (game, custom playlist, saved lists), then the hexagon and track list -->
     <section class="cb-card cb-viz" id="viz" aria-labelledby="vizHead">

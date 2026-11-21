@@ -15,7 +15,7 @@ test.describe("color page", () => {
     await openColors(page);
     await expect(page.locator("h1")).toHaveText("Song Color Visualizer");
     await expect(page.locator(".wrap h2.sh")).toHaveText([
-      "Why Color", "Intensity to Color", "The Visualizer", "Intensity Distribution", "Color Comparison by Game", "Color Buddies",
+      "Why Color", "Color Metrics", "Random Track Player", "The Visualizer", "Intensity Distribution", "Color Comparison by Game", "Color Buddies",
     ]);
   });
 
@@ -36,6 +36,42 @@ test.describe("color page", () => {
     await expect.poll(() => isPlaying(page)).toBe(true);
     await first.click();
     expect(await selectedTrack(page)).toBeNull();
+  });
+
+  test("a random track plays from the chosen bands", async ({ page }) => {
+    await openColors(page);
+    await page.locator('#randFilters [data-ax="0"][data-band="hi"]').click();
+    await page.locator('#randFilters [data-ax="2"][data-band="lo"]').click();
+    await expect(page.locator('#randFilters [data-ax="0"][data-band="hi"]')).toHaveAttribute("aria-pressed", "true");
+    await expect(page.locator("#randNote")).toHaveText(/tracks? match/);
+    await page.locator("#randBtn").click();
+    const vals = await inPage(page, ({ viz }) => viz.G.tracks[viz.pinned].vals);
+    expect(vals[0]).toBeGreaterThanOrEqual(4);
+    expect(vals[2]).toBeLessThanOrEqual(2);
+    await expect.poll(() => isPlaying(page)).toBe(true);
+    await expect(page.locator("#randNote")).toContainText("Now playing");
+    await expect(page.locator("#rSw")).toBeInViewport();
+  });
+
+  test("with repeat on, a random track that ends is followed by another", async ({ page }) => {
+    await openColors(page);
+    const repeat = page.locator("#randRepeat");
+    await expect(repeat).toHaveAttribute("aria-pressed", "false");
+    await repeat.click();
+    await expect(repeat).toHaveAttribute("aria-pressed", "true");
+    await page.locator("#randBtn").click();
+    const first = await inPage(page, ({ viz }) => viz.G.tracks[viz.pinned].audio);
+    await inPage(page, ({ viz }) => viz.player.dispatchEvent(new Event("ended")));
+    await expect.poll(() => inPage(page, ({ viz }) => viz.G.tracks[viz.pinned].audio)).not.toBe(first);
+    await expect.poll(() => isPlaying(page)).toBe(true);
+  });
+
+  test("with repeat off, a random track that ends stays put", async ({ page }) => {
+    await openColors(page);
+    await page.locator("#randBtn").click();
+    const first = await inPage(page, ({ viz }) => viz.G.tracks[viz.pinned].audio);
+    await inPage(page, ({ viz }) => viz.player.dispatchEvent(new Event("ended")));
+    expect(await inPage(page, ({ viz }) => viz.G.tracks[viz.pinned].audio)).toBe(first);
   });
 
   test("a game in the comparison loads it in the visualizer", async ({ page }) => {

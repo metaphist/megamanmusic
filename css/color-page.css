@@ -26,6 +26,29 @@
 .cb-intro .vnote { background: var(--bg); border-radius: 10px; border-left-width: 1px }
 .cb-intro .steps i { border-radius: 6px }
 
+/* ---- Random track: a segmented any/low/mid/high control per score, then the play button ---- */
+.cb-rand { display: flex; flex-direction: column; gap: 18px }
+.cb-rand > .sh { margin: 0 }
+.rfilters { display: flex; flex-wrap: wrap; gap: 14px 24px }
+.rfilter { display: flex; flex-direction: column; gap: 6px }
+.rfilter .plabel b { font-weight: 700 }
+.rseg { display: flex }
+.rseg .tab { padding: 7px 12px; border-radius: 0; justify-content: center; min-width: 48px }
+.rseg .tab + .tab { margin-left: -1px }
+.rseg .tab:first-child { border-radius: 8px 0 0 8px }
+.rseg .tab:last-child { border-radius: 0 8px 8px 0 }
+.rseg .tab[aria-pressed="true"] { position: relative; z-index: 1 }
+.rgo { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px }
+.rplay { background: var(--ink); color: var(--bg); border-color: var(--ink); padding: 10px 16px; gap: 8px }
+.rplay:hover { background: var(--ink); opacity: .85 }
+.rplay:disabled { opacity: .4; cursor: default }
+.rplay svg, .rrepeat svg { width: 12px; height: 12px }
+.rrepeat { padding: 10px 14px; gap: 8px }
+.rnote { font-size: 14px; color: var(--muted) }
+.rnote b { color: var(--ink); font-weight: 600 }
+.rchip { display: inline-block; width: 14px; height: 14px; margin: 0 6px 0 4px; vertical-align: -2px; border-radius: 4px; border: 1px solid var(--halo) }
+.rhex { font-family: var(--mono, "JetBrains Mono", monospace); font-size: 13px }
+
 /* ---- Visualizer: color bar, pickers, hexagon and track list ---- */
 .cb-viz { display: flex; flex-direction: column; gap: 22px; scroll-margin-top: 16px }
 .cb-viz > .shead { margin: 0; overflow: visible }
@@ -33,7 +56,7 @@
 .cb-bar .hint { margin: 0; font-size: 13px; color: var(--muted) }
 .cb-viz .rp-colorbar { height: 40px; border-radius: 10px; overflow: hidden }
 /* The selected track's color stands out in the bar */
-.cb-viz .rp-colorbar button.on { outline: 2px solid var(--ink); outline-offset: -2px; position: relative; z-index: 1 }
+.cb-viz .rp-colorbar button.on { outline: 1px solid var(--ink); outline-offset: -1px; position: relative; z-index: 1 }
 .cb-viz .chart { background: var(--bg); border: 0; border-radius: 12px }
 .cb-viz .rbanner { border-radius: 12px; overflow: hidden; scroll-margin-top: 16px }
 .cb-viz .legend { border-top: 0 }
@@ -65,4 +88,6 @@
   .cb-card { padding: 16px }
   .cb-flush { padding: 2px 0 }
   .cb-flush .crow { padding-inline: 12px }
+  .rfilters, .rfilter { width: 100% }
+  .rseg .tab { flex: 1; min-width: 0 }
 }
