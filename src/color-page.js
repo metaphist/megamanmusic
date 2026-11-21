@@ -117,6 +117,10 @@ function renderGameProfiles() {
   box.addEventListener("click", e => {
     const b = e.target.closest("[data-game]");
     if (!b) return;
+    // A color in the row's strip plays its track (loading its game), and the page stays where it is, like the color
+    // bar. Anywhere else in the row loads the game and scrolls to it.
+    const t = e.target.closest(".strip [data-gi]");
+    if (t) { toggleTrack(+t.dataset.gi, +t.dataset.ti); return; }
     nav(() => setGame(+b.dataset.game));
     scrollToViz();
   });

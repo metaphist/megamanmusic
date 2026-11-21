@@ -356,7 +356,8 @@ function flicker() {
 }
 
 // The selected track's swatches: legend chip, card band, banner, table-row swatch, dot-plot dot, game-profile strip,
-// report row swatch, its bar in the report's all-colors strip, and the floating visualizer button.
+// report row swatch, its bar in the all-colors strip (the report's, or the color page's above the visualizer), and the
+// floating visualizer button.
 // Looked up each frame, so the dot keeps flashing after the dot plot switches score.
 function flickerTargets() {
   const t = selected();
@@ -366,6 +367,7 @@ function flickerTargets() {
     q(`#lg${pinned} .chip`), q(`#cd${pinned} .band`), $("rSw"), q("#trackTable tr.on .cc i"),
     q(`#ibars .idot${at}`), q(`#compare .strip span${at}`), q(`#rpBody .rp-row${at} .rp-col i`),
     q(`#viewReport .rp-colorbar button[data-to-gi="${t.gi}"][data-to-ti="${t.ti}"]`),
+    q(`#colorbar button[data-to-gi="${t.gi}"][data-to-ti="${t.ti}"]`),
     t.vals ? $("vizFab") : null,
   ].filter(Boolean);
 }
@@ -424,7 +426,7 @@ function resetLive() {
   document.querySelectorAll("#rpBody .rp-hex .tri").forEach(unpulse);
   ring.setAttribute("opacity", 0);
   ghost.setAttribute("opacity", 0);
-  document.querySelectorAll(".legend .chip, .card .band, #rSw, #trackTable .cc i, #ibars .idot, #compare .strip span, #rpBody .rp-col i, #viewReport .rp-colorbar button")
+  document.querySelectorAll(".legend .chip, .card .band, #rSw, #trackTable .cc i, #ibars .idot, #compare .strip span, #rpBody .rp-col i, #viewReport .rp-colorbar button, #colorbar button")
     .forEach(e => e.style.filter = "");
   const fab = $("vizFab");
   if (fab) fab.style.filter = fab.style.background = fab.style.color = fab.style.borderColor = "";

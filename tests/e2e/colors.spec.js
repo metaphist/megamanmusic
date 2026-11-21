@@ -74,6 +74,31 @@ test.describe("color page", () => {
     expect(await inPage(page, ({ viz }) => viz.G.tracks[viz.pinned].audio)).toBe(first);
   });
 
+  test("in the comparison, a color in the track strip plays its track in place; the game swatch scrolls to the visualizer", async ({ page }) => {
+    await openColors(page);
+    const row = page.locator("#compare .crow[data-game]").last();
+    const color = row.locator(".strip span").first();
+    await color.click();
+    await expect(row).toHaveAttribute("aria-pressed", "true");
+    const [gi, ti] = [+await color.getAttribute("data-gi"), +await color.getAttribute("data-ti")];
+    expect(await inPage(page, ({ viz }, [gi, ti]) => viz.isPinned(gi, ti), [gi, ti])).toBe(true);
+    await expect.poll(() => isPlaying(page)).toBe(true);
+    await page.waitForTimeout(800);   // longer than a smooth scroll would take
+    await expect(row).toBeInViewport();
+    await expect(page.locator("#rSw")).not.toBeInViewport();
+    await row.locator(".big").click();
+    await expect(page.locator("#rSw")).toBeInViewport();
+  });
+
+  test("the playing track's color in the bar flickers with the music, and settles when stopped", async ({ page }) => {
+    await openColors(page);
+    const first = page.locator("#colorbar button").first();
+    await first.click();
+    await expect.poll(() => first.evaluate(e => e.style.filter), { timeout: 5000 }).toContain("brightness");
+    await first.click();
+    await expect.poll(() => first.evaluate(e => e.style.filter)).toBe("");
+  });
+
   test("a game in the comparison loads it in the visualizer", async ({ page }) => {
     await openColors(page);
     await page.locator('#compare .crow[data-game]').nth(1).click();
