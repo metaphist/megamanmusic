@@ -189,6 +189,30 @@ test.describe("the custom track list", () => {
     await expect(panel).toBeHidden();
   });
 
+  test("filters by color score, with x or ? for any digit, and by color name", async ({ page }) => {
+    await open(page, "?game=mm1");
+    await page.locator("#customBtn").click();
+    const visibleScores = () => page.locator("#customList .copt:visible").evaluateAll(opts => opts.map(o => o.dataset.score));
+    const count = re => page.locator("#customList .copt").evaluateAll((opts, re) =>
+      opts.filter(o => new RegExp(re).test(o.dataset.score || "")).length, re);
+    const filter = page.locator("#customFilter");
+
+    const [score, cname] = await inPage(page, ({ model }) => {
+      const t = model.GAMES.flatMap(g => g.tracks).find(t => t.vals);
+      return [t.vals.join(""), t.cname];
+    });
+    await filter.fill(score);
+    await expect(page.locator("#customList .copt:visible")).toHaveCount(await count(`^${score}$`));
+    expect(new Set(await visibleScores())).toEqual(new Set([score]));
+
+    await filter.fill("5x?");
+    await expect(page.locator("#customList .copt:visible")).toHaveCount(await count("^5..$"));
+    (await visibleScores()).forEach(s => expect(s).toMatch(/^5/));
+
+    await filter.fill(cname);
+    await expect(page.locator("#customList .copt:visible").first()).toBeVisible();
+  });
+
   test("lists every scored or playable track", async ({ page }) => {
     await open(page, "?game=mm1");
     const n = await inPage(page, ({ model }) => model.GAMES.flatMap(g => g.tracks).filter(model.selectable).length);

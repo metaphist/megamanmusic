@@ -487,10 +487,14 @@ function setupCustomPicker() {
   document.addEventListener("mousedown", e => { if (!panel.hidden && !e.target.closest(".cpick")) open(false); });
   panel.addEventListener("keydown", e => { if (e.key === "Escape") { e.stopPropagation(); open(false); btn.focus(); } });
 
-  // The filter box matches every word against the track name and game
+  // The filter box matches every word against the track name, game, color name and hex. A word that reads as a
+  // score (three digits, energy, density, gravity, with x or ? for any) also matches tracks with that score.
   filter.addEventListener("input", () => {
-    const words = filter.value.trim().toLowerCase().split(/\s+/).filter(Boolean);
-    list.querySelectorAll(".copt").forEach(o => o.hidden = !words.every(w => o.dataset.hay.includes(w)));
+    const words = filter.value.trim().toLowerCase().split(/\s+/).filter(Boolean).map(w => ({
+      w, score: /^[1-5x?]{3}$/.test(w) && new RegExp("^" + w.replace(/[x?]/g, ".") + "$"),
+    }));
+    const matches = (o, { w, score }) => o.dataset.hay.includes(w) || (score && score.test(o.dataset.score || ""));
+    list.querySelectorAll(".copt").forEach(o => o.hidden = !words.every(word => matches(o, word)));
     list.querySelectorAll(".cgrp").forEach(g => g.hidden = !g.querySelector(".copt:not([hidden])"));
   });
 
@@ -500,8 +504,9 @@ function setupCustomPicker() {
 
 // One checkbox row: color chip, track name and scores
 function customOption(t, g) {
-  const hay = (t.name + " " + g.title + " " + shortTitle(g)).toLowerCase();
-  return `<label class="copt" data-hay="${hay}">
+  const hay = [t.name, g.title, shortTitle(g), t.vals ? `${t.cname} ${t.color}` : ""].join(" ").toLowerCase();
+  const score = t.vals ? ` data-score="${t.vals.join("")}"` : "";
+  return `<label class="copt" data-hay="${hay}"${score}>
       <input type="checkbox" data-gi="${t.gi}" data-ti="${t.ti}"><i class="${t.vals ? "" : "chip empty"}" style="${t.vals ? `background:${t.color}` : ""}"></i>
       <span>${t.name}</span><span class="cd">${t.vals ? digits(t.vals) : "–"}</span></label>`;
 }
