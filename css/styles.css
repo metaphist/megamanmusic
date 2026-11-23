@@ -3378,6 +3378,18 @@ button.tl-tile[aria-pressed="true"] .tl-pi {
   }
 }
 
+/* Faint: the S grade's version, added alongside .special. Instead of covering the element's background, the pattern
+   multiplies into it: its white parts leave the tier color as it is, and its bands tint it, so the kaleidoscope turns
+   faintly through the color. (Lighter blends like soft-light wash the color out, since the pattern is mostly white.)
+   Turn --fx-opacity up or down to show more or less of it. */
+.special.special-faint {
+  --fx-opacity: .55
+}
+
+.special-faint::before {
+  mix-blend-mode: multiply
+}
+
 /* The tier list's letter block runs the full height of its row; center the special on its (sticky) letter instead */
 .tl-letter.special {
   --special-at: 50% 44px
@@ -4005,4 +4017,20 @@ button.tl-tile[aria-pressed="true"] .tl-pi {
 
 .backlink:hover {
   color: var(--ink)
+}
+
+/* ---- Site footer: Capcom credit, shown on every page ---- */
+.site-foot {
+  padding-top: 20px;
+  border-top: 1px solid var(--line);
+  font-size: 13px;
+  color: var(--muted)
+}
+
+.site-foot p {
+  margin: 0
+}
+
+.site-foot p + p {
+  margin-top: 8px
 }

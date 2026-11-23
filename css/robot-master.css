@@ -109,13 +109,13 @@
 @supports (animation-timeline: scroll()) {
   .rm-badge .special::before { animation-timeline: scroll(root); animation-range: 0 100vh }
 }
+.rm-controls { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px }
 .rm-play {
   all: unset;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  margin-top: 6px;
   padding: 10px 16px;
   border-radius: 999px;
   background: var(--ink-on);
@@ -127,6 +127,23 @@
 .rm-play svg { width: 16px; height: 16px }
 .rm-play .i-stop, .rm-play[aria-pressed="true"] .i-play { display: none }
 .rm-play[aria-pressed="true"] .i-stop { display: inline }
+/* Shuffle: an outlined pill beside Play, filled like it when on */
+.rm-shuffle {
+  all: unset;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border: 2px solid var(--ink-on);
+  border-radius: 999px;
+  color: var(--ink-on);
+  font: 700 12px var(--display);
+  letter-spacing: .04em;
+}
+.rm-shuffle:focus-visible { outline: 2px solid var(--ink-on); outline-offset: 3px }
+.rm-shuffle svg { width: 16px; height: 16px }
+.rm-shuffle[aria-pressed="true"] { background: var(--ink-on); color: var(--c) }
 
 /* ---- Cards ---- */
 .rm-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px; align-items: stretch }
@@ -174,6 +191,12 @@
 .rm-pips { display: flex; gap: 4px }
 .rm-pips i { flex: 1; height: 12px; border-radius: 3px; background: var(--grid) }
 .rm-pips.tier i.on { background: var(--tier); box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .15) }
+/* In light mode, the special's near-white blends into the white card; a gray stroke gives the hero badge's grade,
+   the tier card's swatch and its lit pips a crisp edge. An outline, because the special's overlay (z-index -1, styles.css) covers inset box-shadows. */
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) :is(.rm-swatch, .rm-pips.tier i, .rm-badge .rm-grade).special:not(.special-faint) { outline: 1px solid var(--line) }
+}
+:root[data-theme="light"] :is(.rm-swatch, .rm-pips.tier i, .rm-badge .rm-grade).special:not(.special-faint) { outline: 1px solid var(--line) }
 .rm-stand { display: flex; gap: 12px; margin: 0 }
 /* Side-by-side cards stretch to the same height; the last line (average key or standings) sits at the bottom */
 .rm-grid > .rm-card:not(.rm-wide) > :last-child:not(:nth-child(-n+2)) { margin-top: auto }

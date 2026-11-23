@@ -59,9 +59,13 @@
 .cb-viz .chart { background: var(--bg); border: 0; border-radius: 12px }
 .cb-viz .rbanner { border-radius: 12px; overflow: hidden; scroll-margin-top: 16px }
 .cb-viz .legend { border-top: 0 }
-/* Above the track list: the repeat toggle, tucked close to the list it plays through */
-.lgbar { display: flex; justify-content: flex-end; margin-bottom: -12px }
-.rrepeat { padding: 6px 12px; gap: 8px; font-size: 12px }
+/* Under the banner: composer and color lines on the left; the favorite star and the repeat toggle at the right,
+   both spanning the two lines */
+.cb-viz .rinfo { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; column-gap: 8px; align-items: center; padding-right: 0 }
+.cb-viz .rinfo .sub { grid-area: 1 / 1 }
+.cb-viz .rinfo .code { grid-area: 2 / 1 }
+.cb-viz .rinfo .rp-fav { grid-area: 1 / 2 / 3; position: static; transform: none }
+.rrepeat { grid-area: 1 / 3 / 3; padding: 10px 14px; gap: 8px; font-size: 12px }
 .cb-viz .legend button { border-radius: 8px }
 
 /* ---- Controls, rounded like the home page's search box and jump buttons ---- */
@@ -78,9 +82,8 @@
 .bud { border-radius: 14px; overflow: hidden }
 .bud li button { border-radius: 6px }
 
-/* ---- Footer: a quiet link to the deprecated classic page ---- */
-.cb-foot { padding-top: 20px; border-top: 1px solid var(--line); font-size: 13px; color: var(--muted) }
-.cb-foot a { color: var(--ink); text-underline-offset: 3px }
+/* ---- Footer link to the deprecated classic page (base footer style lives in styles.css) ---- */
+.site-foot a { color: var(--ink); text-underline-offset: 3px }
 
 @media (max-width: 900px) {
   .cb-intro { grid-template-columns: minmax(0, 1fr) }

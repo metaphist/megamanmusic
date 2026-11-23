@@ -38,9 +38,13 @@ function hero(t) {
       <span class="eyebrow">${esc(g.title)}${g.year ? " · " + g.year : ""}${t.dln ? " · " + esc(t.dln) : ""}</span>
       <h1>${esc(t.name)}</h1>
       ${g.composer ? `<p class="rm-composer">Music by ${esc(g.composer)}</p>` : ""}
-      ${t.audio ? `<button type="button" class="rm-play" id="rmPlay" data-testid="rm-play" aria-pressed="false">
+      ${t.audio ? `<div class="rm-controls"><button type="button" class="rm-play" id="rmPlay" data-testid="rm-play" aria-pressed="false">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path class="i-play" fill="currentColor" d="M8 5h2v2h2v2h2v2h2v2h-2v2h-2v2h-2v2H8V5Z"/><path class="i-stop" fill="currentColor" d="M6 6h12v12H6z"/></svg>
-        <span>Play theme</span></button>` : ""}
+        <span>Play theme</span></button>
+        ${neighbors(t).some(o => o.audio) ? `<button type="button" class="rm-shuffle" id="rmShuffle" data-testid="rm-shuffle" aria-pressed="false"
+          aria-description="When the theme ends, opens and plays one of its color neighbors at random">
+          <svg viewBox="0 0 12 12" aria-hidden="true" shape-rendering="crispEdges"><path fill="currentColor" d="${ICON_SHUFFLE}"/></svg>
+          <span>Shuffle</span></button>` : ""}</div>` : ""}
     </div>
     ${selectable(t) ? `<button type="button" class="rm-fav" id="rmFav" data-testid="rm-fav" aria-pressed="false" aria-label="Favorite ${esc(t.name)}, ${esc(g.title)}">${ICON_STAR}</button>` : ""}
     <div class="rm-badges">
@@ -155,15 +159,22 @@ function tile(o, current) {
   </a>`;
 }
 
+// The six closest colors across every game, nearest first, ties going to the higher total
+function neighbors(t) {
+  if (!t.vals) return [];
+  return ALL.filter(o => o !== t && o.vals)
+    .map(o => ({ o, d: Math.hypot(...o.vals.map((v, i) => v - t.vals[i])) }))
+    .sort((a, b) => a.d - b.d || (totalOf(b.o.ratings || [0]) - totalOf(a.o.ratings || [0]))).slice(0, 6)
+    .map(n => n.o);
+}
+
 function neighborsSection(t) {
   if (!t.vals) return "";
-  const near = ALL.filter(o => o !== t && o.vals)
-    .map(o => ({ o, d: Math.hypot(...o.vals.map((v, i) => v - t.vals[i])) }))
-    .sort((a, b) => a.d - b.d || (totalOf(b.o.ratings || [0]) - totalOf(a.o.ratings || [0]))).slice(0, 6);
+  const near = neighbors(t);
   return `<section class="rm-card rm-wide" aria-labelledby="rmNearHead">
     <h2 class="sh" id="rmNearHead">Color Neighbors</h2>
     <p class="hint">The six closest colors across every game.</p>
-    <div class="rm-tiles">${near.map(n => tile(n.o, t)).join("")}</div>
+    <div class="rm-tiles">${near.map(o => tile(o, t)).join("")}</div>
   </section>`;
 }
 
@@ -189,8 +200,46 @@ function render(t) {
   stop();
   $("rmPlay")?.addEventListener("click", () => player.paused || player.dataset.key !== trackKey(t) ? play(t) : stop());
   $("rmFav")?.addEventListener("click", () => toggleFavorite(t));
+  $("rmShuffle")?.addEventListener("click", toggleShuffle);
   markFav(t);
+  markShuffle();
 }
+
+// ---- Shuffle ----
+
+// With shuffle on, a theme that plays to its end is followed by one of its color neighbors, picked at random: its
+// profile opens and plays, and so on from there. Neighbors already played this run are skipped while there are
+// others, so it wanders off rather than bouncing between two close colors. It stays on from profile to profile.
+const ICON_SHUFFLE = "M0 2h3v1H0zM3 3h1v1H3zM4 4h1v1H4zM5 5h1v1H5zM6 6h1v1H6zM7 7h1v1H7zM8 8h1v1H8zM9 7h1v5H9zM10 8h1v3h-1zM11 9h1v1h-1z"
+  + "M0 9h3v1H0zM3 8h1v1H3zM4 7h1v1H4zM5 6h1v1H5zM6 5h1v1H6zM7 4h1v1H7zM8 3h1v1H8zM9 0h1v5H9zM10 1h1v3h-1zM11 2h1v1h-1z";
+let shuffling = false, autoplay = null;
+const played = new Set();
+
+function markShuffle() {
+  $("rmShuffle")?.setAttribute("aria-pressed", shuffling);
+}
+
+function toggleShuffle() {
+  shuffling = !shuffling;
+  played.clear();
+  if (shuffling && !player.paused && picked) played.add(trackKey(picked));
+  markShuffle();
+  track("shuffle_toggle", { on: shuffling });
+}
+
+function nextNeighbor(t) {
+  const pool = neighbors(t).filter(o => o.audio), fresh = pool.filter(o => !played.has(trackKey(o)));
+  const from = fresh.length ? fresh : pool;
+  return from[Math.floor(Math.random() * from.length)];
+}
+
+player.addEventListener("ended", () => {
+  if (!shuffling || !picked || player.dataset.key !== trackKey(picked)) return;
+  const next = nextNeighbor(picked);
+  if (!next) return;
+  autoplay = next;
+  location.hash = trackKey(next);
+});
 
 // ---- Favorites ----
 
@@ -240,6 +289,7 @@ function frameOpaqueArt() {
 }
 
 function play(t) {
+  if (shuffling) played.add(trackKey(t));
   player.src = t.audio;
   player.dataset.key = trackKey(t);
   player.currentTime = 0;
@@ -349,7 +399,11 @@ function pickHit(t, i) {
 
 // Picking a track, clicking a tile, and Back and Forward all change the hash, which redraws the profile
 addEventListener("hashchange", () => {
-  render(current());
+  const t = current(), auto = autoplay === t;
+  autoplay = null;
+  render(t);
+  // Shuffle moving on keeps the music going
+  if (auto) play(t);
   scrollTo({ top: 0, behavior: "smooth" });
 });
 

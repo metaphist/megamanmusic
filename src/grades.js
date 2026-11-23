@@ -36,5 +36,7 @@ export const gradeOf = ratings => {
 // A gem: a perfect ranking (S+, all three ratings at 5), whatever the track's color
 export const gem = t => !!t.ratings && gradeOf(t.ratings) === GRADES[0];
 
-// The special effect (.special in styles.css) marks the top grade wherever it shows: " special" to add to a class list, or ""
-export const specialOf = letter => letter === GRADES[0].letter ? " special" : "";
+// The special effect (.special in styles.css) marks the top grade wherever it shows, and a faint version of it
+// (.special-faint) the next grade down: classes to add to a class list, or ""
+export const specialOf = letter =>
+  letter === GRADES[0].letter ? " special" : letter === GRADES[1].letter ? " special special-faint" : "";
